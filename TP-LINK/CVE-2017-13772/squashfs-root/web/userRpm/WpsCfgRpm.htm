@@ -1,0 +1,243 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT language="JavaScript" src="../dynaform/custom.js" type="text/JavaScript">
+</SCRIPT>
+<SCRIPT type="text/javascript">
+<!-- 
+var g_wpsStatus = wpsInf[0];
+var g_wpsPIN = wpsInf[1];
+var g_enWlan = wpsInf[2];
+var g_vapIdx = wpsInf[4];
+
+function doSubmit()
+{
+	return true;
+}
+
+function doOnClick()
+{
+	location.href = "../userRpm/WpsCfgRpm.htm?NewDev=value";
+}
+
+function doWpsPinLock()
+{
+	var wps_pin_lock;
+	if (document.forms[0].pin_lock.checked == true)
+	{
+		wps_pin_lock = 1;		
+	}
+	else
+	{
+		wps_pin_lock = 0;		
+	}
+	location.href = "../userRpm/WpsCfgRpm.htm?wps_pin_lock=" + wps_pin_lock;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wlan_wps');LoadHelp('WlanWpsHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<FORM action="WpsCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+  <TABLE id="autoWidth">
+    <TR>
+		<TD colspan=2 class=h1>
+			<SCRIPT type="text/javascript">
+				document.write(str_wps_name_short + ' (' + str_wps_name_long + ')');
+			</SCRIPT>
+		</TD>
+    </TR>
+	
+    <TR>
+      <TD colspan=2 class=blue>&nbsp;</TD>
+    </TR>
+	
+<SCRIPT type="text/javascript">
+if(sysMode == 8)//PT_AP
+{
+	var operModeIdx = getOperModeIdxByValue(operMode);
+	document.write('<TR id="line_OperMode">');
+	document.write('<TD class="Item" id="t_transmit_power">Operation Mode:</TD>');	
+	document.write('<TD class=emp><span>');
+	document.write(getOperModeName(operModeIdx));
+	document.write('</span>&nbsp;&nbsp;');
+	document.write('</TD></TR>');
+	document.write('<TR><TD class=blue colspan=2 >&nbsp;</TD></TR>');
+}
+
+if(wpsInf[5] == 1)
+{
+	document.write('<TR><TD id="t_ssid1" class="Item">SSID:</TD><TD class="emp">');
+	for (i=0;i<wpsInf[7].length; i++)
+	{
+		if (wpsInf[7].charAt(i) == ' ')
+			document.write('&nbsp;');
+		else if (wpsInf[7].charAt(i) == '<')
+		{
+			document.write('&lt;');
+		}
+		else
+			document.write(wpsInf[7].charAt(i));
+	}
+	document.write('</TD>');
+}
+</SCRIPT>
+	
+    <TR id="enWlan">
+		<TD colspan=2>
+			<B><FONT color="#FF0000">
+				<SPAN id="t_allow">You should turn on wireless first, </SPAN>
+				<A href="../userRpm/WlanNetworkRpm.htm" id="t_click_here">Click here </A>
+				<SPAN id="t_enb_radio">to Enable Wireless Router Radio.</SPAN>
+				</FONT></B>
+		</TD>
+    </TR>
+	
+	 <TR id="enBrocastSsid">
+		<TD colspan=2>
+			<B><FONT color="#FF0000">
+				<SPAN id="t_allow">You should turn on Enable Wireless SSID Broadcast function first, </SPAN>
+				<A href="../userRpm/WlanNetworkRpm.htm" id="t_click_here">Click here </A>
+				<SPAN id="t_enb_radio">to Enable Wireless SSID Broadcast.</SPAN>
+				</FONT></B>
+		</TD>
+    </TR>
+	
+    <TR id="enWlanBr">
+      <TD colspan=2>&nbsp;</TD>
+    </TR>
+    <TR>
+		<TD class="Item">
+			<SCRIPT type="text/javascript">
+				document.write(str_wps_name_short);
+			</SCRIPT>
+			<SPAN id = "t_status">Status:</SPAN>
+		</TD>
+		<TD class="emp">
+			<SCRIPT type="text/javascript">
+			if (g_wpsStatus == 0)
+			{
+				document.write("<span id=\"t_disabled\">Disabled<\/span>");
+			}
+			else
+			{
+				document.write("<span id=\"t_enabled\">Enabled<\/span>");
+			}
+			</SCRIPT>
+			&nbsp;&nbsp;
+			<SCRIPT type="text/javascript">
+			document.write('<INPUT name=\"EnWps\"  type=\"submit\" class=\"buttonBig\" value=\"Enable '+ str_wps_name_short + '\">');
+			document.write('<INPUT name=\"DisWps\" type=\"submit\" class=\"buttonBig\" value=\"Disable '+ str_wps_name_short + '\">');
+			</SCRIPT>
+		</TD>
+    </TR>
+	
+    <TR>
+      <TD colspan=2>&nbsp;</TD>
+    </TR>
+    <TR>
+      <TD class="Item" height="60" id="t_cur_pin">Current PIN:</TD>
+			<TD>
+				<SCRIPT type="text/javascript">
+					document.write("<B style='font-size: 18px; vertical-align: middle;'>" + g_wpsPIN + "<\/B>");
+				</SCRIPT>
+				&nbsp;&nbsp;
+				<INPUT name="DefPin" type="submit" class="buttonBig" value="Restore PIN">
+				&nbsp;&nbsp;
+				<INPUT name="NewPin" type="submit" class="buttonBig" value="Gen New PIN">
+			</TD>
+    </TR>
+
+	<TR>
+      <TD class="Item"></TD>
+      <TD><INPUT type="checkbox" name="pin_lock" onClick = "doWpsPinLock();"> <SPAN id="t_withpsw">&nbsp;Disable PIN of this device</SPAN></TD>
+    </TR>
+	
+    <TR>
+      <TD colspan=2>&nbsp;</TD>
+    </TR>
+    <TR>
+		<TD class="Item" id="t_add_dev">Add a new device:</TD>
+		<TD>
+			<INPUT name="NewDev" type="button" class="buttonBig" value="Add Device" onclick = "doOnClick()">
+		</TD>
+    </TR>
+    
+	<SCRIPT type="text/javascript">
+	if(wpsInf[3] == 1)
+	{
+		//added by ZQQ.08.12.05
+		document.write('<TR><TD colspan=2><span style="color:#FF0000" id="t_chng">The change of wireless config will not take effect until this device reboots, please <\/span><A href="../userRpm/SysRebootRpm.htm" id="t_click">click here<\/A><span id="t_to_reboot" style="color:#FF0000"> to reboot.<\/span> <\/TD><\/TR>');  
+	}
+	</SCRIPT>
+    
+	<TR>
+      <TD colspan=2 class=blue>&nbsp;</TD>
+    </TR>
+  </TABLE>
+</FORM>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript">
+if (g_wpsStatus == 0)
+{
+	document.forms[0].DisWps.style.display = "none";
+	//add by yuyi ,use for ap 18July2011
+	if(sysMode == 8)
+	{
+		if((operMode>=3 && operMode<=5) || operMode ==7 || (operMode==1 && vlanEnable==1))
+		{
+			document.forms[0].EnWps.disabled = true;
+		}
+	}	
+	document.forms[0].NewDev.disabled = true;
+	document.forms[0].pin_lock.disabled = true;
+}
+else
+{
+	document.forms[0].EnWps.style.display = "none";
+}
+if (g_enWlan == 0)
+{
+	document.forms[0].DisWps.disabled = true;
+	document.forms[0].EnWps.disabled = true;
+	document.forms[0].DefPin.disabled = true;
+	document.forms[0].NewPin.disabled = true;
+	document.forms[0].NewDev.disabled = true;
+	document.forms[0].pin_lock.disabled = true;
+	document.getElementById("enBrocastSsid").style.display = "none";
+}
+else if(g_enWlan == 1)
+{
+	document.forms[0].DisWps.disabled = true;
+	document.forms[0].EnWps.disabled = true;
+	document.forms[0].DefPin.disabled = true;
+	document.forms[0].NewPin.disabled = true;
+	document.forms[0].NewDev.disabled = true;
+	document.forms[0].pin_lock.disabled = true;
+	document.getElementById("enWlan").style.display = "none";
+}
+else
+{
+	document.getElementById("enWlan").style.display = "none";
+	document.getElementById("enBrocastSsid").style.display = "none";
+	document.getElementById("enWlanBr").style.display = "none";
+}
+//add by yuyi 18July2011 for ap
+if(sysMode == 8)
+{
+	if((operMode>=3 && operMode<=5) || operMode ==7 || (operMode==1 && vlanEnable==1))
+	{
+		var cf = document.forms[0];
+		for(var i=1; i<cf.length; i++)
+		{
+			cf[i].disabled = true;
+		}
+	}
+}
+
+document.forms[0].pin_lock.checked = wpsInf[6];
+if(document.forms[0].pin_lock.checked)
+{
+	document.forms[0].DefPin.disabled = true;
+	document.forms[0].NewPin.disabled = true;
+}
+</SCRIPT>

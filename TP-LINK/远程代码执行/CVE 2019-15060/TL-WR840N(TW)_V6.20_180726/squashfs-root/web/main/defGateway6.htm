@@ -1,0 +1,22 @@
+﻿<script language="javascript" type="text/javascript">function init(){var index=0;var aliasName=$.act(ACT_GET,L3_IP6_FORWARDING,null,null,["__ifAliasName"]);var wanIpList=$.act(ACT_GL,WAN_IP_CONN,null,null,["enable","name","X_TP_IPv6Enabled"]);var wanPPPList=$.act(ACT_GL,WAN_PPP_CONN,null,null,["enable","name","X_TP_IPv6Enabled"]);var sel=$.id("wanInf");if(!$.exe()){for(var i=0;i<wanIpList.length;i++){if(wanIpList[i].enable==1&&wanIpList[i].X_TP_IPv6Enabled==1){var option=$.c("option");option.value=wanIpList[i].__stack;option.text=wanIpList[i].name;try{sel.add(option,null)}catch(e){sel.add(option)}index++;if(wanIpList[i].name==aliasName.__ifAliasName){sel.selectedIndex=index-1}}}for(var j=0;j<wanPPPList.length;j++){if(wanPPPList[j].enable==1&&wanPPPList[j].X_TP_IPv6Enabled==1){var option=$.c("option");option.value=wanPPPList[j].__stack;option.text=wanPPPList[j].name;try{sel.add(option,null)}catch(e){sel.add(option)}index++;if(wanPPPList[j].name==aliasName.__ifAliasName){sel.selectedIndex=index-1}}}if(index==0){var option=$.c("option");option.value=0;option.text=s_str.noAvailIntf;try{sel.add(option,null)}catch(e){sel.add(option)}$.removeClass($.id("tip"),"nd")}}}function doSubmit(){$.addLoading($.id("submitBtn"));$.act(ACT_SET,L3_IP6_FORWARDING,null,null,["__ifAliasName="+$.id("wanInf").options[$.id("wanInf").selectedIndex].text,"__ifName=","defaultConnectionService="]);$.exe(function(ret){if(!ret){$.reload()}})};</script>
+
+<p class="et T" id="et">IPv6 Default Gateway Settings</p>
+
+<div class="con1 L">
+<p class="ct"></p>
+<p class="bl"></p>
+<div class="con2">
+<p class="T" id="t_info">Select a preferred wan interface as the system IPv6 default gateway.</p>
+<p class="br"></p>
+<p class="L1"><b class="item T" id="t_selwan">Select WAN Interface:</b>
+<select class="XL" id="wanInf" ></select>
+<input id="tip" type="button" class="button nd L" value="Add Interface" onclick="$.loadMain('wan.htm')"/></p>
+<p class="br"></p>
+</div>
+<p class="bl"></p>
+<p class="tail" id="tail">
+	<input type="button" class="button L T T_save" value="Save" id="submitBtn" onclick="doSubmit()" />
+</p>
+</div>
+<script language="javascript" type="text/javascript">$.loadHelp();init();</script>
+

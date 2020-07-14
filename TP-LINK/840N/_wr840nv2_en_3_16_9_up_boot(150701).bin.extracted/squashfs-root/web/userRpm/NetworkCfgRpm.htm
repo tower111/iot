@@ -1,0 +1,242 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+var address;
+function LoadPage()
+{
+	parent.location.href = 'http://' + address;	
+}
+function LoadNewIp()
+{
+	setTimeout("LoadPage()",5000);
+}
+
+function doSubmit()
+{
+	document.forms[0].igmpChanged.value = 0;
+	if (document.forms[0].lantype.value==1 && lanPara[4]==1)
+	{
+		return false;
+	}
+	
+	if (document.forms[0].lantype.value==1 && lanPara[4]==0)
+	{
+		/* type changed */
+		if(!confirm(js_modi_ip_addr="Modification of LAN Settings will result in the rebooting of this device, OK?"))
+	    {
+	        return false;
+	    }
+	    return true;
+	}
+	
+	if (document.forms[0].lantype.value==0)
+	{
+		if(document.forms[0].lanip.value=="") 
+		{
+			alert(js_pl_ip_addr="Please input IP address!");
+			return false;
+		}
+		if(!is_ipaddr(document.forms[0].lanip.value))
+		{
+			var element =document.forms[0].lanip;
+			if(element)
+				{
+					element.focus();element.select();
+				}
+			return false;
+		}	
+		if (document.forms[0].langw.value !="" && document.forms[0].langw.value !="0.0.0.0")
+		{
+			if(!is_ipaddr(document.forms[0].langw.value))
+			{
+				var element =document.forms[0].langw;
+				if(element)
+					{
+						element.focus();element.select();
+					}
+				return false;
+			}
+		}
+		
+		if(document.forms[0].lanip.value==lanPara[1] &&
+			document.forms[0].lanmask.value==lanPara[2] &&
+			document.forms[0].inputMask.value==lanPara[3] && 
+			document.forms[0].lantype.value==lanPara[4] && 
+			document.forms[0].langw.value==lanPara[5])
+		{
+			if (document.forms[0].igmpEn.value == lanPara[9])
+			{ 
+				return false;
+			}
+			else
+			{
+				document.forms[0].igmpChanged.value = 1;
+				return true;
+			}
+		}
+		if(document.forms[0].lanip.value!=lanPara[1] || document.forms[0].lantype.value!=lanPara[4])
+		{
+			address = document.forms[0].lanip.value;	
+			LoadNewIp();
+		}
+	    if(!confirm(js_modi_ip_addr="Modification of LAN Settings will result in the rebooting of this device, OK?"))
+	    {
+	        return false;
+	    }
+	    
+	    return true;
+	}
+	return true;
+}
+function doOnchange(value)
+{
+    if(3==value)
+    {
+        document.getElementById("otherMask").style.display="block";
+    }   
+    else
+    {
+        document.getElementById("otherMask").style.display="none";
+    }
+}
+
+function style_display_on()
+{
+	if (window.ActiveXObject)
+	{ // IE
+		return "block";
+	}
+	else if (window.XMLHttpRequest)
+	{ // Mozilla, Safari,...
+		return "table-row";
+	}
+}
+
+function doChangeType(value)
+{
+	if(0==value)
+	{
+		document.getElementById("lanip").disabled=false;
+		document.getElementById("lanmask").disabled=false;
+		document.getElementById("inputMask").disabled=false;
+		document.getElementById("langw").disabled=false;
+		document.getElementById("dynaip_warning").style.display = "none";
+	}
+	else
+	{
+		document.getElementById("lanip").disabled=true;
+		document.getElementById("lanmask").disabled=true;
+		document.getElementById("inputMask").disabled=true;
+		document.getElementById("langw").disabled=true;
+		document.getElementById("dynaip_warning").style.display = style_display_on();
+	}
+}
+
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_lan');LoadHelp('NetworkCfgHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="NetworkCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth" border=0>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=5 id="t_title">LAN</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=5></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_mac">MAC Address:</TD>
+          <TD colspan="4"><DIV id="MAC"></DIV></TD>
+        </TR>
+		
+		<SCRIPT type="text/javascript">
+				document.write('<TR id="line_type" style="display:none">');
+				document.write('<TD class=Item id="t_lantype">Type:</TD>');	
+				document.write('<TD colspan="4"><SELECT name="lantype" id="lantype" onChange="doChangeType(this.value)">');
+				document.write('<OPTION value="0" id="t_lan_static">Static IP</OPTION>');
+				document.write('<OPTION value="1" id="t_lan_dynamic">Dynamic IP(DHCP)</OPTION>');
+				document.write('</SELECT></TD></TR>');
+		</SCRIPT>
+		
+		<TR id="dynaip_warning" style="display: none"><TD colspan="5"><FONT color="red"><SPAN id="t_dynaipwarning">DHCP is selected. Please make sure there is a DHCP Server available in the network to assign the IP address, <br/>or you will not able to login this device.</SPAN></FONT></TD></TR>
+        <TR>
+          <TD class=Item id="t_ip">IP Address:</TD>
+          <TD colspan="4"><INPUT name="lanip" type="text" class="text" id="lanip" value="192.168.1.1" size="15" maxlength="15"></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_mask">Subnet Mask:</TD>
+          <TD><SELECT name="lanmask" id="lanmask" onChange="doOnchange(this.value)">
+              <OPTION value="0">255.0.0.0</OPTION>
+              <OPTION value="1">255.255.0.0</OPTION>
+              <OPTION value="2">255.255.255.0</OPTION>
+              <OPTION value="3" id="t_other_mask">Other Mask</OPTION>
+            </SELECT></TD>
+          <TD id="otherMask" style="display:none"><INPUT name="inputMask" id="inputMask" type="text" class="text" value="255.255.255.0" size="15" maxlength="15"></TD>
+          <TD width="30%">&nbsp;</TD>
+        </TR>
+        
+		<SCRIPT type="text/javascript">
+				document.write('<TR id="line_Gateway" style="display:none">');
+				document.write('<TD class=Item id="t_lan_gw">Gateway:</TD>');	
+				document.write('<TD colspan="4"><INPUT name="langw" type="text" class="text" id="langw" value="0.0.0.0" size="15" maxlength="15"></TD>');
+				document.write('</TR>');
+		</SCRIPT>
+		<TR>
+			<TD class=Item id="t_igmp_proxy">IGMP Proxy:</TD>
+			<TD><SELECT name="igmpEn" id="igmpEn" >
+				<OPTION value="0" id="t_disable" name="t_disable">Disable</OPTION>
+				<OPTION value="1" id="t_enable" name="t_enable">Enable</OPTION>
+				</SELECT>
+			</TD>
+        </TR>
+		<TR>
+			<TD></TD>
+			<TD colspan="4" style="color:#FF0000;white-space:normal;" id="t_chng">Note:IGMP(Internet Group Management Protocol) works for IPTV multicast stream.The device supports both IGMP proxy with enabled/disabled option and IGMP snooping.	</TD>
+		</TR>
+		</SCRIPT>
+		<TR>
+          <TD class="blue" colspan="5"></TD>
+        </TR>
+        <TR>
+          <TD></TD>
+          <TD colspan="4"><INPUT name="Save" type="submit" class="buttonBig" value="Save"></TD>
+        </TR>
+		<TR>
+			<TD></TD>
+			<TD colspan="4"><INPUT type="hidden" name="igmpChanged" value="0"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.getElementById("MAC").innerHTML = lanPara[0];
+document.forms[0].lanip.value =lanPara[1];
+document.forms[0].lanmask.value =lanPara[2];
+if(3==lanPara[2])
+{
+    var obj;
+    obj=document.getElementById("otherMask");
+    obj.style.display="block";
+    document.forms[0].inputMask.value=lanPara[3];
+}
+if(lanPara[6] == 8)//PT_AP
+{
+		var obj1,obj2;
+		obj1=document.getElementById("line_type");
+		obj1.style.display="";
+		obj2=document.getElementById("line_Gateway");
+		obj2.style.display="";
+document.forms[0].lantype.value=lanPara[4];
+document.forms[0].langw.value=lanPara[5];
+doChangeType(lanPara[4]);
+	}
+document.forms[0].igmpEn.value = lanPara[9];
+document.forms[0].igmpChanged.value = 0;
+</SCRIPT>

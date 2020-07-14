@@ -1,0 +1,42 @@
+﻿<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<HTML>
+<HEAD><TITLE>Archer C7</TITLE>
+<META http-equiv=Pragma content=no-cache>
+<META http-equiv=Expires content="wed, 26 Feb 1997 08:21:57 GMT">
+<LINK href="../css/css_help.css" rel=stylesheet type="text/css">
+<SCRIPT language="javascript" type="text/javascript"></SCRIPT>
+
+<HTML><HEAD><TITLE></TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+</head>
+
+
+<h1 class="header">IPv6 Tunnel Help</H1>
+<p class="brief">IPv6 tunnel is a kind of transition mechanism to enable IPv6-only hosts to reach IPv4 services and to allow isolated IPv6 hosts and networks to reach each-other over IPv4-only infrastructure before IPv6 completely supplants IPv4. It is a temporary solution for networks that do not support native dual-stack, where both IPv6 and IPv4 run independently.</P>
+
+<p class="enable"><B>Enable</B> Check the box to enable IPv6 Tunnel function. It is disabled by default.</P>
+<p class="mechanism"><B>Mechanism</B> Select a type for IPv6 tunnel from the drop-down list. DS-Lite, 6RD and 6to4 are supported.</P>
+</br>
+<p class="ds_lite"><B>DS-Lite</B></P>
+<p class="s_0">This type is used in the situation that your WAN connection is IPv6 while LAN connection is IPv4. </p>
+<p class="wan_conn"><B>WAN Connection</B> Select a WAN connection from the drop-down list. Only the connected WAN connections can be shown in the drop-down list.</P>
+<p class="conf_type"><B>Configuration Type</B> Select a configuration type for this tunnel. Auto means to obtain the Remote IPv6 Address automatically while Manual means you set it manually.</P>
+<p class="address"><B>Remote IPv6 Address</B> Enter the IPv6 address of the remote node.</P>
+<p class="note"><B>Note:</B> In this type, there should not have any IPv4 WAN connections. If there are IPv4 WAN connections, the page will prompt you to delete all the IPv4 WAN connections.</p>
+</br>
+<p class="rd"><B>6RD</B></P>
+<p class="s_1">This type is used in the situation that your WAN connection is IPv4 while LAN connection is IPv6.</p>
+<p class="wan_conn"><B>WAN Connection</B> Select a WAN connection from the drop-down list. Only the connected WAN connections can be shown in the drop-down list.</P>
+<p class="conf_type_0"><B>Configuration Type</B> Select a configuration type for this tunnel. Auto means to obtain the following parameters automatically while Manual means you set them manually. If Auto is selected, only Dynamic IP connection can be selected from the drop-down list.</P>
+<p class="length"><B>IPv4 Mask Length</B> The length of the selected WAN connections IPv4 mask.</P>
+<p class="rd_pref"><B>6RD Prefix</B> The prefix of the 6RD tunnel.</P>
+<p class="prefix"><B>6RD Prefix Length</B> The length of the 6RD prefix.</P>
+<p class="address_0"><B>Border Relay IPv4 Address</B> The IPv4 address of the border relay router of 6RD tunnel.</P>
+<p class="note_0"><B>Note:</B> In this type, there should not have any IPv6 WAN connections. If there are IPv6 WAN connections, the page will prompt you to delete all the IPv6 WAN connections.</p>
+</br>
+<p class="to"><B>6to4</B></P>
+<p class="s_1">This type is used in the situation that your WAN connection is IPv4 while LAN connection is IPv6.</p>
+<p class="wan_conn"><B>WAN Connection</B> Select a WAN connection from the drop-down list. Only the connected WAN connections can be shown in the drop-down list.</P>
+
+</BODY></HTML>
+<script language="javascript" type="text/javascript">window.parent.$.transHelp(document.URL);</script>

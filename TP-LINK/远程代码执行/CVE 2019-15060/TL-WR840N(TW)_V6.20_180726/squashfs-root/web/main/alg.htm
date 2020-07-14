@@ -1,0 +1,51 @@
+﻿<script language="javascript" type="text/javascript">function init(){algEntry=$.act(ACT_GET,ALG_CFG,null,null);if(!$.exe()){if(algEntry.pptpAlg==1){$.id("pptpEnable").checked=true}else{$.id("pptpDisable").checked=true}if(algEntry.l2tpAlg==1){$.id("l2tpEnable").checked=true}else{$.id("l2tpDisable").checked=true}if(algEntry.ipSecAlg==1){$.id("ipSecEnable").checked=true}else{$.id("ipSecDisable").checked=true}if(algEntry.ftpAlg==1){$.id("ftpEnable").checked=true}else{$.id("ftpDisable").checked=true}if(algEntry.tftpAlg==1){$.id("tftpEnable").checked=true}else{$.id("tftpDisable").checked=true}if(INCLUDE_ALG_H323){$.removeClass($.id("h323"),"nd");if(algEntry.h323Alg==1){$.id("h323Enable").checked=true}else{$.id("h323Disable").checked=true}}if(INCLUDE_ALG_SIP){$.removeClass($.id("sip"),"nd");if(algEntry.sipAlg==1){$.id("sipEnable").checked=true}else{$.id("sipDisable").checked=true}}}}function algSave(obj){var arg={};arg.pptpAlg=($.id("pptpEnable").checked==true)?1:0;arg.ipSecAlg=($.id("ipSecEnable").checked==true)?1:0;arg.l2tpAlg=($.id("l2tpEnable").checked==true)?1:0;arg.ftpAlg=($.id("ftpEnable").checked==true)?1:0;arg.tftpAlg=($.id("tftpEnable").checked==true)?1:0;if(INCLUDE_ALG_H323){arg.h323Alg=($.id("h323Enable").checked==true)?1:0}if(INCLUDE_ALG_SIP){arg.sipAlg=($.id("sipEnable").checked==true)?1:0}$.addLoading(obj);$.act(ACT_SET,ALG_CFG,null,null,arg);$.exe(function(err){if(!err){$.reload()}})};</script>
+
+<p class="et T" id="et">ALG Settings</p>
+
+<div class="con1 M">
+<p class="ct"></p>
+<p class="bl"></p>
+<div class="con2">
+<div class="bdr M">
+<p class="L1"><b class="item L T" id="t_vpn">Virtual Private Network(VPN)</b></p>
+
+<p class="L1"><b class="item M T" id="t_pptp">PPTP Pass-through:</b><input type="radio" id="pptpEnable" name="pptpAlg" /><span class="T T_en">Enable</span>
+<input type="radio" id="pptpDisable" name="pptpAlg" /><span class="T T_dis">Disable</span></p>
+
+<p class="L1"><b class="item M T" id="t_l2tp">L2TP Passt-hrough:</b><input type="radio" id="l2tpEnable" name="l2tpAlg" /><span class="T T_en">Enable</span>
+<input type="radio" id="l2tpDisable" name="l2tpAlg" /><span class="T T_dis">Disable</span></p>
+
+<p class="L1"><b class="item M T" id="t_ipsec">IPSec Pass-through:</b><input type="radio" id="ipSecEnable" name="ipSecAlg" /><span class="T T_en">Enable</span>
+<input type="radio" id="ipSecDisable" name="ipSecAlg" /><span class="T T_dis">Disable</span></p>
+
+</div>
+
+<p class="br"></p>
+
+<div class="bdr M">
+
+<p class="L1"><b class="item L T" id="t_alg">Application Layer Gateway(ALG) </b></p>
+
+<p class="L1"><b class="item M"> FTP ALG:</b><input type="radio" id="ftpEnable" name="ftpAlg" /><span class="T T_en">Enable</span>
+<input type="radio" id="ftpDisable" name="ftpAlg" /><span class="T T_dis">Disable</span></p>
+
+<p class="L1"><b class="item M"> TFTP ALG:</b><input type="radio" id="tftpEnable" name="tftpAlg" /><span class="T T_en">Enable</span>
+<input type="radio" id="tftpDisable" name="tftpAlg" /><span class="T T_dis">Disable</span></p>
+
+<p class="L1 nd" id="h323"><b class="item M"> H323 ALG:</b><input type="radio" id="h323Enable" name="h323Alg" /><span class="T T_en">Enable</span>
+<input type="radio" id="h323Disable" name="h323Alg" /><span class="T T_dis">Disable</span></p>
+
+<p class="L1 nd"  id="sip"><b class="item M"> SIP ALG:</b><input type="radio" id="sipEnable" name="sipAlg" /><span class="T T_en">Enable</span>
+<input type="radio" id="sipDisable" name="sipAlg" /><span class="T T_dis">Disable</span></p>
+
+</div>
+<p class="br"></p>
+</div>
+<p class="bl"></p>
+<p class="tail" id="tail">
+	<input type="button" class="button L T T_save" value="Save" id="algSaveBu" onclick="algSave(this)" />
+</p>
+</div>
+
+<script language="javascript" type="text/javascript">$.loadHelp("alg_h.htm");init();</script>
+

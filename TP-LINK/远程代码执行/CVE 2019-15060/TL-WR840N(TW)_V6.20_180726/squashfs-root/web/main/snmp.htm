@@ -1,0 +1,28 @@
+﻿<script language="javascript" type="text/javascript">function init(){snmpCfg=$.act(ACT_GET,SNMP_CFG,null,null,null);if(!$.exe()){if(snmpCfg.enable==0){$.id("snmp_disable").checked=1;$.addClass($.id("snmp_cfg_div"),"nd")}else{$.id("snmp_enable").checked=1;$.removeClass($.id("dhcp_cfg_div"),"nd")}$.id("rCommunity").value=snmpCfg.ROCommunity;$.id("sCommunity").value=snmpCfg.RWCommunity;$.id("sysName").value=snmpCfg.sysName;$.id("sysDescr").value=snmpCfg.sysDescr;$.id("sysLocation").value=snmpCfg.sysLocation;$.id("sysContact").value=snmpCfg.sysContact;$.id("trapIp").value=snmpCfg.trapIpAddress?snmpCfg.trapIpAddress:"0.0.0.0"}}function changeSnmpStatus(){if($.id("snmp_disable").checked){$.addClass($.id("snmp_cfg_div"),"nd")}else{$.removeClass($.id("snmp_cfg_div"),"nd")}}function doSave(){var element;var snmpEnable=0;snmpEnable=$.id("snmp_enable").checked?1:0;rComm=$.id("rCommunity").value;sComm=$.id("sCommunity").value;if(rComm==""){$.alert(ERR_SNMP_RCOMMUNITY_EMPTY);element=$.id("rCommunity");if(element){element.focus();element.select()}return}else{if($.asc(rComm,true)){$.alert(ERR_SNMP_RCOMMUNITY_NOT_ASCII);element=$.id("rCommunity");if(element){element.focus();element.select()}return}}if(sComm==""){$.alert(ERR_SNMP_SCOMMUNITY_EMPTY);element=$.id("sCommunity");if(element){element.focus();element.select()}return}else{if($.asc(sComm,true)){$.alert(ERR_SNMP_SCOMMUNITY_NOT_ASCII);element=$.id("sCommunity");if(element){element.focus();element.select()}return}}if(($.id("trapIp").value!="")&&($.id("trapIp").value!="0.0.0.0")&&($.ifip($.id("trapIp").value,true))){$.alert(ERR_SNMP_TRAP_IP_INVAD);element=$.id("trapIp");if(element){element.focus();element.select()}return}$.addLoading($.id("saveBtn"));$.act(ACT_SET,SNMP_CFG,null,null,["enable="+snmpEnable,"ROCommunity="+$.id("rCommunity").value,"RWCommunity="+$.id("sCommunity").value,"sysName="+$.id("sysName").value,"sysDescr="+$.id("sysDescr").value,"sysLocation="+$.id("sysLocation").value,"sysContact="+$.id("sysContact").value,"trapIpAddress="+(($.id("trapIp").value!="")?$.id("trapIp").value:"0.0.0.0")]);$.exe(function(err){if(!err){$.loadMain("snmp.htm")}})}$.loadHelpFrame("SnmpHelpRpm.htm");init();</script>
+<p class="et T" id="et">SNMP Settings</p>
+<div class="con1 M">
+<p class="ct"></p>
+<p class="bl"></p>
+<div class="con2">
+<p class="line T lbk" id="t_info">Simple Network Management Protocol (SNMP) allows a management application to retrieve statistics and status from the SNMP agent in this device.</p>
+<p class="br"></p>
+<p class="L2"><b class="item L T" id="t_snmp">SNMP Agent:</b>
+<input name="snmpAgent" id="snmp_disable" type="radio" onclick="changeSnmpStatus()"/><span class="T T_dis">Disable</span>
+<input name="snmpAgent" id="snmp_enable" type="radio" onclick="changeSnmpStatus()"/><span class="T T_en">Enable</span>
+</p>
+<div id="snmp_cfg_div">
+<p class="br"></p>
+<p class="L2"><b class="item L T" id="t_read">Read Community:</b><input id="rCommunity" type="text" class="text" size="15" value="public" maxlength="63"/></p>
+<p class="L2"><b class="item L T" id="t_set">Set Community:</b><input id="sCommunity" type="text" class="text" size="15" value="private" maxlength="63"/></p>
+
+<p class="L2"><b class="item L T" id="t_name">System Name:</b><input id="sysName" type="text" class="text" size="15" maxlength="126"/></p>
+<p class="L2"><b class="item L T" id="t_desc">System Description:</b><input id="sysDescr" type="text" class="text" size="15" maxlength="127"/></p>
+<p class="L2"><b class="item L T" id="t_locale">System Location:</b><input id="sysLocation" type="text" class="text" size="15" maxlength="127"/></p>
+<p class="L2"><b class="item L T" id="t_concat">System Contact:</b><input id="sysContact" type="text" class="text" size="15" maxlength="127"/></p>
+<p class="L2"><b class="item L T" id="t_trapip">Trap Manager IP:</b><input id="trapIp" type="text" class="text" value="0.0.0.0" size="15" maxlength="15"/></p>
+</div>
+</div>
+<p class="bl"></p>
+<p class="tail">
+<input type="button" class="button L T T_save" id="saveBtn" value="Save" onclick="doSave();"/></p>
+</div>

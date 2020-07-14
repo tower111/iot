@@ -1,0 +1,223 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+
+<SCRIPT type="text/javascript"><!--//
+var sign = false;
+function doSubmit()
+{
+	if(!is_ipaddr(document.forms[0].wanip.value))
+	{
+		var element =document.forms[0].wanip;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(!is_maskaddr(document.forms[0].wanmask.value))
+	{
+		var element =document.forms[0].wanmask;
+		if(element)
+		{
+			element.focus();
+			element.select();
+	 }
+		return false;
+	}
+
+	if(!is_gatewayaddr(document.forms[0].gateway.value))
+		{
+			var element =document.forms[0].gateway;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+
+
+	if(!is_dnsaddr(document.forms[0].dnsserver.value))
+		{
+			var element =document.forms[0].dnsserver;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	if(document.forms[0].dnsserver2.value != "0.0.0.0" && document.forms[0].dnsserver2.value != "")
+	{
+		if(!is_dnsaddr(document.forms[0].dnsserver2.value))
+		{
+			var element =document.forms[0].dnsserver2;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+	if(sign == true)
+	{
+		return false;
+	}
+	else
+	{
+		sign = true;
+	}
+	return true;
+}
+
+/*
+function enIpCheck(ip_string, name_string)
+{
+	if(ip_string.charAt(0) == '0')
+	{
+		alert(js_illegal_ip="The " + name_string + " address is invalid, please input another one!");
+		return false;
+	}
+	return true;
+}
+
+function printTipMsg()
+{
+	var tipMsg = "";
+	if (wzdStaticIPInf[multiSysModeIdx] == 1)
+	{
+		tipMsg += "<B><span id=\"t_start\" name=\"t_start\">Start</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_workingmode\" name=\"t_workingmode\">Working Mode</span>&nbsp;&gt;&gt;&nbsp;";
+	}
+	else
+	{
+		tipMsg += "<B><span id=\"t_start\" name=\"t_start\">Start</span>&nbsp;&gt;&gt;&nbsp;";
+	}
+	
+	if (wzdStaticIPInf[sysModeIdx] == 2)//3G
+	{
+		tipMsg += "<span id=\"t_interacce\" name=\"t_interacce\">Internet Access</span>&nbsp;&gt;&gt;&nbsp;";
+		if (wzdStaticIPInf[accessTypeIdx] == 0)
+		{
+			tipMsg += "<span id=\"t_3g\" name=\"t_3g\">3G</span>&nbsp;&gt;&gt;&nbsp;</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;";
+		}
+		else if (wzdStaticIPInf[accessTypeIdx] == 1)
+		{		
+			tipMsg += "";
+		}
+		else if (wzdStaticIPInf[accessTypeIdx] == 2)
+		{
+			tipMsg += "</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_3g\" name=\"t_3g\">3G</span>&nbsp;&gt;&gt;&nbsp;";
+		} 
+		else if (wzdStaticIPInf[accessTypeIdx] == 3)
+		{
+			tipMsg += "</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;";
+		}
+	}
+	else
+	{
+		tipMsg += "</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;";
+	}
+	
+	tipMsg += "<span id=\"t_wireless\" name=\"t_wireless\">Wireless</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	
+	document.getElementById("tips_msg").innerHTML = tipMsg;
+}
+*/
+//--></SCRIPT>
+<style type="text/css">
+<!--
+.STYLE2 {color: #66CC00}
+-->
+</style>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_static_ip');LoadHelp('WzdStaticIpHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action=WzdStaticIpRpm.htm method=get enctype=multipart/form-data>
+    <TABLE id=autoWidth>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup - Static IP</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+		<TR>
+          <TD class=info colspan=2 STYLE1> 
+			<SPAN id = "tips_msg"></SPAN>
+		  </TD>
+        </TR>
+		<br/><br/>	
+        <TR>
+          <TD class=Item id="t_ip">IP Address:</TD>
+          <TD><INPUT class=text id=wanip maxlength=15 size=16 name=wanip></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_submask">Subnet Mask:</TD>
+          <TD><INPUT class=text id=wanmask maxlength=15 size=16 name=wanmask></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_def_gt">Default Gateway:</TD>
+          <TD><INPUT class=text id=gateway maxlength=15 size=16 name=gateway></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_prima_dns">Primary DNS:</TD>
+          <TD><INPUT class=text id=dnsserver maxlength=15 size=16 name=dnsserver></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_second_dns">Secondary DNS:</TD>
+          <TD><INPUT class=text id=dnsserver2 maxlength=15 size=16 name=dnsserver2>
+		  &nbsp;<SPAN id = "t_option" name="t_option">(Optional)</SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn colspan=2><INPUT name="Return" class=buttonBig id=PrevStep type=submit value="Back">
+            &nbsp;&nbsp;
+            <INPUT name="Next" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value=Next>
+            <INPUT type=hidden name=ClientId>
+            <SCRIPT type="text/javascript"><!--//
+if(wzdStaticIPInf[0])
+{
+	document.write('<input type=\"hidden\" name=\"PopupWindow\" value=\"255\">');
+}
+//--></SCRIPT></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript"><!--//
+document.forms[0].wanip.value = wzdStaticIPInf[1];
+document.forms[0].wanmask.value = wzdStaticIPInf[2];
+document.forms[0].gateway.value = wzdStaticIPInf[3];
+document.forms[0].dnsserver.value = wzdStaticIPInf[4];
+document.forms[0].dnsserver2.value = wzdStaticIPInf[5];
+document.forms[0].ClientId.value = wzdStaticIPInf[6];
+
+var sysModeIdx = 9;
+//printTipMsg();
+
+var accessTypeIdx = 2;
+var multiSysModeIdx = 0;
+var sysModeIdx = 1;
+var wlanDualBandIdx = 3;
+var showStepInfoIdx = 4;
+
+var bMultiSysMode = wzdForShowStepInfo[multiSysModeIdx];
+var sysMode = wzdForShowStepInfo[sysModeIdx];
+var accessType = wzdForShowStepInfo[accessTypeIdx];
+var bWlanDualBand = wzdForShowStepInfo[wlanDualBandIdx];
+var bShowStepInfoEnable = wzdForShowStepInfo[showStepInfoIdx];
+if (bShowStepInfoEnable)
+{
+	showTipMsg(bMultiSysMode, sysMode, accessType, bWlanDualBand, "tips_msg", wanTypeStep);
+}
+//--></SCRIPT>

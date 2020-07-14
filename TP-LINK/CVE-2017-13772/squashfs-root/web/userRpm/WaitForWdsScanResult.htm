@@ -1,0 +1,104 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+
+var pingTestImage = new Image();
+pingTestImage.onload =
+pingTestImage.onerror =
+{
+}
+
+function ping()
+{
+  pingTestImage.src = 'http://'+ waitWdsInf[3] + "/" + 'forPingTest'; 
+}
+
+function LoadMain()
+{
+	location.href = waitWdsInf[0]+"?getWdsResult=1&"+waitWdsInf[1];
+}
+
+function doLoad()
+{
+	doReFresh();
+}
+var timeout = waitWdsInf[2] * 10;
+var rate = 0;
+function doReFresh()
+{
+	window.setTimeout("growUp()",timeout);
+}
+function growUp()
+{
+	rate = rate + 1;
+	document.getElementById("td1").style.width = rate + "%";
+    var per=document.getElementById("percent");
+    per.innerHTML=rate+"%";
+	if(rate >= 100)
+	{        
+        document.getElementById("t_wds_scanning").style.display="none";
+        document.getElementById("t_wds_scan_complete").style.display="block";
+        document.getElementById("t_wds_scan_complete").style.color="red";
+        per.style.color="red";
+        LoadMain();
+		return;
+	}
+	else if (rate > 30)
+	{
+		if (0 == (rate % 10))
+		{			
+			ping();
+		}
+	}
+	doReFresh();
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript"  type="text/JavaScript">
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wdsscan_page');return doLoad()">
+<CENTER>
+  <FORM>
+    <TABLE border=0>
+      <TBODY>
+        <TR>
+          <TD class=h1 id = "t_wds_scan_title" >WDS Scan.</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>		
+        
+        <TR>
+          <TD class=h2 id="t_wds_scanning">Scanning...</TD>
+        </TR>
+        <TR>
+          <TD class=h2 id="t_wds_scan_complete" style="display:none">Completed!</TD>
+        </TR>
+        <TR>
+          <TD align = "center" style="padding-left:5%"><TABLE border="0" cellpadding="0" cellspacing="0" height="10" align="center" class="space" width="40%">
+              <TR>
+                <TD><DIV id="percent"></DIV></TD>
+                <TD style = "width:98%"><TABLE id="td1"  class="guage" border="0" cellpadding="0" cellspacing="0" height="10" style="width:0px;">
+                    <TR>
+                      <TD></TD>
+                    </TR>
+                  </TABLE></TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

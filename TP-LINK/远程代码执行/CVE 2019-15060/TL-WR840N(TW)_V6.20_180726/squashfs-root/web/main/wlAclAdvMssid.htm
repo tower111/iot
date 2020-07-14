@@ -1,0 +1,27 @@
+﻿<script language="javascript" type="text/javascript">function doSave(obj){var macAddr=$.id("MAC").value.toUpperCase();var desc=$.id("desc").value;var hostName=vapObj.name;var enable;var desc;var macList;var isConflict=false;if($.id("desc").value==""){desc=" "}if(!$.isname(desc)){$.alert(ERR_WLAN_MAC_FILTER_DESCRIP_INVALID);var element=$.id("desc");if(element){element.focus();element.select()}return false}if($.mac(macAddr)){return}$.addLoading(obj);macList=$.act(ACT_GS,MSSID_MACTABLEENTRY,null,vapObj.__stack,["MACAddress","HostName"]);$.exe(function(ret){if(!ret){$.each(macList,function(arg,index){if(this.MACAddress==macAddr){if(entry==null||(entry!=null&&entry.__stack!=this.__stack)){isConflict=true}}});if(isConflict){$.alert(ERR_WLAN_MAC_CONFLICT);$.id("MAC").focus();$.id("MAC").select();$.removeLoading();return}var enable;if($.id("state").value==1){enable=1}else{enable=0}if(entry==null){$.act(ACT_ADD,MSSID_MACTABLEENTRY,null,vapObj.__stack,{Enabled:enable,Description:desc,MACAddress:macAddr,HostName:hostName})}else{$.act(ACT_SET,MSSID_MACTABLEENTRY,entry.__stack,null,["Enabled="+enable,"MACAddress="+macAddr,"Description="+desc,"HostName="+hostName])}$.exe(function(ret){if(!ret){$.loadMain("wlAclMssid.htm",vapIdx)}})}})}function goBack(){$.loadMain("wlAclMssid.htm",vapIdx)};</script>
+<p class="et T" id="et">Add or Modify Wireless MAC Address Filtering entry</p>
+<div class="con1 M">
+<p class="ct"></p>
+<p class="bl"></p>
+<div class="con2">
+<p class="line">
+<span class="T" id="t_info">You can configure the Wireless MAC Filtering to control the wireless access on this page.</span>
+</p>
+<p class="br"></p>
+<p>
+<b class="item T T_macaddr">MAC Address:</b><input type="text" class="text" maxlength="17" size="17" id="MAC" />
+</p>
+<p>
+<b class="item T T_desc">Description:</b><input type="text" class="text" maxlength=30 size=30 id="desc"/>
+</p>
+<p><b class="item T T_status">Status:</b>
+<select id="state" name="state">
+<option  class="T T_enabled" value=1>Enabled</option>
+<option class="T T_disabled" value=2>Disabled</option>
+</select>
+</p>
+</div>
+<p class="bl"></p>
+<p class="tail"><input type=button class="button L T T_save" value="Save" onclick="doSave(this)"/>&nbsp;<input type=button class="button L T T_back" value="Back" onclick="goBack()"/></p>
+</div>
+<script language="javascript" type="text/javascript">var vapObj,vapIdx;if($.mainParam!=null){vapObj=($.mainParam).vapObj;vapIdx=($.mainParam).vapIdx;entry=($.mainParam).entry;if(entry!=null){$.id("MAC").value=entry.MACAddress;$.id("desc").value=entry.description;if(entry.enabled==1){$.id("state").selectedIndex=0}else{$.id("state").selectedIndex=1}}};</script>

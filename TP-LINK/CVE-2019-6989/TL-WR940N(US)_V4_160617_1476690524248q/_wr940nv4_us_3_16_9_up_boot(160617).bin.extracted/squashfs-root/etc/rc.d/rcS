@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# This script runs when init it run during the boot process.
+# Mounts everything in the fstab
+
+mount -a
+#mount -o remount +w /
+
+#
+# Mount the RAM filesystem to /tmp
+#
+
+mount -t ramfs -n none /tmp
+mount -t ramfs -n none /var
+
+export PATH=$PATH:/etc/ath
+
+#insmod /lib/modules/2.6.15/net/ag7100_mod.ko
+#insmod /lib/modules/2.6.15/net/ag7240_mod.ko
+
+#
+# Set lo eth1 up
+#
+ifconfig lo 127.0.0.1 up
+#ifconfig eth1 up
+
+#
+# insert netfilter/iptables modules
+#
+
+/etc/rc.d/rc.modules
+
+#
+# Start Our Router Program
+#
+
+/usr/bin/httpd &
+
+echo 524288 > /proc/sys/net/ipv4/ipfrag_high_thresh
+
+echo 1 > /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal
+
+#for SMB memory fragment
+echo 3 >/proc/sys/vm/dirty_background_ratio
+echo 75 >/proc/sys/vm/dirty_ratio
+echo 200 >/proc/sys/vm/vfs_cache_pressure

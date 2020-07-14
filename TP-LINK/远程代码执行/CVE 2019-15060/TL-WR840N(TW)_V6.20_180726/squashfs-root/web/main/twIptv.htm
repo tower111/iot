@@ -1,0 +1,30 @@
+﻿<script language="javascript" type="text/javascript">function getVlanPort(lanPort){var lanArray=new Array(0,0,0,0);var count=0;var calPort=lanPort;while(calPort){if(calPort%2==1){lanArray[count]=1}calPort=Math.floor(calPort/2);count++}return lanArray}function loadVlanCfg(){var vlan=$.act(ACT_GET,VLAN,null,null);var ispService=$.act(ACT_GL,ISP_SERVICE,null,null);if(!$.exe()){if(vlan.workingMode=="bridge"){$.each(ispService,function(){if(this.name=="iptv"){$.id("bridge_state").value=1;$.removeClass($.id("bridge_mode_cfg"),"nd");$.id("bridge_port").value=this.lanPort}})}else{$.id("bridge_state").value=0;$.addClass($.id("bridge_mode_cfg"),"nd")}}}function setVlanCfg(){var vlan_cfg={};var iptvIsp={};var ipphoneIsp={};var multicastIsp={};var vlanTemp=$.act(ACT_GET,VLAN,null,null);var ispList=$.act(ACT_GL,ISP_SERVICE,null,null);var forwarding=$.act(ACT_GET,L3_FORWARDING,null,null,null);var ip6_forwarding=$.act(ACT_GET,L3_IP6_FORWARDING,null,null,null);var needRoot=false;if($.id("bridge_state").value==0){vlan_cfg.workingMode="";iptvIsp.name="";iptvIsp.vlanID=0;iptvIsp.extendID=0;iptvIsp.priority=0;iptvIsp.untag=1;iptvIsp.lanPort=0;vlan_cfg.internetGroupVlanID=2;vlan_cfg.internetGroupPriority=0;vlan_cfg.internetUntag=1;vlan_cfg.internetGroupExtendID=0;vlan_cfg.internetGroupLanPort=255}else{vlan_cfg.workingMode="bridge";iptvIsp.name="iptv";iptvIsp.vlanID=2;iptvIsp.extendID=2;iptvIsp.priority=0;iptvIsp.untag=1;iptvIsp.lanPort=$.id("bridge_port").value;vlan_cfg.internetGroupVlanID=2;vlan_cfg.internetGroupPriority=0;vlan_cfg.internetUntag=1;vlan_cfg.internetGroupExtendID=1;vlan_cfg.internetGroupLanPort=255-iptvIsp.lanPort}if(!$.exe()){if(vlanTemp.workingMode!=vlan_cfg.workingMode||vlanTemp.internetGroupVlanID!=vlan_cfg.internetGroupVlanID||vlanTemp.internetGroupLanPort!=vlan_cfg.internetGroupLanPort||vlanTemp.internetGroupPriority!=vlan_cfg.internetGroupPriority||vlanTemp.internetUntag!=vlan_cfg.internetUntag||vlanTemp.internetGroupExtendID!=vlan_cfg.internetGroupExtendID){needRoot=true}$.each(ispList,function(){if(vlan_cfg.workingMode=="bridge"){if(this.name=="iptv"){if(this.vlanID!=iptvIsp.vlanID||this.extendID!=iptvIsp.extendID||this.priority!=iptvIsp.priority||this.lanPort!=iptvIsp.lanPort||this.untag!=iptvIsp.untag){needRoot=true}}}});if(needRoot==true){if(!confirm(c_str.save_reboot)){return}}$.addLoading($.id("b_save"));if(vlanTemp.workingMode!=vlan_cfg.workingMode){$.each(ispList,function(){$.act(ACT_DEL,ISP_SERVICE,this.__stack,null,null)});if(!$.exe()){$.act(ACT_SET,VLAN,vlanTemp.__stack,null,vlan_cfg);if(vlan_cfg.workingMode=="bridge"){$.act(ACT_ADD,ISP_SERVICE,null,null,iptvIsp)}}}else{if(vlanTemp.workingMode==vlan_cfg.workingMode){$.act(ACT_SET,VLAN,vlanTemp.__stack,null,vlan_cfg);$.each(ispList,function(){if(vlan_cfg.workingMode=="bridge"){if(this.name=="iptv"){$.act(ACT_SET,ISP_SERVICE,this.__stack,null,iptvIsp)}}})}}$.act(ACT_SET,L3_FORWARDING,null,null,{__ifAliasName:forwarding.__ifAliasName,__ifName:"",defaultConnectionService:""});$.exe(function(ret){if(!ret){if(needRoot==true){$.guage(["<span class='T T_rebooting'>"+s_str.rebooting+"</span>","<span class='T T_wait_reboot'>"+s_str.wait_reboot+"</span>",],100,$.guageInterval,function(){window.parent.$.refresh()});$.act(ACT_OP,ACT_OP_REBOOT);$.exe(true)}else{$.reload()}}})}}function changeBridgeStatus(){if($.id("bridge_state").value==0){$.addClass($.id("bridge_mode_cfg"),"nd")}else{$.removeClass($.id("bridge_mode_cfg"),"nd")}}function doSave(){setVlanCfg()};</script>
+<div class="con1 M">
+    <p class="et" id="t_et">IPTV(MOD)</p>
+    <p class="bl"></p>
+    <div class="con2">
+        <p class="br"></p>
+        <p class="L2">
+            <b class="item T" id="t_bridge">連接埠橋接:</b>
+            <select class="M" id="bridge_state" onchange="changeBridgeStatus();">
+                <option value="0" class="T T_dis" id="bridge_disable">disable</option>
+                <option value="1" class="T T_en" id="bridge_enbale">enable</option>
+            </select>
+        </p>
+
+        <div class="nd" id="bridge_mode_cfg">
+            <p class="L2">
+                <b class="item T" id="t_bridge_port">IPTV連接埠:</b>
+                <select class="M" id="bridge_port">
+                    <option value="8" id="t_bridge_lan4">LAN4</option>
+                    <option value="12" id="t_bridge_lan34">LAN3&LAN4</option>
+                </select>
+            </p>
+        </div>
+    </div>
+    <p class="bl"></p>
+    <p class="tail ctr" id="tail">
+        <input type="button" class="button L T T_save" value="Save" id="b_save" onclick="doSave();" />
+    </p>
+</div>
+<script language="javascript" type="text/javascript">$.loadHelpFrame("BridgeCfgHelpRpm.htm");loadVlanCfg();</script>

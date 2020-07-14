@@ -1,0 +1,188 @@
+
+		<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+		<SCRIPT language=JavaScript type="text/javascript">
+			var guestNasStatus = guestFolderArray[0];
+			var n_mnt = guestFolderArray[2];
+			var n_item = guestFolderArray[3];
+			
+			function doSubmit()
+			{
+				if ((guestFolderArray[4] == 0) && (document.forms[0].start_nas.value != ""))
+				{
+					alert(js_guest_usb="Please start the Service on the page USB Setings->Storage Sharing first!");
+					return false;
+				}
+				
+				return true;
+			}			
+			function doClickModifyUsr()
+			{
+				location.href="GuestNetUserModifyRpm.htm"; 
+			}
+			function doClickAddFile()
+			{
+				location.href="GuestNetFolderAdvRpm.htm"; 
+			}
+
+		</SCRIPT>
+	</HEAD>
+
+	<BODY onload="setTagStr(document,'ntw_guest_usb_cfg');LoadHelp('GuestNetUsbCfgHelpRpm.htm');resize(this);" onResize="resize(this);">
+		<CENTER>
+			<center><form action="GuestNetUsbCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+				<TABLE id="autoWidth" border =0>
+					<TBODY>
+						<TR>
+							<TD class=h1 id ="t_arp_list" >Guest Network Storage Sharing</TD>
+						</TR>					
+						<TR>
+							<TD colspan=3><B><SPAN id="t_vs_note1">Note:&nbsp;&nbsp;&nbsp;&nbsp;Make sure the Service Status of USB Setting is <SPAN style="color:#FF0000">Started</SPAN> and the Access shared storage with password is <SPAN style="color:#FF0000">enable</SPAN></SPAN></B></TD>		
+						</TR>
+						<TR>
+							<TD class=blue></TD>
+						</TR>
+					</TBODY>
+				</TABLE>
+				<TABLE border=0>
+					<TBODY>
+						<TR>
+							<TD><B id="t_account_manage">User Account Management</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<INPUT class="buttonBigL" type="button" value="Modify" name="ModifyUsr" id="t_modify_user" onclick="doClickModifyUsr()"></TD>
+						</TR>
+						<TR>
+							<TD>
+								<TABLE border =0>
+									<SCRIPT language=JavaScript type="text/javascript">
+										document.write(
+											'<TR><TD class=ListB><span id = \"t_usrname\">User Name<\/span><\/TD>'
+											+ '<TD class=ListB><span id=\"t_passwd\">Password<\/span><\/TD>'
+											+ '<TD class=ListB><span id = \"t_authority\">Storage Authority<\/span><\/TD>'
+											+ '<\/TR>'
+										);
+										var row = 0;
+										document.write('<TR align="center">');
+										document.write('<TD class=ListB>' + guestUserInfo[row] + '<\/TD>');
+										document.write('<TD class=ListB>' + guestUserInfo[row + 1] + '<\/TD>');
+										permissions = (guestUserInfo[row + 2] == "1")? "<span name=\"t_readwrite\" id =\"t_readwrite\">Read and Write<\/span>" : "<span name=\"t_readonly\" id =\"t_readonly\">Read Only<\/span>";
+										document.write('<TD class=ListB>' + permissions + '<\/TD>');
+										document.write('<\/TR>');
+									</SCRIPT>
+								</TABLE>
+							</TD>
+						</TR>
+						<TR>
+							<TD class = "blue"></TD>
+						</TR>	
+					</TBODY>
+				</TABLE>
+				<TABLE border=0>
+					<TBODY>
+						<TR>
+							<TD>
+								<TABLE border=0>
+									<TR>
+										<TD 
+											class="Item" id="t_serv_status">Service Status:
+										</TD>&nbsp;
+										<TD class=emp>
+											<SCRIPT language = "JavaScript" type="text/javascript">
+												if (guestNasStatus == 0)
+												{
+													document.write('<span id="t_disabled">Stopped<\/span>')
+												}
+												else
+												{
+													document.write('<span id="t_enabled">Started<\/span>')
+												}
+											</SCRIPT>
+											&nbsp;&nbsp;
+											<INPUT name="start_nas"  type="submit" class="buttonBig" value="Start" >
+											<INPUT name="stop_nas" type="submit" class="buttonBig" value="Stop" >
+										</TD>
+									</TR>
+								</TABLE>
+							</TD>
+						</TR>
+						<TR align="center">
+							<TD><INPUT class="buttonBigL" type="button" value="Add New Folder to Share" name="AddFolder" onclick="doClickAddFile()">&nbsp; </TD>
+						</TR>	
+						<TR>
+							<TD>
+								<TABLE border=0>
+									<SCRIPT language=JavaScript type="text/javascript">
+										document.write(
+											'<TR><TD class=ListB id = \"t_name\"><font color=#003399>Name<\/font><\/TD>'
+											+ '<TD class=ListB id = \"t_partition\">Partition<\/TD>'
+											+ '<TD class=ListB id = \"t_folder\">Folder<\/TD>'
+											+ '<TD class=ListB id = \"t_modify\">Modify<\/TD> '
+											+ '<\/TR>'
+										);										
+										if (n_mnt > 0)
+										{
+											var row = 0;
+											var i = 0;
+											var k = 0;
+											var j;
+											
+											
+											for(i = 0; i < n_mnt; i++)
+											{	
+												var permissions;	
+												j = i + 1;
+												row = i * n_item;
+												
+												document.write('<TR align="center">');
+												document.write('<TD>' + folderListArray[row] + '<\/TD>');
+												document.write('<TD>' + folderListArray[row+1] + '<\/TD>');
+												//the length of '/tmp/usbdisk/' is 13
+												document.write('<TD>' + folderListArray[row+2].substr(13) + '<\/TD>');
+												document.write('<TD align="center"><a href=\"GuestNetFolderAdvRpm.htm?modify='
+																+i
+																+'\" id="t_edit" name="t_edit">Edit&nbsp;<\/a>&nbsp;<a href=\"GuestNetUsbCfgRpm.htm?flagDelete='
+																+i
+																+'\" id="t_del" name="t_del">Delete<\/a><\/td><\/tr>');
+											}
+										}
+										else if (false == guestNasStatus)
+										{
+											document.write('<TR align="center"><TD class=info1 colspan="10" id = "t_empty">No folders set. Plug an external USB drive into this Router, and make sure it is connected to the Router.<\/TD><\/TR>');
+										}
+										else
+										{
+											document.write('<TR align="center"><TD class=info1 colspan="10" id = "t_empty">No folders set. Plug an external USB drive into this Router, and make sure it is connected to the Router.<\/TD><\/TR>');
+										}
+									</SCRIPT>
+								</TABLE>
+							</TD>
+						</TR>
+						<TR>
+							<TD class=blue></TD>
+						</TR>
+					</TBODY>
+				</TABLE>
+			</FORM>
+		</CENTER>
+	</BODY>
+</HTML>
+
+<SCRIPT language="JavaScript">
+if (guestFolderArray[0] == 1)
+{
+	document.forms[0].start_nas.style.display = "none";
+	document.forms[0].AddFolder.disabled = false;
+}
+else
+{
+	document.forms[0].stop_nas.style.display = "none";
+	document.forms[0].AddFolder.disabled = true;
+}
+
+if (guestFolderArray[1] == 0)
+{
+	document.forms[0].start_nas.disabled = true;
+}
+else
+{
+	document.forms[0].start_nas.disabled = false;
+}
+</SCRIPT>
+

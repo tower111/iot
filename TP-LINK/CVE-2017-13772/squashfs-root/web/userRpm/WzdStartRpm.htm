@@ -1,0 +1,122 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+function doExit()
+{
+	if (window.parent == window)
+	{
+		window.close();
+	}
+	else
+	{
+		parent.bottomLeftFrame.collapseAll();
+		if(wzdStartInf[curSysModeIdx] == 8 || wzdNormalRouterStartInf[0] == 1)//systemMode ap
+			parent.bottomLeftFrame.location.href = "../userRpm/MenuRpm.htm?&WzdStepOnly=0";
+		parent.mainFrame.location.href = "../userRpm/StatusRpm.htm";
+	}
+}
+/*
+function printTipMsg()
+{
+	var tipMsg = "";
+	var sysMode = wzdStartInf[curSysModeIdx];
+	if (wzdStartInf[multiSysModeIdx])
+	{
+		tipMsg += "<span class=\"STYLE2\"><span id=\"t_start\" name=\"t_start\">Start</span></span><B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_workingmode\" name=\"t_workingmode\">Working Mode</span></B>";
+	}
+	else
+	{
+		tipMsg += "<span class=\"STYLE2\"><span id=\"t_start\" name=\"t_start\">Start</span></span>";
+	}
+	if (sysMode == 1 || sysMode == 4)
+	{
+		tipMsg += "<B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_wireless\" name=\"t_wireless\">Wireless</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	}
+	else if (sysMode == 2)
+	{
+		tipMsg += "<B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_interacce\" name=\"t_interacce\">Internet Access</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_wan3g\" name=\"t_wan3g\">WAN/3G/4G</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_wireless\" name=\"t_wireless\">Wireless</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	}
+	else if (sysMode == 8)
+	{
+		tipMsg += "<B>&nbsp;&gt;&gt;&nbsp;Wireless operMode&nbsp;&gt;&gt;&nbsp;Wireless&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	}
+	else if (sysMode == 16)
+	{
+		tipMsg += "<B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_3g\" name=\"t_3g\">3G/4G</span>&nbsp;&gt;&gt;&nbsp;Wireless&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	}
+	document.getElementById("tips_msg").innerHTML = tipMsg;
+}
+*/
+//--></SCRIPT>
+<style type="text/css">
+<!--
+.STYLE1 {color: #66CC33}
+.STYLE2 {color: #66CC00}
+-->
+</style>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_start');LoadHelp('WzdStartHelpRpm.htm');resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WzdStartRpm.htm" method=get enctype=multipart/form-data>
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD width="466" colspan=2 class=h1 id="t_title">Quick Setup</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+		<TR id = "tips_msg" style="display:none">
+			<TD class=info colspan=2>
+			<SPAN id = "t_tips_msg"></SPAN>
+			</TD>
+		</TR>
+        <TR>
+			<TD class=info colspan=2 id="t_guide">Run the Quick Setup to manually configure your internet connection and wireless settings.</TD>
+        </TR>
+        <TR>
+			<TD class=info colspan=2><SPAN id="t_to_continue">To continue, please click the </SPAN> <B><SPAN id="t_next">Next</SPAN></B> <SPAN id="t_button">button.</SPAN></TD>
+        </TR>
+        <TR>
+			<TD class=info colspan=2><SPAN id="t_to_exit">To exit, please click the </SPAN> <B><SPAN id="t_exit">Exit</SPAN></B> <SPAN id="t_button_nbsp">&nbsp;button.</SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn colspan=2><INPUT type=hidden name="ClientId">
+            <INPUT name="Exit" class="buttonBig" id="Submit" type="button" value="Exit" onClick="doExit();">
+            &nbsp; &nbsp;&nbsp;&nbsp;
+            <INPUT name="Next" class="buttonBig" id="Submit" type="submit" value="Next"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript"><!--//
+document.forms[0].ClientId.value = wzdStartInf[1]; 
+var curSysModeIdx = 3;
+var accessTypeIdx = 2;
+var multiSysModeIdx = 0;
+var sysModeIdx = 1;
+var wlanDualBandIdx = 3;
+var showStepInfoIdx = 4;
+
+var bMultiSysMode = wzdForShowStepInfo[multiSysModeIdx];
+var sysMode = wzdForShowStepInfo[sysModeIdx];
+var accessType = wzdForShowStepInfo[accessTypeIdx];
+var bWlanDualBand = wzdForShowStepInfo[wlanDualBandIdx];
+var bShowStepInfoEnable = wzdForShowStepInfo[showStepInfoIdx];
+if (sysMode != 8)
+{
+	document.getElementById("tips_msg").style.display = "";
+	//printTipMsg();
+	
+	if (bShowStepInfoEnable)
+	{
+		showTipMsg(bMultiSysMode, sysMode, accessType, bWlanDualBand, "t_tips_msg", startStep);
+	}
+}	
+//--></SCRIPT>

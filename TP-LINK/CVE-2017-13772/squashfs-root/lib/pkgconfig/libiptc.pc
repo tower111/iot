@@ -1,0 +1,11 @@
+
+prefix=/workspace/jenkins/workspace/dragonfly_model_qca/build/../rootfs.build.2.6.31
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name:		libiptc
+Description:	iptables ruleset ADT and kernel interface
+Version:	1.4.5
+Libs:		-L${libdir} -liptc
+Cflags:		-I${includedir}

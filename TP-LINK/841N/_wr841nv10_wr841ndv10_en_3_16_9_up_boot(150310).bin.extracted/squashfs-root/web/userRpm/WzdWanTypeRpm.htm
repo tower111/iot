@@ -1,0 +1,222 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+TD { white-space:normal}   
+.STYLE2 {color: #66CC00}
+-->
+</style>
+<SCRIPT type="text/javascript">
+<!--
+function doSubmit()
+{
+	var cf = document.forms[0];
+	if(!cf.auto_opt.checked && !cf.dhcp_opt.checked && !cf.static_opt.checked && !cf.pppoe_opt.checked && !cf.pptp_opt.checked && !cf.l2tp_opt.checked)
+	{
+		alert(js_wan_select="Please select one of the options!");
+		return false;
+	}
+	return true;
+}
+function selectHelpPage()
+{
+	if (wzdWanTypeInf[4] == 4) //APC mode
+	{
+		LoadHelp('WzdWanTypeAPCHelpRpm.htm')
+	}
+	else
+	{
+		LoadHelp('WzdWanTypeHelpRpm.htm')
+	}
+}
+
+function printTipMsg()
+{//tip msg will decided by workingMode,productType(whether is multi working mode),AccessType
+	var tipMsg = "";
+	if (wzdWanTypeInf[multiSysModeIdx] == 1)
+	{
+		tipMsg += "<B><span id=\"t_start\" name=\"t_start\">Start</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_workingmode\" name=\"t_workingmode\">Working Mode</span>&nbsp;&gt;&gt;&nbsp;";
+	}
+	else
+	{
+		tipMsg += "<B><span id=\"t_start\" name=\"t_start\">Start</span>&nbsp;&gt;&gt;&nbsp;";
+	}
+	
+	if (wzdWanTypeInf[sysModeIdx] == 2)//3G
+	{
+		tipMsg += "<span id=\"t_interacce\" name=\"t_interacce\">Internet Access</span>&nbsp;&gt;&gt;&nbsp;";
+		if (wzdWanTypeInf [accessTypeIdx] == 0)
+		{
+			tipMsg += "<span id=\"t_3g\" name=\"t_3g\">3G</span>&nbsp;&gt;&gt;&nbsp;</B><span class=\"STYLE2\" id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span><B>&nbsp;&gt;&gt;&nbsp;";
+		}
+		else if (wzdWanTypeInf [accessTypeIdx] == 1)
+		{		
+			tipMsg += "";
+		}
+		else if (wzdWanTypeInf [accessTypeIdx] == 2)
+		{
+			tipMsg += "</B><span class=\"STYLE2\" id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span><B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_3g\" name=\"t_3g\">3G</span>&nbsp;&gt;&gt;&nbsp;";
+		} 
+		else if (wzdWanTypeInf [accessTypeIdx] == 3)
+		{
+			tipMsg += "</B><span class=\"STYLE2\" id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span><B>&nbsp;&gt;&gt;&nbsp;";
+		}
+	}
+	else
+	{
+		tipMsg += "</B><span class=\"STYLE2\" id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span><B>&nbsp;&gt;&gt;&nbsp;";
+	}
+	
+	tipMsg += "<span id=\"t_wireless\" name=\"t_wireless\">Wireless</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	
+	document.getElementById("tips_msg").innerHTML = tipMsg;
+}
+function doWanChoose()
+	{
+	if(document.forms[0].auto_opt.checked)
+		document.getElementById("auto_context").style.display = "";
+	else
+		document.getElementById("auto_context").style.display = "none";
+	if(document.forms[0].dhcp_opt.checked)
+		document.getElementById("dhcp_context").style.display = "";
+	else
+		document.getElementById("dhcp_context").style.display = "none";
+	if(document.forms[0].static_opt.checked)
+		document.getElementById("static_context").style.display = "";
+	else
+		document.getElementById("static_context").style.display = "none";
+	if(document.forms[0].pppoe_opt.checked)
+		document.getElementById("pppoe_context").style.display = "";
+	else
+		document.getElementById("pppoe_context").style.display = "none";
+	if(document.forms[0].l2tp_opt.checked)
+		document.getElementById("l2tp_context").style.display = "";
+	else
+		document.getElementById("l2tp_context").style.display = "none";
+	if(document.forms[0].pptp_opt.checked)
+		document.getElementById("pptp_context").style.display = "";
+	else
+		document.getElementById("pptp_context").style.display = "none";
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'wzd_wantype');selectHelpPage(); resize(this); doWanChoose();resize(this)" onResize="resize(this);">
+<CENTER>
+  <FORM action=WzdWanTypeRpm.htm method=get enctype=multipart/form-data>
+    <TABLE id=autoWidth>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup - WAN Connection Type</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+	    <TR>
+          <TD class=info colspan=2 STYLE1> 
+			<SPAN id = "tips_msg"></SPAN>
+		  </TD>
+        </TR>
+        <TR>
+          <TD class=info colspan=2><span id="t_item1" style="line-height:150%">The Quick Setup is preparing to set up your internet connection, please choose one type below according to your ISP.</span></br><span id="t_item2">The detailed description will be displayed after you choose the corresponding type.</span></TD>
+        </TR>
+
+        <TR id="type_autodetect">
+          <TD class=clk><INPUT name="wan" id="auto_opt" type="radio" value="16" onClick="doWanChoose()"></TD>
+          <TD><B id="t_auto_detect_opt">Auto-Detect</B></TD>
+        </TR>
+		<TR id="auto_context" style="display:none">
+			<TD></TD>
+			<TD id="t_auto_detect">Let the router automatically detect the internet connection type provided by your ISP.</TD>
+		</TR>
+		
+        <TR>
+          <TD class=clk><INPUT type=radio value=0 name=wan id="dhcp_opt" onClick="doWanChoose()"></TD>
+          <TD><B id="t_dhcp_opt">Dynamic IP (Most Common Cases)</B></TD>
+        </TR>
+		<TR id="dhcp_context" style="display:none">
+			<TD></TD>
+			<TD id="t_dhcp_ip">For Cable/DSL/Broadband connection which makes your computer immediately online without any setting or signing-in.</TD>
+		</TR>
+		
+        <TR>
+          <TD class=clk><INPUT type=radio value=1 name=wan id="static_opt" onClick="doWanChoose()"></TD>
+          <TD><B id="t_static_ip_opt">Static IP</B></TD>
+        </TR>
+		<TR id="static_context" style="display:none">
+			<TD></TD>
+			<TD id="t_static_ip">Your ISP provides you specified IP parameters.</TD>
+        </TR>
+		
+		<TR>
+          <TD class=clk><INPUT type=radio value=2 name=wan id="pppoe_opt" onClick="doWanChoose()"></TD>
+          <TD><B id="t_pppoe_opt">PPPoE/Russian PPPoE</B></TD>
+        </TR>
+		<TR id="pppoe_context" style="display:none">
+			<TD></TD>
+			<TD id="t_pppoe">You have DSL connection and are connecting via PPPoE (Broadband Connection) on your computer or existing router.</TD>
+        </TR>
+		
+        <TR>
+          <TD class=clk><INPUT type=radio value=6 name=wan id="l2tp_opt" onClick="doWanChoose()"></TD>
+          <TD><B id="t_l2tp_opt">L2TP/Russian L2TP</B></TD>
+        </TR>
+		<TR id="l2tp_context" style="display:none">
+			<TD></TD>
+			<TD style="line-height:150%"><span id="t_l2tp">
+			In this type, you should fill in the username, password and IP address/Domain name of VPN Server provided by your ISP.</span></br><span id="t_no_detect" name="t_no_detect">
+			Auto-Detect can't detect this connection type.</span></TD>
+        </TR>
+		
+        <TR>
+          <TD class=clk><INPUT type=radio value=7 name=wan id="pptp_opt" onClick="doWanChoose()"></TD>
+          <TD><B id="t_pptp_opt">PPTP/Russian PPTP</B></TD>
+        </TR>
+		<TR id="pptp_context" style="display:none">
+			<TD></TD>
+			<TD style="line-height:150%"><span id="t_pptp">In this type, you should fill in the username, password and IP address/Domain name of VPN Server provided by your ISP.</span></br><span id="t_no_detect" name="t_no_detect">
+			Auto-Detect can't detect this connection type.</span></TD>
+		</TR>
+		
+        <TR>
+          <TD class=info colspan=2><span id="t_item" style="color:#A52A2A">Note: For users in some areas (such as Russia, Ukraine etc.), please contact your ISP to choose connection type manually.</span></TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn colspan=2><INPUT class=buttonBig id=Return type="submit" value="Back" name="Return">
+            &nbsp; 
+            &nbsp;
+            <INPUT class=buttonBig id=Submit type="submit" value="Next" name="Next" onClick="return doSubmit()">
+            &nbsp;
+            <INPUT type=hidden name=ClientId></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+<!--//
+if(wzdWanTypeInf[4] == 4)  //APC mode
+{
+    document.getElementById("t_autodetect_msg").style.display ="none";
+    document.getElementById("t_tyep_autodetect").style.display ="none";
+    document.forms[0].wan[0].checked = true;
+}
+else
+{
+    document.forms[0].wan[0].checked = false; 
+}
+var accessTypeIdx = 2;
+var multiSysModeIdx = 3;
+var sysModeIdx = 4;
+//printTipMsg();
+//-->
+</SCRIPT>
+

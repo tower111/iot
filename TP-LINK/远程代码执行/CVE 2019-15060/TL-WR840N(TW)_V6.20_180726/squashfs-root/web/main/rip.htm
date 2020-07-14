@@ -1,0 +1,18 @@
+﻿<script language="javascript" type="text/javascript">function doSave(){var index=0;$.each(wanIpConList,function(){if(this.enable==1&&this.connectionType!="IP_Bridged"){index++;var verId="ripVer"+index;var optId="ripOpt"+index;var enId="ripEn"+index;var routeProtocoRx=(($.id(enId).checked==1)?$.id(verId).value:"Off");var ripMode=$.id(optId).value;$.act(ACT_SET,WAN_IP_CONN,this.__stack,null,["routeProtocolRx="+routeProtocoRx,"X_TP_RipOperationMode="+ripMode])}});$.addLoading($.id("saveBtn"));$.exe(function(err){if(!err){$.loadMain("rip.htm")}})}function init(){wanIpConList=$.act(ACT_GL,WAN_IP_CONN,null,null);$.exe(function(err){if(!err){var tbl=$.id("wan_table");var index=0;$.each(wanIpConList,function(){if(this.enable==1&&this.connectionType!="IP_Bridged"){index++;var row=tbl.insertRow(-1);cell=row.insertCell(-1);cell.innerHTML=this.name;cell=row.insertCell(-1);cell.innerHTML="<select name='ripVer' id = ripVer"+index+"><option value='RIPv1' "+(this.routeProtocolRx=="RIPv1"?"selected":"")+">1</option><option value='RIPv2' "+((this.routeProtocolRx=="RIPv2"||this.routeProtocolRx=="Off")?"selected":"")+">2</option><option class='T T_both' value='RIPv1v2' "+(this.routeProtocolRx=="RIPv1v2"?"selected":"")+">"+s_str.both+"</option></select>";cell=row.insertCell(-1);cell.innerHTML="<select name='ripOpt' id = ripOpt"+index+"><option class='T T_active' value='Active' "+(this.X_TP_RipOperationMode=="Active"?"selected":"")+">"+s_str.active+"</option><option class='T T_passive' value='Passive' "+(this.X_TP_RipOperationMode=="Passive"?"selected":"")+">"+s_str.passive+"</option></select>";cell=row.insertCell(-1);cell.innerHTML="<input type='checkbox' name='ripEn' id='ripEn"+index+"' "+(this.routeProtocolRx=="Off"?"":"checked")+">"}})}})}var wanIpConList;init();</script>
+<p class="et T" id="et">RIP Settings</p>
+<div class="con1 XL">
+<p class="ct"></p>
+<p class="bl"></p>
+<div class="con2">
+<p class="T" id="t_info">To activate RIP for the WAN interface, select the desired RIP version and operation and place a check in the 'Enabled' checkbox. To stop RIP on the WAN Interface, uncheck the 'Enabled' checkbox. Click the 'Save' button to start/stop RIP and save the configuration.</p>
+<p class="L1"><i class="T" id="t_note">NOTE: RIP cannot be configured on the WAN interface which has NAT enabled.</i></p>
+<p class="br"></p>
+<table class="tc bdr XL" id="wan_table" align="center" cellspacing="0" cellpadding="0">
+<tr><th width="70px" class="T T_intf">Interface</th><th width="150px" class="T" id="t_ver">Version</th><th width="150px" class="T T_operation">Operation</th><th width="70px" class="T T_enabled">Enabled</th></tr>
+</table>
+</div>
+<p class="bl"></p>
+<p class="tail">
+<input type="button" id="saveBtn" class="button L T T_save" value="Save" onClick="doSave()" />
+</p>
+</div>

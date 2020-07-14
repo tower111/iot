@@ -1,0 +1,27 @@
+﻿<script language="javascript" type="text/javascript">function init(){if(opt=="edit"){$.id("dynshow").innerHTML='<b class="item T T_macaddr">MAC Address:</b><input id="macAddr" type="text" class="text" value="" size="17" maxlength="17"/>';var ydns=$.act(ACT_GET,YANDEX_DNS_POOL,stack,null,["mac","description","mode"]);if(!$.exe()){$.id("macAddr").value=ydns.mac;$.id("description").value=ydns.description;$.id("mode").value=ydns.mode}}else{$.id("dynshow").innerHTML='<b class="item T T_macaddr">MAC Address:</b><select id="macAddr" class="XL"></select>';$.act(ACT_CGI,"/cgi/lanMac");if(!$.exe()){var sel=$.id("macAddr");for(var i=0;i<lanMacs.length;i++){var option=$.c("option");option.value=lanMacs[i];option.text=lanMacs[i];try{sel.add(option,null)}catch(e){sel.add(option)}}}}}function doSubmit(){var element;if($.mac($.id("macAddr").value)){element=$.id("macAddr");if(element){element.focus();element.select()}return false}if(!$.isname($.id("description").value)){$.alert(ERR_FW_ENTRYNAME_INVAD);element=$.id("description");if(element){element.focus();element.select()}return false}$.addLoading($.id("submitBtn"));if(opt=="add"){$.act(ACT_ADD,YANDEX_DNS_POOL,null,stack,["mac="+$.id("macAddr").value.toUpperCase(),"description="+$.id("description").value,"mode="+$.id("mode").value])}else{if(opt=="edit"){$.act(ACT_SET,YANDEX_DNS_POOL,stack,null,["mac="+$.id("macAddr").value.toUpperCase(),"description="+$.id("description").value,"mode="+$.id("mode").value])}}$.exe(function(err){if(!err){$.loadMain("yandexDns.htm")}})};</script>
+<p class="et T" id="et">Yandex DNS</p>
+<div class="con1 L">
+<p class="ct"></p>
+<p class="bl"></p>
+<div class="con2">
+<p><b class="T" id="t_info">Yandex DNS rule for special device</b></p>
+<p class="br"></p>
+<p class="L2" id="dynshow"></p>
+<p class="L2"><b class="item T" id="t_name">Client Name:</b><input id="description" type="text" class="text" value="" size="17" maxlength="15"/></p>
+<p class="L2"><b class="item T" id="t_mode">Control Mode:</b>
+<select class="M" id="mode">
+<option value="3" selected="selected" class="T T_disabled">Disabled</option>
+<option value="0" class="T T_basic">safe</option>
+<option value="1" class="T T_safe">safe</option>
+<option value="2" class="T T_child">safe</option>
+</select>
+</p>
+</div>
+<p class="bl"></p>
+<p class="tail" id="tail">
+	<input type="button" class="button L T T_save" value="Save" id="submitBtn" onclick="doSubmit()" />
+	<input type="button" class="button L T T_back" value="Back" id="back" onclick="$.loadMain('yandexDns.htm')"/>
+</p>
+</div>
+<script language="javascript" type="text/javascript">$.loadHelp();var opt=$.mainParam[0];var stack=$.mainParam[1];init();</script>
+

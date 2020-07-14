@@ -1,0 +1,51 @@
+
+<script language="JavaScript" src="../dynaform/custom.js" type="text/JavaScript"></script>
+<HTML><HEAD><TITLE></TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+</head>
+
+<H1>Wireless Settings Help</H1>
+<p><B>Note</B>: The operating distance or range of your wireless connection varies significantly based on the physical placement of the Router. For best results, place your Router.</P>
+
+<ul>
+<lI>Near the center of the area in which your wireless stations will operate.</lI>
+<lI>In an elevated location such as a high shelf.</lI>
+<lI>Away from the potential sources of interference, such as PCs, microwaves, 
+and cordless phones.</lI>
+<lI>With the Antenna in the upright position.</lI>
+<lI>Away from large metal surfaces.</lI>
+
+</ul>
+<p><B>Note</B>: Failure to follow these guidelines can result in significant performance degradation or inability to wirelessly connect to the Router.
+<p><B>Wireless Network Name</B> - Enter a value of up to 32 characters. The same 
+Name (SSID) must be assigned to all wireless devices in your network.</p>
+<p><B>Mode</B> - Select transmission mode according to your wireless devices. </p>
+<p><B>Channel Width</B> - The bandwidth of the wireless channel.</p>
+<p><B>Channel</B> - This field determines which operating frequency will be used. It is not necessary to change the wireless channel unless you notice interference problems with another nearby access point. If you select auto, then AP will choose the best channel automatically.</p>
+<!--<p><B>Max Tx Rate</B> - You can limit the maximum tx rate of the Router through this field.</p>-->
+<!--<p><B>Rate</B> - Max transmit data rate (It is strongly recommended that you set the rate to <B>Automatic</B>, and the Router will set the rate to the best by itself).</p>-->
+<p><B>Enable Wireless Router Radio</B> - The wireless radio of the Router can 
+be enabled or disabled to allow wireless stations access. If enabled, the wireless 
+stations will be able to access the Router. Otherwise, wireless stations will 
+not be able to access the Router.</p>
+<p><B>Enable SSID Broadcast</B> - If you select the <B>Enable SSID Broadcast</B> 
+checkbox, the wireless router will broadcast its name (SSID) on the air. </p>
+
+<DIV id="display_wds" style="display:none">
+<p><B>Enable WDS Bridging</B> - You can select this to enable WDS Bridging, 
+with this function, the Router can bridge two or more WLANs. NOTE: If this checkbox is selected, you had better make sure the following settings are correct. </p>
+<p><B>SSID (to be bridged)</B> - The SSID of the AP your Router is going to connect to as a client.
+You can also use the survey function to select the SSID to join.</p>
+<p><B>BSSID (to be bridged)</B> - The BSSID of the AP your Router is going to connect to as a client.
+You can also use the survey function to select the BSSID to join.</p>
+<p><B>Survey</B> - Click this button, you can search the AP which runs in the current channel.</p>
+<p><B>WDS Mode</B> - This field determines which WDS Mode will be used. It is not necessary to change the WDS Mode unless you notice network communication problems with root AP. If you select Auto, then Router will choose the appropriate WDS Mode automatically.</p>
+<p><B>Key type</B> - This option should be chosen according to the AP's security configuration. It is recommended that the security type is the same as your AP's security type</p>
+<p><B>WEP Index</B> - This option should be chosen if the key type is WEP (ASCII) or WEP (HEX).It indicates the index of the WEP key.</p>
+<p><B>Auth Type</B> - This option should be chosen if the key type is WEP (ASCII) or WEP (HEX).It indicates the authorization type of the Root AP.</p>
+<p><B>Password</B> - If the AP your Router is going to connect needs password, you need to fill the password in this blank.</p>
+</DIV>
+
+<SCRIPT type="text/javascript">
+document.getElementById("display_wds").style.display = wlan_wds == 1? "" : "none";
+</SCRIPT>

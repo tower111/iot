@@ -1,0 +1,64 @@
+﻿<script language="javascript" type="text/javascript">var opt=$.mainParam[0];var stack=$.mainParam[1];var condPoolEntry;var optEntry;var condOptStack;function init(){if(opt=="add"){$.addClass($.id("groupEdit"),"nd");$.removeClass($.id("groupAdd"),"nd");var brList=$.act(ACT_GL,L2_BRIDGING_ENTRY,null,null,["bridgeName"]);var sel=$.id("groupView");var option;if(!$.exe()){for(var i=0;i<brList.length;i++){option=$.c("option");option.value=brList[i].__stack;option.text=brList[i].bridgeName;try{sel.add(option,null)}catch(e){sel.add(option)}}}}else{if(opt=="edit"){$.addClass($.id("groupAdd"),"nd");$.removeClass($.id("groupEdit"),"nd");var tmpBrName;var stk=stack[0]+",0,0,0,0,0";var brList=$.act(ACT_GET,L2_BRIDGING_ENTRY,stk,null,["bridgeName"]);if(!$.exe()){tmpBrName=brList.bridgeName}condPoolEntry=$.act(ACT_GET,LAN_DHCP_COND_SRV_POOL,stack,null,["enable","minAddress","maxAddress","vendorClassID","X_TP_DeviceName","X_TP_DeviceType","DNSServers","IPRouters"]);if(!$.exe()){$.h($.id("brname"),tmpBrName);$.id("dev").value=condPoolEntry.X_TP_DeviceName;$.id("vid").value=condPoolEntry.vendorClassID;$.id("gw").value=condPoolEntry.IPRouters;$.id("sip").value=condPoolEntry.minAddress;$.id("eip").value=condPoolEntry.maxAddress;$.id("state").value=condPoolEntry.enable;$.id("dev_type").value=condPoolEntry.X_TP_DeviceType;optEntry=$.act(ACT_GS,LAN_DHCP_COND_SRV_POOL_OPT,null,stack,["tag","value"]);if(!$.exe()&&optEntry.length>0){condOptStack=optEntry[0].__stack;if(condPoolEntry.X_TP_DeviceType=="STB"){$.id("stb_opt_val").value=optEntry[0].value;$.id("dns1").value=(condPoolEntry.DNSServers).split(",")[0];$.id("dns2").value=(condPoolEntry.DNSServers).split(",")[1]}else{if(condPoolEntry.X_TP_DeviceType!="STB"&&condPoolEntry.X_TP_DeviceType!="Unknown"){$.id("opt_code").value=optEntry[0].tag;$.id("opt_val").value=optEntry[0].value}}}}}}showDevType()}function showDevType(){if(opt=="edit"){if($.id("dev_type").value==condPoolEntry.X_TP_DeviceType&&optEntry.length>0){$.id("opt_code").value=optEntry[0].tag;$.id("opt_val").value=optEntry[0].value}else{$.id("opt_code").value=241;$.id("opt_val").value=""}}if($.id("dev_type").value=="STB"){$.removeClass($.id("stb_opt"),"nd");$.addClass($.id("reserved_opt"),"nd")}else{if($.id("dev_type").value=="Unknown"){$.addClass($.id("reserved_opt"),"nd");$.addClass($.id("stb_opt"),"nd")}else{$.removeClass($.id("reserved_opt"),"nd");$.addClass($.id("stb_opt"),"nd")}}}function showOptType(){if(opt=="edit"){if($.id("opt_code").value==optEntry[0].tag&&$.id("dev_type").value==condPoolEntry.X_TP_DeviceType){$.id("opt_val").value=optEntry[0].value}else{$.id("opt_val").value=""}}}function doSave(){var element;if(!$.isname($.id("dev").value)){$.alert(ERR_DHCP_COND_POOL_DEV_NAME_INVALID);var element=$.id("dev");if(element){element.focus();element.select()}return false}if($.id("dev").value==""){$.alert(ERR_DHCP_COND_POOL_DEV_NAME_EMPTY);element=$.id("dev");if(element){element.focus();element.select()}return false}if($.id("vid").value==""){$.alert(ERR_DHCP_COND_POOL_VID_EMPTY);element=$.id("vid");if(element){element.focus();element.select()}return false}if(($.id("vid").value).indexOf('"')!=-1){$.alert(ERR_DHCP_COND_POOL_VID_INVAD);element=$.id("vid");if(element){element.focus();element.select()}return false}if($.ifip($.id("sip").value,true)){$.alert(ERR_DHCP_COND_POOL_START_IP_INVAD);element=$.id("sip");if(element){element.focus();element.select()}return false}if($.ifip($.id("eip").value,true)){$.alert(ERR_DHCP_COND_POOL_END_IP_INVAD);element=$.id("eip");if(element){element.focus();element.select()}return false}if((parseInt($.id("sip").value.split(".")[3],10)==0)||(parseInt($.id("sip").value.split(".")[3],10)==255)){$.alert(ERR_DHCP_START_IP_INVAD_1);element=$.id("sip");if(element){element.focus();element.select()}return false}if((parseInt($.id("eip").value.split(".")[3],10)==0)||(parseInt($.id("eip").value.split(".")[3],10)==255)){$.alert(ERR_DHCP_END_IP_INVAD_1);element=$.id("eip");if(element){element.focus();element.select()}return false}if(!$.isOrderIp($.id("sip").value,$.id("eip").value)){$.alert(ERR_TC_IP_ORDER_INVAD);element=$.id("eip");if(element){element.focus();element.select()}return false}if($.ifip($.id("gw").value,true)){$.alert(ERR_DHCP_COND_POOL_GW_INVAD);element=$.id("gw");if(element){element.focus();element.select()}return false}if($.id("dev_type").value=="STB"){if($.id("stb_opt_val").value==""){$.alert(ERR_DHCP_COND_POOL_OPT_VAL_EMPTY);element=$.id("opt_val");if(element){element.focus();element.select()}return false}if($.ifip($.id("dns1").value,true)){$.alert(ERR_DHCP_COND_DNS1_INVAD);element=$.id("dns1");if(element){element.focus();element.select()}return}if($.id("dns2").value!=""&&$.id("dns2").value!="0.0.0.0"&&$.ifip($.id("dns2").value,true)){$.alert(ERR_DHCP_COND_DNS2_INVAD);element=$.id("dns2");if(element){element.focus();element.select()}return}}else{if($.id("dev_type").value!="STB"&&$.id("dev_type").value!="Unknown"){if($.id("opt_val").value==""){$.alert(ERR_DHCP_COND_POOL_OPT_VAL_EMPTY);element=$.id("opt_val");if(element){element.focus();element.select()}return false}}}$.addLoading($.id("saveBtn"));if(opt=="add"){var condEntry=$.act(ACT_ADD,LAN_DHCP_COND_SRV_POOL,null,$.id("groupView").value,["X_TP_DeviceName="+$.id("dev").value,"minAddress="+($.ip2ip($.id("sip").value)),"maxAddress="+($.ip2ip($.id("eip").value)),"IPRouters="+$.id("gw").value,"vendorClassID="+$.id("vid").value,"X_TP_DeviceType="+$.id("dev_type").value,"DNSServers="+($.id("dns1").value!=""?$.id("dns1").value:"0.0.0.0")+","+($.id("dns2").value!=""?$.id("dns2").value:"0.0.0.0"),"enable="+$.id("state").value]);if($.id("dev_type").value!="Unknown"){if(!$.exe()){$.act(ACT_ADD,LAN_DHCP_COND_SRV_POOL_OPT,null,condEntry.__stack,["tag="+($.id("dev_type").value=="STB"?240:$.id("opt_code").value),"value="+($.id("dev_type").value=="STB"?$.id("stb_opt_val").value:$.id("opt_val").value)])}else{return}}$.exe(function(err){if(!err){$.loadMain("dhcpCond.htm")}})}else{if(opt=="edit"){$.act(ACT_SET,LAN_DHCP_COND_SRV_POOL,stack,null,["X_TP_DeviceName="+$.id("dev").value,"minAddress="+($.ip2ip($.id("sip").value)),"maxAddress="+($.ip2ip($.id("eip").value)),"IPRouters="+$.id("gw").value,"vendorClassID="+$.id("vid").value,"X_TP_DeviceType="+$.id("dev_type").value,"DNSServers="+($.id("dns1").value!=""?$.id("dns1").value:"0.0.0.0")+","+($.id("dns2").value!=""?$.id("dns2").value:"0.0.0.0"),"enable="+$.id("state").value]);if(condPoolEntry.X_TP_DeviceType!="Unknown"&&$.id("dev_type").value=="Unknown"){$.act(ACT_DEL,LAN_DHCP_COND_SRV_POOL_OPT,condOptStack,null,null)}else{if(condPoolEntry.X_TP_DeviceType=="Unknown"&&$.id("dev_type").value!="Unknown"){$.act(ACT_ADD,LAN_DHCP_COND_SRV_POOL_OPT,null,stack,["tag="+($.id("dev_type").value=="STB"?240:$.id("opt_code").value),"value="+($.id("dev_type").value=="STB"?$.id("stb_opt_val").value:$.id("opt_val").value)])}else{$.act(ACT_SET,LAN_DHCP_COND_SRV_POOL_OPT,condOptStack,null,["tag="+($.id("dev_type").value=="STB"?240:$.id("opt_code").value),"value="+($.id("dev_type").value=="STB"?$.id("stb_opt_val").value:$.id("opt_val").value)])}}$.exe(function(err){if(!err){$.loadMain("dhcpCond.htm")}})}}};</script>
+<p class="et T" id="et">DHCP Conditional Pool</p>
+<div class="con1 L">
+<p class="ct"></p>
+<p class="bl"></p>
+<div class="con2">
+<p><b class="T" id="t_info">The vendor class IP range can be set on this page.</b></p>
+<p class="br"></p>
+<div id="groupEdit" class="nd">
+<p class="L2"><b class="item T T_group">Group:</b><b style="padding-left:12px" id="brname"></b></p>
+</div>
+<p class="L2"><b class="item T" id="t_facility">Facility:</b><input id="dev" type="text" class="text" value="" size="17" maxlength="15"/></p>
+<p class="L2"><b class="item T" id="t_vendor">Vendor ID:</b><input id="vid" type="text" class="text" value="" size="17" maxlength="127"/></p>
+<p class="L2"><b class="item T" id="t_poolstart">Start IP Address:</b><input id="sip" type="text" class="text" value="" size="17" maxlength="15"/></p>
+<p class="L2"><b class="item T" id="t_poolend">End IP Address:</b><input id="eip" type="text" class="text" value="" size="17" maxlength="15"/></p>
+<p class="L2"><b class="item T T_defgw">Default Gateway:</b><input id="gw" type="text" class="text" value="" size="17" maxlength="15"/></p>
+
+<p class="L2"><b class="item T" id="t_devtype">Device Type:</b>
+	<select id="dev_type" class="M" onchange="showDevType();">
+	<option value="PC" selected="selected">PC</option>
+	<option class="T" id="t_camera" value="Camera">Camera</option>
+	<option value="HGW" >HGW</option>
+	<option value="STB">STB</option>
+	<option class="T" id="t_phone" value="Phone">Phone</option>
+	<option class="T T_unknown" value="Unknown">Unknown</option>
+	</select>
+</p>
+
+<div id="reserved_opt">
+<p class="L2"><b class="item T" id="t_addopt1">Add Option:</b><select id="opt_code" class="L" onchange="showOptType();">
+	<option id="t_opt241" value="241" selected="selected">Option 241</option>
+	<option id="t_opt242" value="242">Option 242</option>
+	<option id="t_opt243" value="243" >Option 243</option>
+	<option id="t_opt244" value="244">Option 244</option>
+	<option id="t_opt245" value="245">Option 245</option>
+	</select>
+</p>
+<p class="L2"><b class="item T" id="t_optval1">Option Value:</b><input id="opt_val" type="text" class="text" value="" size="17" maxlength="127"/></p>
+</div>
+
+<div id="stb_opt">
+<p class="L2"><b class="item T" id="t_addopt2">Add Option:</b><span class="T" id="t_opt240">Option 240</span></p>
+<p class="L2"><b class="item T" id="t_optval2">Option Value:</b><input id="stb_opt_val" type="text" class="text" value="" size="17" maxlength="127"/></p>
+<p class="L2"><b class="item">DNS1:</b><input id="dns1" type="text" class="text" value="" size="17" maxlength="15"/></p>
+<p class="L2"><b class="item">DNS2:</b><input id="dns2" type="text" class="text" value="" size="17" maxlength="15"/></p>
+</div>
+
+<div id="groupAdd" class="nd">
+<p class="L2"><b class="item T T_group">Groups:</b><select class="M" id="groupView"></select></p>
+</div>
+<p class="L2"><b class="item T T_status">Status:</b>
+<select class="M" id="state" class="list">
+<option value="0" class="T T_disabled" selected="selected">Disabled</option>
+<option value="1" class="T T_enabled" >Enabled</option>
+</select></p>
+</div>
+<p class="bl"></p>
+<p class="tail">
+	<input type="button" class="button L T T_save" value="Save" id="saveBtn" onclick="doSave()"/>
+	<input type="button" class="button L T T_back" value="Back" id="Back" onclick="$.loadMain('dhcpCond.htm')"/>
+</p>
+</div>
+<script language="javascript" type="text/javascript">init();</script>
+

@@ -1,0 +1,851 @@
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT language="JavaScript" src="../dynaform/custom.js" type="text/JavaScript"></SCRIPT>
+<SCRIPT type="text/javascript">
+<!-- 
+var key1dis = 0;
+var key2dis = 0;
+var key3dis = 0;
+var key4dis = 0;
+var keylength1 = 10;
+var keylength2 = 10;
+var keylength3 = 10;
+var keylength4 = 10;
+var is_Hex = true;
+function checkWEP()
+{
+	var cf = document.forms[0];
+	if (key1dis && key2dis && key3dis && key4dis)
+		return 0;
+	if (key1dis == 0 &&!(cf.key1.value=="" && !cf.secType[3].checked))	{if (checkkey(cf.key1.value,keylength1) == false)	return 1;}
+	if (key2dis == 0 &&!(cf.key2.value=="" && !cf.secType[3].checked))	{if (checkkey(cf.key2.value,keylength2) == false)	return 2;}
+	if (key3dis == 0 &&!(cf.key3.value=="" && !cf.secType[3].checked))	{if (checkkey(cf.key3.value,keylength3) == false)	return 3;}
+	if (key4dis == 0 &&!(cf.key4.value=="" && !cf.secType[3].checked))	{if (checkkey(cf.key4.value,keylength4) == false)	return 4;}
+	return 5;
+}
+function checkAuth()
+{
+	var cf = document.forms[0];
+	var len;
+	var st = 0;
+	
+	//WPARadius JS
+	if (cf.secType[3].checked)
+	{
+		st = 1;
+	}
+	else if (cf.secType[2].checked)
+	{
+		st = 2;
+	}
+	else if (cf.secType[1].checked)
+	{
+		st = 3;
+	}
+
+	{
+		if (!ipverify(cf.radiusIp.value))
+		{
+			if ((st == 2) || ("" != cf.radiusIp.value))
+			{
+			alert(js_inv_ip="Invalid IP address for Radius Server, please input again!");
+				cf.radiusIp.focus();
+				cf.radiusIp.select();
+				return false;
+			}
+		}
+		len = getValLen(cf.radiusSecret.value);
+		if (len <= 0)
+		{
+			if ((st == 2))
+			{
+				alert(js_enpty_radius="Please input Radius password!");
+				cf.radiusSecret.focus();
+				cf.radiusSecret.select();
+				return false;
+			}
+		}
+		else if (len > 64)
+		{
+			alert(js_radius_password="Radius password must be less than 64 characters, please input again!");
+			cf.radiusSecret.focus();
+			cf.radiusSecret.select();
+			return false;
+		}
+		len = getValLen(cf.radiusPort.value);
+		if (len <= 0)
+			cf.radiusPort.value = 1812;
+		if (!is_number(cf.radiusPort.value) || (0 > cf.radiusPort.value) || (65535 < cf.radiusPort.value))
+		{
+			alert(js_inv_radius="Invalid Radius port, please input again!");
+			cf.radiusPort.focus();
+			cf.radiusPort.select();
+			return false;
+		}
+		len = getValLen(cf.interval.value);
+		if (len <= 0)
+			cf.interval.value = 0;
+		if (!is_number(cf.interval.value) || ((0 != cf.interval.value) && (cf.interval.value < 30)))
+		{
+			alert(js_inv_group_key="Invalid Group Key Update Period, please input again!");
+			cf.interval.focus();
+			cf.interval.select();
+			return false;
+		}
+		len = getValLen(cf.intervalWpa.value);
+		if (len <= 0)
+			cf.intervalWpa.value = 0;
+		if (!is_number(cf.intervalWpa.value) || ((0 != cf.intervalWpa.value) && (cf.intervalWpa.value < 30)))
+		{
+			alert(js_inv_update_period="Invalid Group Key Update Period, please input again!");
+			cf.intervalWpa.focus();
+			cf.intervalWpa.select();
+			return false;
+		}
+	}
+
+	//WAPPSK JS
+	{
+		len = getValLen(cf.pskSecret.value);
+		if ((st == 3) && (len <= 0))
+		{
+			alert(js_empty_psk_password="Empty Wireless password, please input one!");
+			cf.pskSecret.focus();
+			return false;
+		}
+		if ((len > 0) && (len < 8))
+		{
+			alert(js_psk_char="Wireless password should not be less than 8 characters, please input again!");
+			cf.pskSecret.focus();
+			cf.pskSecret.select();
+			return false;
+		}
+        else if(len < 64)
+        {
+            var ch = "0123456789ABCDEFabcdefGHIJKLMNOPQRSTUVWXYZghijklmnopqrstuvwxyz`~!@#$^&*()-=_+[]{};:\'\"\\|/?.,<>/% ";
+            var c;
+            for(i = 0; i < len; i++)
+            {
+                c = cf.pskSecret.value.charAt(i);
+                if(ch.indexOf(c) == -1)
+                {
+                    alert(js_psk_hex="The Wireless password include illegal characters, please input again.");
+                    cf.pskSecret.focus();
+                    cf.pskSecret.select();
+                    return false;
+                }
+            }
+        }
+        else 
+		{
+			var ch = "0123456789ABCDEFabcdef";
+			var c;
+			for(i = 0; i < len; i++)
+			{
+				c = cf.pskSecret.value.charAt(i);
+				if(ch.indexOf(c) == -1)
+				{
+                    alert(js_psk_hex="The 64 bytes Wireless password include non-hexadecimal characters, please input again.");
+                    cf.pskSecret.focus();
+                    cf.pskSecret.select();
+                    return false;
+                }
+            }
+		}
+		if ((0 != cf.interval.value) && (cf.interval.value < 30))
+		{
+			if ((st == 3) || ("" != cf.interval.value))
+			{
+				alert(js_inv_group_per="Invalid Group Key Update Period, please input again!");
+				return false;
+			}
+		}
+		if ((0 != cf.intervalWpa.value) && (cf.intervalWpa.value < 30))
+		{
+			if ((st == 3) || ("" != cf.intervalWpa.value))
+			{
+				alert(js_inv_group_per="Invalid Group Key Update Period, please input again!");
+				return false;
+			}
+		}
+//		return true;
+	}
+
+	//WEP
+	{
+		var renum;
+		renum = checkWEP();
+		if (0 == renum && st == 1)
+		{
+			alert(js_no_wep_key="The WEP key is empty, please input WEP key.");
+			return false;
+		}
+		if (renum < 5 && renum >0)
+		{
+			if (is_Hex == true)
+			{
+                alert (js_wep_key_inv_hex="WEP key is invalid!\nThe WEP Key Format is Hexadecimal currently.\nMake sure that all digits are Hexadecimal (zero key is illegal) and the length must be 10,26 or 32.");
+			}
+			else
+			{				
+                alert (js_wep_key_inv_asc="WEP key is invalid!\nThe WEP Key Format is ASCII currently.\nMake sure that all characters are ASCII (not including any other character) and the length must be 5,13 or 16.");
+			}
+			
+			if (renum == 1 &&cf.key1.disabled == false)				{	cf.key1.focus();	cf.key1.select();	}
+			else if (renum == 2 &&cf.key2.disabled == false)		{	cf.key2.focus();	cf.key2.select();	}
+			else if (renum == 3 &&cf.key3.disabled == false)		{	cf.key3.focus();	cf.key3.select();	}
+			else if (renum == 4 &&cf.key4.disabled == false)		{	cf.key4.focus();	cf.key4.select();	}
+			return false;
+		}
+	}
+	return true;
+}
+
+function setKey()
+{
+	var cf = document.forms[0];
+	getdisable();
+	auto_disable();
+	auto_length();
+}
+function setAuth()
+{
+	if(wlanPara[2] == 1 )
+		return setKey();
+}
+function getdisable()
+{
+	var cf = document.forms[0];
+	key1dis = (cf.length1.selectedIndex == 0);
+	key2dis = (cf.length2.selectedIndex == 0);
+	key3dis = (cf.length3.selectedIndex == 0);
+	key4dis = (cf.length4.selectedIndex == 0);
+}
+function auto_disable()
+{
+	var cf = document.forms[0];
+	var keychoosed;
+	cf.key1.disabled = cf.keynum[0].disabled = key1dis;
+	cf.key2.disabled = cf.keynum[1].disabled = key2dis;
+	cf.key3.disabled = cf.keynum[2].disabled = key3dis;
+	cf.key4.disabled = cf.keynum[3].disabled = key4dis;
+	for (i = 0; i < cf.keynum.length; i ++)
+	{
+		if (cf.keynum[i].checked)
+		{
+			keychoosed = cf.keynum[i].value;
+			break;
+		}
+	}
+	if ((0 == key1dis) || (0 == key2dis) || (0 == key3dis) || (0 == key4dis))
+	{
+		if ((keychoosed == 1 && cf.length1.selectedIndex == 0) ||
+			(keychoosed == 2 && cf.length2.selectedIndex == 0) ||
+			(keychoosed == 3 && cf.length3.selectedIndex == 0) ||
+			(keychoosed == 4 && cf.length4.selectedIndex == 0))
+		{
+			if (0 == key1dis)
+				cf.keynum[0].checked = 1;
+			else if (0 == key2dis)
+				cf.keynum[1].checked = 1;
+			else if (0 == key3dis)
+				cf.keynum[2].checked = 1;
+			else
+				cf.keynum[3].checked = 1;
+		}
+	}
+}
+
+function auto_length()
+{
+	var cf = document.forms[0];
+
+	keylength1 =(1 == key1dis) ? keylength1 :(((3 == cf.length1.selectedIndex) ? 16 : ((2 == cf.length1.selectedIndex) ? 13 : 5)) *((0 == cf.keytype.selectedIndex) ? 2 : 1));
+	keylength2 =(1 == key2dis) ? keylength2 :(((3 == cf.length2.selectedIndex) ? 16 : ((2 == cf.length2.selectedIndex) ? 13 : 5)) *((0 == cf.keytype.selectedIndex) ? 2 : 1));
+	keylength3 =(1 == key3dis) ? keylength3 :(((3 == cf.length3.selectedIndex) ? 16 : ((2 == cf.length3.selectedIndex) ? 13 : 5)) *((0 == cf.keytype.selectedIndex) ? 2 : 1));
+	keylength4 =(1 == key4dis) ? keylength4 :(((3 == cf.length4.selectedIndex) ? 16 : ((2 == cf.length4.selectedIndex) ? 13 : 5)) *((0 == cf.keytype.selectedIndex) ? 2 : 1));
+
+	if ((cf.key1.value.length > keylength1) && (key1dis != 1))cf.key1.value = cf.key1.value.substring(0,keylength1);
+	if ((cf.key2.value.length > keylength2) && (key2dis != 1))cf.key2.value = cf.key2.value.substring(0,keylength2);
+	if ((cf.key3.value.length > keylength3) && (key3dis != 1))cf.key3.value = cf.key3.value.substring(0,keylength3);
+	if ((cf.key4.value.length > keylength4) && (key4dis != 1))cf.key4.value = cf.key4.value.substring(0,keylength4);
+
+	cf.key1.maxLength =  keylength1;
+	cf.key2.maxLength =  keylength2;
+	cf.key3.maxLength =  keylength3;
+	cf.key4.maxLength =  keylength4;
+
+	if (cf.keytype.selectedIndex == 0)
+		is_Hex = true;
+	else
+		is_Hex = false;
+}
+function checkkey(szname,strlength)
+{
+	var c;
+	var zeronum = 0;
+	var ch = "0123456789ABCDEFabcdefGHIJKLMNOPQRSTUVWXYZghijklmnopqrstuvwxyz`~!@#$^&*()-=_+[]{};:\'\"\\|/?.,<>/% ";
+	if (szname.length != strlength)
+		return false;
+	if	(is_Hex == 1)
+		ch = ch.substring(0,22);
+	for (var i = 0; i < szname.length; i++)
+	{
+		c = szname.charAt(i);
+		if (c =="0")
+			zeronum ++;
+		if (ch.indexOf(c) == -1)
+			return false;
+		if (zeronum == strlength && is_Hex == 1)
+			return false;
+	}
+	return true;
+}
+function checkpwd()
+{
+    var c;
+    var obj = document.forms[0];
+    var ch = "0123456789ABCDEFabcdefGHIJKLMNOPQRSTUVWXYZghijklmnopqrstuvwxyz`~!@#$^&*()-=_+[]{};:\'\"\\|/?.,<>/% ";
+    var pwd;
+    var chr;
+    if(obj.secType[3].checked == true)
+    {
+        return true;
+    }
+    if(obj.secType[2].checked == true)
+    {
+        pwd = obj.radiusSecret.value;
+		//if(pwd.length <= 64)
+	{
+        for(var i =0; i < pwd.length; i++)
+        {
+            chr = pwd.charAt(i);
+            if(ch.indexOf(chr) == -1)
+            {
+                alert(js_ill_chars="The password value contain illegal characters, please input another one!");
+                return false;
+            }
+        }
+    }
+}
+    if(obj.secType[1].checked == true)
+    {
+        pwd = obj.pskSecret.value;
+		//if(pwd.length <= 64)
+	{
+        for(var i = 0; i < pwd.length; i++)
+        {
+            chr = pwd.charAt(i);
+            if(ch.indexOf(chr) == -1)
+            {
+                alert(js_ill_chars="The password value contain illegal characters, please input another one!");
+                return false;
+            }
+        }
+    }
+    }
+    return true;
+}
+
+function checkWdsWep()
+{
+	var cf = document.forms[0];
+	
+	if ((wlanPara[19]==1) || (wlanPara[19]==4) || (wlanPara[19] == 0))
+		return true;
+	
+	if (cf.keynum[wlanPara[20]- 1].checked == false)
+		return true;
+	
+	if ((wlanPara[19] == 2) && (cf.keytype.value == 1))
+	{
+		return false;	
+	}
+	
+	if ((wlanPara[19] == 3) && (cf.keytype.value == 2))
+	{
+		return false;
+	}
+
+ 
+	var APLen;
+	var localKey;
+  if (wlanPara[20] == 1)
+  		localKey = cf.key1.value;
+  else if (wlanPara[20] == 2)
+  			localKey = cf.key2.value;
+  		else if (wlanPara[20] == 3)
+  				localKey = cf.key3.value;
+  				else
+  				  localKey = cf.key4.value;
+  
+  APLen = getValLen(localKey);
+	var STALen = getValLen(wlanPara[21]);
+
+	if (APLen != STALen)
+		return false;
+	
+	for (i=0; i<APLen; i++)
+	{
+		if (localKey.charAt(i) != wlanPara[21].charAt(i))
+			return false;
+	}
+	
+	return true;
+	
+}
+
+function doSubmit()
+{
+	var cf = document.forms[0];
+
+	if (!checkAuth())
+		return false;
+        
+    if( !checkpwd() )
+    {
+        return false;
+    }
+	for (var i =0; i<document.forms[0].elements.length; i++)
+	{
+		cf.elements[i].disabled = false;
+	}
+	
+//	if ((wlanPara[19] == 4) && (cf.secType[3].checked == true) && (cf.keynum[0].checked == false))
+//	{
+//		alert(js_sec_error_set="Your WDS's security is WPA-PSK. So if your AP's security is WEP, The index should be 1!");
+//		return false;
+//	}
+	 if (cf.secType[3].checked == true)
+	{
+		if (checkWdsWep() == false)
+		{
+			alert(js_sec_wep_notsame = "If both your AP and WDS use WEP with the same index as security mode, then you should make sure the keys are the same!");
+		return false;
+	}
+	}
+	return true;
+}
+function getValLen(val)
+{
+	var len = 0;
+	var i = 0;
+	for (i = 0; i < val.length; i ++)
+	{
+		var c = val.charAt(i);
+		len += ((c >= ' ') && (c <= '~')) ? 1 : 2;
+	}
+	return len;
+}
+function changeInfo()
+{
+    var secTypes = document.forms[0].secType;
+    if (secTypes[1].checked && (document.getElementById("pskCipher").value==2))   //WPA/WPA2-Personal
+    {
+        document.getElementById("tnotice1").style.display = "none";
+        document.getElementById("table_notice2").style.display = "";
+        document.getElementById("table_notice3").style.display = "none";
+    }
+    //added by zqq,08,08,13
+    else if (secTypes[2].checked && (document.getElementById('wpaCipher').value==2))  //WPA/WPA2-Enterprise
+    {
+        document.getElementById("tnotice1").style.display = "none";
+        document.getElementById("table_notice2").style.display = "none";
+        document.getElementById("table_notice3").style.display = "";
+    }
+    else if (secTypes[3].checked) //WEP
+    {
+        document.getElementById("tnotice1").style.display = "";
+        document.getElementById("table_notice2").style.display = "none";
+        document.getElementById("table_notice3").style.display = "none";
+    }
+    else
+    {
+        document.getElementById("tnotice1").style.display = "none";
+        document.getElementById("table_notice2").style.display = "none";
+        document.getElementById("table_notice3").style.display = "none";
+    }
+}
+
+function onChangeMbssid()
+{
+	location.href="../userRpm/WlanSecurityRpm.htm?vapIdx="+document.forms[0].vapIdx.value;
+}
+
+function disable_wep()
+{
+	document.getElementById("weptable").style.display="none";
+}
+
+var secElemDisplayInfo=new Array(
+	1,1,1,	//ap
+	0,1,1,	//mssid
+	0,0,1,  //mssid -vlan
+	1,0,1,  //client
+	1,0,1,  //rpt 
+	1,0,1,  //urpt
+	1,1,1,  //bridge(wds)
+	1,0,0,  //bridge with ap(nawds)
+	1,1,1
+);
+
+//-->
+</SCRIPT>
+<style type="text/css">
+td.Item
+{
+	width:32%;
+}
+</style>
+</HEAD>
+<BODY onLoad="setTagStr(document,'wlan_security'); LoadHelp('WlanSecurityHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WlanSecurityRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth" border = 0>
+	<TR>
+	<TD>
+		<TABLE border="0" cellpadding="2" cellspacing="0" class="space">	
+			<TR><TD class=h1 colspan=5 id="t_title">Wireless Security</TD></TR>
+			<TR><TD class=blue colspan=5>&nbsp;</TD></TR>
+	
+			<SCRIPT type="text/javascript">
+			var operModeIdx = getOperModeIdxByValue(operMode);
+			if(sysMode == 8)//PT_AP
+			{
+			document.write('<TR id="line_OperMode" name="line_OperMode">');
+			document.write('<TD class="Item" id="t_transmit_power" name="t_transmit_power">Operation Mode:</TD>');	
+				document.write('<TD class=emp><span>');
+				document.write(getOperModeName(operModeIdx));
+				document.write('</span>&nbsp;&nbsp;');
+			}
+			else if(sysMode !=8 && wlanPara[22] > 1)
+			{
+			document.write('<TR id = "aaaa" name="aaaa"><TD class=item>SSID:</TD><TD class=emp>');	
+			}
+		document.write('<select name="vapIdx" id="vapIdx" onChange="onChangeMbssid();" style="display:none" id="vapIdx"></select>');
+			if(wlanPara[22] > 1 || (sysMode == 8 && operMode ==1))
+			{
+				for(var i=0, j=0; i<wlanPara[22]; i++ )
+				{
+					if(ssidList[i] != "")
+						document.forms[0].vapIdx.options[j++] = new Option(ssidList[i], i+1, false, false);
+				}
+			}	
+			if(sysMode == 8)
+			{
+				document.write('</TD></TR>');
+				document.write('<TR><TD class=blue colspan=2 >&nbsp;</TD></TR>');
+			}
+			else if(sysMode !=8 && wlanPara[22] > 1)
+			{
+				document.write('</TD></TR>');
+			}
+			</SCRIPT>
+		</TABLE>
+	</TD>
+			</TR>
+<TR>
+	<TD style="padding-left:30px;font-weight:bold;font-size:14px">
+		<INPUT name="secType" id="secType" type="radio" value="0" onClick="changeInfo()">
+		&nbsp; <A id="t_disSec" name="t_disSec">Disable Security</A>
+	</TD>
+	</TR>  
+<TR><TD>&nbsp;</TD></TR>	
+	
+	<TR>
+	<TD>
+		<table border="0" cellpadding="2" cellspacing="0" class="space" id="wpapsktable">	  
+		<TR>
+			<TD colspan=4 style="padding-left:30px;font-weight:bold;font-size:14px">
+				<INPUT name="secType" id="secType" type="radio" value="3" onClick="changeInfo()">
+				&nbsp;<span id="t_wpa_psk">WPA/WPA2 - Personal(Recommended)</span>
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item id="t_ver" name="t_ver">Version:</TD>
+			<TD colspan="3">
+				<SELECT name="pskSecOpt" id="pskSecOpt" class="list">
+					<OPTION value="3" id="t_auto" name="t_auto">Automatic</OPTION>
+					<OPTION value="1">WPA-PSK</OPTION>
+					<OPTION value="2">WPA2-PSK</OPTION>
+				</SELECT>
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item  id="t_encrypt" name="t_encrypt">Encryption:</TD>
+			<TD colspan="3">
+				<SELECT name="pskCipher" id="pskCipher" class="list" onclick="changeInfo()">
+				<SCRIPT type="text/javascript">
+				if ((wlanPara[18] != 3) && (wlanPara[18] != 7))
+				{
+					document.write('<option value="1" id="t_auto" name="t_auto">Automatic</option>');
+					document.write('<option value="2">TKIP</option>');
+				}
+				</SCRIPT>
+				<OPTION value="3">AES</OPTION>
+				</SELECT>
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item  id="t_psk_pwd" name="t_psk_pwd">Wireless Password:</TD>
+			<TD colspan = "3"><INPUT name=pskSecret type=text class=text id="pskSecret" value="" size="32"></TD>
+		</TR>
+		<TR>
+			<TD class=Item>&nbsp;</TD>
+			<TD  colspan = 3 id="t_psk_note" name="t_psk_note" style="white-space:normal;">(You can enter ASCII characters between 8 and 63 or Hexadecimal characters between 8 and 64.)</TD>
+		</TR>
+		<TR>
+			<TD class=Item id="t_key_update_prd" name="t_key_update_prd">Group Key Update Period:</TD>
+			<TD colspan = "3">
+				<INPUT name=interval type=text class=text id="interval" value="" size="9" maxlength="9">
+				<A id="t_key_update_prd_note" name="t_key_update_prd_note">&nbsp;Seconds </A>
+			</TD>
+		</TR>	
+		<TR>
+			<TD class=Item>&nbsp;</TD>
+			<TD  colspan = 3 id="t_key_update_prd_note2" name="t_key_update_prd_note2" style="white-space:normal;">(Keep it default if you are not sure, minimum is 30, 0 means no update)</TD>
+		</TR>		
+		<TR id ="table_notice2" style="display:none;color:red;" name="table_notice2">
+			<TD colspan="4" id ="t_notice2" name="t_notice2" style="white-space:normal;padding-left:60px">We do not recommend using the TKIP encryption if this device operates in 802.11n mode due to the fact that TKIP is not supported by 802.11n specification.</TD>
+					</TR>
+				</TABLE>
+			</TD>
+		</TR>
+
+	<TR>
+	<TD>
+		<table border="0" cellpadding="2" cellspacing="0" class="space" id="wpatable">	  
+		<TR>
+			<TD colspan=4 style="padding-left:30px;font-weight:bold;font-size:14px">
+				<INPUT name="secType" id="secType" type="radio" value="2" onClick="changeInfo()">
+				&nbsp;<span id="t_wpa_wpa2">WPA/WPA2 - Enterprise</span>
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item id="t_ver" name="t_ver">Version:</TD>
+			<TD colspan=3>
+				<SELECT name=wpaSecOpt class=list id=wpaSecOpt>
+					<OPTION value="3" id="t_auto" name="t_auto">Automatic</OPTION>
+					<OPTION value="1">WPA</OPTION>
+					<OPTION value="2">WPA2</OPTION>
+				</SELECT>
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item id="t_encrypt" name="t_encrypt">Encryption:</TD>
+			<TD colspan=3>
+				<SELECT name=wpaCipher class=list id="wpaCipher" ONCLICK="changeInfo()">
+					<SCRIPT type="text/javascript">
+					if((wlanPara[18] != 3) && (wlanPara[18] != 7)) //add by chenlfieng 7 -11na puren
+					{
+						document.write('<option value="1" id="t_auto" name="t_auto">Automatic</option>');
+						document.write('<option value="2">TKIP</option>');
+					}
+					</SCRIPT>
+					<OPTION value="3">AES</OPTION>
+				</SELECT>
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item  id="t_rad_ser_ip" name="t_rad_ser_ip">Radius Server IP:</TD>
+			<TD colspan=3><INPUT name="radiusIp" type="text" class="text" id="radiusIp" value="" size="15" maxlength="15"></TD>
+		</TR>
+		<TR>
+			<TD class=Item id="t_radius_port"  name="t_radius_port">Radius Port:</TD>
+			<TD colspan=3>
+				<INPUT name="radiusPort" type="text" class="text" id="radiusPort" value="" size="5" maxlength="5">
+				<A id="t_rd_port_note" name="t_rd_port_note">(1-65535, 0 stands for default port 1812)</A></TD>
+		</TR>
+		<TR>
+			<TD class=Item id="t_radius_pwd" name="t_radius_pwd">Radius Password:</TD>
+			<TD colspan=3><INPUT name="radiusSecret" type="text" class="text" id="radiusSecret" value="" size="32"></TD>
+		</TR>
+		<TR>
+			<TD class=Item  id="t_key_update_prd" name="t_key_update_prd">Group Key Update Period:</TD>
+			<TD colspan=3><INPUT name=intervalWpa type=text class=text id="intervalWpa" value="" size="9" maxlength="9">
+				<A id="t_key_update_prd_note" name="t_key_update_prd_note">(in second, minimum is 30, 0 means no update)</A></TD>
+		</TR>
+		
+		<TR id ="table_notice3" style="display:none;color:red;" name="table_notice3">
+			<TD colspan="4" id ="t_tkip_warn" name="t_tkip_warn" style="white-space:normal;padding-left:60px">We do not recommend using the TKIP encryption if this device operates in 802.11n mode due to the fact that TKIP is not supported by 802.11n specification.</TD>
+					</TR>
+				</TABLE>
+			</TD>
+		</TR>
+	<TR>
+	<TD>
+		<table border="0" cellpadding="2" cellspacing="0" class="space" id="weptable">  
+		<TR>
+			<TD colspan=3 style="padding-left:30px;font-weight:bold;font-size:14px">
+				<INPUT name="secType" id="secType" type="radio" value="1" onClick="changeInfo()">
+				&nbsp;<span id="t_wep">WEP</span></TD>
+		</TR>
+		<TR>
+			<TD class=Item><SPAN id="t_type" name="t_type">Type:</SPAN></TD>
+			<TD colspan=2>
+				<SELECT name=wepSecOpt class="list" id=wepSecOpt>
+					<OPTION value="3" id="t_auto" name="t_auto">Automatic</OPTION>
+					<OPTION value="1" id="t_open_sys" name="t_open_sys">Open System</OPTION>
+					<OPTION value="2" id="t_shared_key" name="t_shared_key">Shared Key</OPTION>
+				</SELECT>
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item  id="t_wep_key_fmt" name="t_wep_key_fmt">WEP Key Format:</TD>
+			<TD colspan=2>
+				<SELECT name=keytype class=list id=keytype onChange="setKey();">
+					<OPTION value=1 id="t_hex" name="t_hex">Hexadecimal</OPTION>
+					<OPTION value=2 id="t_ascii" name="t_ascii">ASCII</OPTION>
+				</SELECT>
+			</TD>
+		</TR>
+					<TR>
+			<TD class=Item id="t_key_sel" name="t_key_sel">Key Selected</TD>
+			<TD style="font-size:13px;font-weight:bold; width:100px;text-align:center;" id="t_wep_key" name="t_wep_key">WEP Key</TD>
+			<TD style="font-size:13px;font-weight:bold;" id="t_key_type" name="t_key_type">Key Type</TD>
+					</TR>
+					
+					<SCRIPT type="text/javascript">
+					for (var i=1; i<5; i++)
+					{
+			document.write('<TR><TD class=Item ><span id="t_key" name="t_key">Key</span> '+i+':&nbsp;<input type=radio name=keynum value='+i+'></td>');
+			document.write('<TD width="100px"><input type=text class=text name=key'+i+' maxLength=32 size=32 value="" onfocus="if(key'+i+'dis) this.blur();else this.form.keynum['+(i-1)+'].checked=true;"></td>');
+						document.write('<TD><select name=length'+i+'  id=length'+i+' onchange="setKey();">');
+			document.write('<option value=0 id="t_disable" name="t_disable">Disabled</option>');
+			document.write('<option value=5 id="t_64" name="t_64">64bit</option>');
+			document.write('<option value=13 id="t_128" name="t_128">128bit</option>');
+			document.write('<option value=16 id="t_152" name="t_152">152bit</option>');
+						document.write('</select></td>');
+			document.write('</tr>');
+					}
+					</SCRIPT>
+					
+		<TR id ="tnotice1" style="display:none;color:red;" name="tnotice1">
+			<TD colspan="3" id="t_wep_warn" name="t_wep_warn" style="white-space:normal;padding-left:60px">We do not recommend using the WEP encryption if this device operates in 802.11n mode due to the fact that WEP is not supported by 802.11n specification.</TD>
+		</TR>
+		
+		<SCRIPT type="text/javascript">
+		if(wlanPara[16] == 1)
+		{
+			document.write('<TR><TD colspan="3" style="white-space:normal;"><span style="color:#FF0000" id="t_chng">The change of wireless config will not take effect until this device reboots, please </span><A href="../userRpm/SysRebootRpm.htm" id="t_click">click here</A><span id="t_to_reboot" style="color:#FF0000"> to reboot.</span> </TD></TR>');  
+		}
+		</SCRIPT>
+		</table>
+		</TD>
+	</TR>
+	 
+	<TR>
+		<TD>
+			<TABLE  border="0" cellpadding="2" cellspacing="0" class="space">
+				<TR>
+					<TD class=blue colspan=4>&nbsp;</TD>
+				</TR>
+				<TR>
+					<TD class=Item>&nbsp;</TD>
+					<TD><INPUT name="Save" type="submit" class="buttonBig" id="Save" value="Save"></TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript">
+if(wlanPara[22] > 1)
+	disable_wep();//mutil-ssid, disable wep
+	if(wlanPara[2] == 1)
+	{
+		document.forms[0].secType[3].checked = true;
+	}
+	else if(wlanPara[2] == 3)
+	{
+		document.forms[0].secType[1].checked = true;
+	}
+	else 
+	{
+		document.forms[0].secType[wlanPara[2]].checked = true;
+	}
+	document.forms[0].wepSecOpt.value = wlanPara[3].charAt(0);
+	document.forms[0].wpaSecOpt.value = wlanPara[3].charAt(1);
+	document.forms[0].pskSecOpt.value = wlanPara[3].charAt(2);
+	document.forms[0].keytype.value = wlanPara[4];
+	// if (1 == wlanPara[2])
+	{
+		var keySelected = wlanPara[10]-1;
+		document.forms[0].keynum[keySelected].checked = true;
+	}
+	document.forms[0].key1.value = wlanList[0];
+	document.forms[0].key2.value = wlanList[2];
+	document.forms[0].key3.value = wlanList[4];
+	document.forms[0].key4.value = wlanList[6];
+	document.forms[0].length1.value = wlanList[1];
+	document.forms[0].length2.value = wlanList[3];
+	document.forms[0].length3.value = wlanList[5];
+	document.forms[0].length4.value = wlanList[7];
+	document.forms[0].radiusIp.value = wlanPara[6];
+	document.forms[0].radiusPort.value = wlanPara[7];
+	document.forms[0].radiusSecret.value = wlanPara[8];
+	document.forms[0].radiusSecret.maxLength = 64;
+	document.forms[0].pskSecret.value = wlanPara[9];
+	document.forms[0].pskSecret.maxLength = 64;
+	document.forms[0].interval.value = wlanPara[11];
+	document.forms[0].wpaCipher.value = wlanPara[13];
+	document.forms[0].pskCipher.value = wlanPara[14];
+	document.forms[0].intervalWpa.value = wlanPara[15];
+	setKey();
+
+    //added by ZQQ
+     if(wlanPara[2]==1)
+    {
+         document.getElementById("tnotice1").style.display = "";
+    }
+     if( (wlanPara[14]==2)&&(wlanPara[2]==3) )
+    {
+         document.getElementById("table_notice2").style.display = "";
+    }
+    if( (wlanPara[13]==2)&&(wlanPara[2]==2) )
+    {
+         document.getElementById("table_notice3").style.display = "";
+    }
+	//add by weizhengqin,2008-10-16
+	//if mode==11n only ,disabled wep
+	if(wlanPara[17]>=1 && wlanPara[17]<=4)
+	{
+		document.forms[0].vapIdx.value=wlanPara[17];
+		document.getElementById("vapIdx").style.display="";
+	}
+	else
+	{
+		document.forms[0].vapIdx.value=1;
+		if(sysMode == 8 && operMode == 1)
+			document.getElementById("vapIdx").style.display="";
+	}
+	if ((wlanPara[18] == 3) || (wlanPara[18] == 7))//modified by chenlifeng
+	{
+		document.forms[0].secType[3].disabled = true;//disabled wep cipher
+		if((wlanPara[2] != 2) || (wlanPara[2] != 3))
+		{
+			document.forms[0].wpaCipher.value = 3;
+			document.forms[0].pskCipher.value = 3;
+		}
+	}
+//	if(sysMode == 4)
+//	{
+//		document.getElementById("wpatable").style.display = "none";
+//	}
+	//add by yuyi
+	if(sysMode == 8)
+	{
+		if(secElemDisplayInfo[operMode*3] == 0)
+			document.getElementById("weptable").style.display = "none";		
+		if(secElemDisplayInfo[operMode*3+1] == 0)
+			document.getElementById("wpatable").style.display = "none";
+		if(secElemDisplayInfo[operMode*3+2] == 0)
+			document.getElementById("wpapsktable").style.display = "none";
+		//if(vlanEnable == 1 && operMode == 1)
+		//	document.getElementById("wpatable").style.display = "none";
+	}
+	//end add
+</SCRIPT>

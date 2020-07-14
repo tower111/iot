@@ -1,0 +1,164 @@
+
+<script language="Javascript" type="text/javascript">
+var n_field = 3;
+var max_len = 15;
+//var isSubmit = "1";
+
+function charCompareA(szname, en_limit, cn_limit)
+{
+	var c;
+	var ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+
+	if (szname.length > en_limit)
+	{
+		return false;
+	}
+	for (var i = 0; i < szname.length; i++)
+	{
+		c = szname.charAt(i);
+		if (ch.indexOf(c) == -1)
+		{
+			if(szname.length > cn_limit)
+			{				
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+function stringCheck(szname)
+{
+	if ('-' == szname.charAt(0))
+	{
+		return false;
+	}
+	return true;
+}
+
+function doClear()
+{
+	for (var i = 0; i < n_field; i ++)
+	{
+		document.forms[0].elements[i].value = "";
+	}
+}
+
+function doBack()
+{
+	location.href="GuestNetUsbCfgRpm.htm"; 
+}
+
+function doSubmit()
+{
+	for (var i = 0; i < n_field; i ++)
+	{
+		if (document.forms[0].elements[i].value != "")
+		{
+			if (!charCompareA(document.forms[0].elements[i].value, max_len, 0))
+			{
+				alert(js_wrong_character_num="You should enter 1 to 15 characters using letters, numbers or underline.");				
+				var element = document.forms[0].elements[i];
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+			if (!stringCheck(document.forms[0].elements[i].value))
+			{
+				alert(js_wrong_string="Your User name or Password can't begins with middleline.");				
+				var element = document.forms[0].elements[i];
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		} 
+		else 
+		{
+			alert(js_no_input="Field value required.");
+			var element = document.forms[0].elements[i];
+                        if(element)
+                        {
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+
+	if (document.forms[0].nas_admin_pwd.value != document.forms[0].nas_admin_confirm_pwd.value)
+	{
+		alert(js_admin_passwd_not_same="The Administrator user passwords you typed do not match. \nPlease retype the new password in both boxes.");
+		var element = document.forms[0].nas_admin_pwd;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+
+	return true;
+}
+        </script>
+    </head>
+    <body onload="LoadHelp('GuestNetUsbCfgHelpRpm.htm');setTagStr(document,'ntw_guest_nas_user_cfg'); resize(this);" onResize="resize(this);">
+        <center>
+            <form action="GuestNetUserModifyRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+                <table id="autoWidth">
+                    <tr>
+                        <td class=h1 colspan=2 id ="t_nas_user">Modify User Account of Guest Network</td>
+                    </tr>
+                    <tr>
+                        <td class=blue colspan=2></td>
+                    </tr>
+                    <tr>
+                        <td class=Item id ="t_nas_admin_name">User Name:</td>
+                        <td><input class="text" maxLength=15 size="16" name="nas_admin_name"></td>
+                    </tr>
+                    <tr>
+                        <td class=Item id ="t_nas_admin_pwd">Password:</td>
+                        <td><input class="text" type="password" size="16" name="nas_admin_pwd"></td>
+                    </tr>
+                    <tr>
+                        <td class=Item id ="t_nas_admin_confirm_pwd">Confirm Password:</td>
+                        <td><input class="text" type="password" size="16" name="nas_admin_confirm_pwd"></td>
+                    </tr>
+                    <tr>
+                        <td class=Item id ="t_nas_admin_authority">Storage Authority:</td><td>
+                        <select name="nas_admin_authority">
+                            <option value=1 selected>Read and Write</option>
+                            <option value=0>Read Only</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td class=blue colspan=2></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input class="buttonBig" type="submit" value="Save" name="Save">&nbsp;&nbsp;
+                            <input class="buttonBig" type="button" value="Back" name="back" onclick="doBack()">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </center>
+    </body>
+</html>
+<script language="JavaScript" type="text/javascript">
+document.forms[0].nas_admin_name.value = userInfo[0];
+document.forms[0].nas_admin_pwd.value = userInfo[1];
+document.forms[0].nas_admin_confirm_pwd.value = userInfo[1];
+document.forms[0].nas_admin_authority.value = userInfo[2];
+
+if (userInfo[0] == "guest")
+{	
+	document.forms[0].nas_admin_name.disabled = true;
+}
+</script>

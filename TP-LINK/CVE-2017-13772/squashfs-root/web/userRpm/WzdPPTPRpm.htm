@@ -1,0 +1,353 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+
+<SCRIPT type="text/javascript"><!--//
+function bindNext(obj)
+{
+	//var button = document.getElementById("Submit");
+	var button = document.forms[0].Next;
+	if (obj.keyCode == 13)
+	{
+		button.click();
+		obj.returnValue = false;
+	}
+}
+var sign = false;
+function doSubmit()
+{
+	var userName = document.forms[0].acc.value;
+	var pwd = document.forms[0].psw.value;
+	var cfm_pwd = document.forms[0].confirm.value;
+	if (userName.length == 0 || pwd.length == 0)
+	{
+		var bContinue = window.confirm("User Name or password is empty, are you sure to go to the next step?");
+		if (!bContinue)
+		{
+			return false;
+		}
+	}
+	if(pwd != cfm_pwd)
+	{
+		alert(js_confirm_different = "The Password is different from the Confirm Password!");
+		return false;
+	}
+	if ( document.forms[0].IpType[1].checked == true)
+	{
+		if ( !is_ipaddr( document.forms[0].sta_ip.value ) )
+		{
+			var element = document.forms[0].sta_ip;
+			if ( element )
+			{
+				element.focus();
+				element.select();			
+			}
+			return false;
+		}
+		if ( !is_maskaddr( document.forms[0].sta_mask.value ) )
+		{
+			var element = document.forms[0].sta_mask;
+			if ( element )
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		
+		if ( document.forms[0].sta_gw.value != "" )
+		{
+			if ( !is_gatewayaddr( document.forms[0].sta_gw.value ) )
+			{
+				var element = document.forms[0].sta_gw;
+				if ( element )
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+		
+		if ( document.forms[0].sta_dns.value != "" )
+		{
+			if ( !is_dnsaddr( document.forms[0].sta_dns.value ) )
+			{
+				var element = document.forms[0].sta_dns;
+				if ( element )
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+	}
+	
+	var ch = ".0123456789";
+	var c;
+	var n = 0;
+	var szarray = new Array();
+	szarray[0,0,0,0];
+	var str = document.forms[0].PPTPServerName.value;
+	var obj = document.forms[0].PPTPServerName;
+	if ( str == "" )
+	{
+		alert(js_svr_ip_emp="Please input the server's IP address or domain name!");
+		obj.focus();
+		obj.select();
+		return false;
+	}
+	if ( !is_domain( str ) )
+	 {
+		obj.focus();
+		obj.select();
+		return false;
+	 }
+	 
+     for( var i=0; i < str.length; i++ )
+     {
+        c = str.charAt( i );
+		if ( ch.indexOf( c ) == -1 )
+        {
+			n = 0;
+            break;//²»ÊÇIPµØÖ·
+        }
+        else
+        {
+            if( c == '.' )
+            {
+                n++; //µãµÄ¸öÊý
+            }
+        }
+     }
+     if( n == 3 )     //3¸öµã£¬¿ÉÄÜÊÇiP
+     {
+        for( var j = 0; j < 3; j++ )
+        {
+            var n = str.indexOf( "." );
+            szarray[j] = str.substring( 0, n );
+            remain = str.substring( n + 1 );
+            str = remain;
+        }
+        szarray[3] = remain;
+        for( var j = 0; j < 4; j++ )
+        {
+            if( szarray[j] == "" || !is_number( szarray[j], 0, 255 ) )
+            {
+               alert(js_ip_inv="The IP address is invalid, please input another one(1-254)!");
+               obj.focus();
+               obj.select();
+               return false;
+            }
+        }
+     }
+	if(sign == true)
+	{
+		return false;
+	}
+	else
+	{
+		sign = true;
+	}
+	return true;
+}
+
+/* by huangwenzhong 21Dec10  */
+function changeIpType()
+{
+	if(document.forms[0].IpType[1].checked == true) 
+	{
+		document.getElementById("sta_ip_row").style.display = "";
+		document.getElementById("sta_mask_row").style.display = "";
+		document.getElementById("sta_gateway_row").style.display = "";
+		document.getElementById("sta_dns_row").style.display = "";
+	}
+    else
+    {
+		document.getElementById("sta_ip_row").style.display = "none";
+		document.getElementById("sta_mask_row").style.display = "none";
+		document.getElementById("sta_gateway_row").style.display = "none";
+		document.getElementById("sta_dns_row").style.display = "none";
+    }
+}
+/*
+function printTipMsg()
+{
+	var tipMsg = "";
+	if (wzdPPTPInf[multiSysModeIdx] == 1)
+	{
+		tipMsg += "<B>Start&nbsp;&gt;&gt;&nbsp;Working Mode&nbsp;&gt;&gt;&nbsp;";
+	}
+	else
+	{
+		tipMsg += "<B>Start&nbsp;&gt;&gt;&nbsp;";
+	}
+	
+	if (wzdPPTPInf[sysModeIdx] == 2)//3G
+	{
+		tipMsg += "Internet Access&nbsp;&gt;&gt;&nbsp;";
+		if (wzdPPTPInf[accessTypeIdx] == 0)
+		{
+			tipMsg += "3G&nbsp;&gt;&gt;&nbsp;</B><span class=\"STYLE2\">WAN Connection Type</span><B>&nbsp;&gt;&gt;&nbsp;";
+		}
+		else if (wzdPPTPInf[accessTypeIdx] == 1)
+		{			
+			tipMsg += "";
+		}
+		else if (wzdPPTPInf[accessTypeIdx] == 2)
+		{
+			tipMsg += "</B><span class=\"STYLE2\">WAN Connection Type</span><B>&nbsp;&gt;&gt;&nbsp;3G&nbsp;&gt;&gt;&nbsp;";
+		} 
+		else if (wzdPPTPInf[accessTypeIdx] == 3)
+		{
+			tipMsg += "</B><span class=\"STYLE2\">WAN Connection Type</span><B>&nbsp;&gt;&gt;&nbsp;";
+		}
+	}
+	else
+	{
+		tipMsg += "</B><span class=\"STYLE2\">WAN Connection Type</span><B>&nbsp;&gt;&gt;&nbsp;";
+	}
+	
+	tipMsg += "Wireless&nbsp;&gt;&gt;&nbsp;Finish</B>";
+	
+	document.getElementById("tips_msg").innerHTML = tipMsg;
+}
+*/
+//--></SCRIPT>
+<style type="text/css">
+<!--
+.STYLE2 {color: #66CC00}
+-->
+</style>
+</HEAD>
+<BODY onLoad="changeIpType();setTagStr(document,'ntw_wzd_pptp');LoadHelp('WzdPPTPHelpRpm.htm'); resize(this);" onResize="resize(this);" onkeyDown="bindNext(event);">
+<CENTER>
+  <FORM action=WzdPPTPRpm.htm method=get enctype=multipart/form-data>
+    <TABLE id=autoWidth border = 0>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup - PPTP</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+		<TR>
+          <TD class=info colspan=2 STYLE1>
+			<SPAN id = "tips_msg"></SPAN>
+		  </TD>
+        </TR>
+		<BR/><BR/>
+        <TR>
+          <TD class=Item id="t_name">User Name:</TD>
+          <TD><INPUT type="text" class=textS id=acc maxlength=118 size=25 name=acc></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_pwd">Password: </TD>
+          <TD><INPUT class=textS id=psw type=password maxlength=118 size=25 name=psw></TD>
+        </TR>
+		<TR>
+          <TD class=Item id="t_psw_confirm">Confirm Password: </TD>
+          <TD><INPUT class=textS id=confirm type=password maxlength=118 size=25 name=confirm></TD>
+        </TR>
+		<TR>
+			<TD colspan=2></TD>
+		</TR>
+	
+		<TR>
+			<TD></TD>
+			<TD>
+				<INPUT name="IpType" type="radio" onClick="changeIpType()" value="0" checked>
+				<SPAN id = "t_dynamic_ip">Dynamic IP</SPAN>&nbsp; &nbsp;
+				<INPUT name="IpType" type="radio" onClick="changeIpType()" value="1">
+				<SPAN id = "t_static_ip">Static IP</SPAN>&nbsp;&nbsp;&nbsp;
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item id = "t_svr_ip_addr">Server IP Address/Name:</TD>
+			<TD><INPUT name="PPTPServerName" id="svr_id" type="text" class="textS" value="" size="32" maxlength="63" ></TD>
+		</TR>
+		<TR id="sta_ip_row">
+			<TD class=Item id = "t_ip_addr" name="t_sec_ip_addr">IP Address:</TD>
+			<TD><input name="sta_ip" id="sta_ip" type="text" class="textS" value="" size="15" maxlength="15" ></TD>
+		</TR>
+		
+		<TR id="sta_mask_row">
+			<TD class=Item id = "t_sub_mask" name="t_sub_mask">Subnet Mask:</TD>
+			<TD><input name="sta_mask" id="sta_mask" type="text" class="textS" value="" size="15" maxlength="15"></TD>
+		</TR>
+		<TR id="sta_gateway_row">
+			<TD class=Item id = "t_gateway">Gateway:</TD>
+			<TD id="sta_gw_d">
+				<INPUT name="sta_gw" id="sta_gateway" type="text" class="textS" value="" size="15" maxlength="15" >
+			</TD>
+		</TR>
+		<TR id="sta_dns_row">
+			<TD class=Item id = "t_dns">DNS:</TD>
+			<TD id="sta_dns_d">
+				<INPUT name="sta_dns" id="sta_dns" type="text" class="textS" value="" size="15" maxlength="15">
+			</TD>
+		</TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR >
+          <TD class=mbtn colspan=2><INPUT name="Return" class=buttonBig id=PrevStep type=submit value="Back">
+            &nbsp;&nbsp;
+            <INPUT name="Next" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value="Next">
+            <INPUT type=hidden name=ClientId></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript"><!--//
+document.forms[0].acc.value=wzdPPTPInf[2];
+document.forms[0].psw.value=wzdPPTPInf[3];
+document.forms[0].confirm.value=wzdPPTPInf[3];
+document.forms[0].ClientId.value=wzdPPTPInf[0];
+
+if ( wzdPPTPInf[4] == 1 )
+{
+	document.forms[0].IpType[1].checked = true;
+	document.getElementById("sta_ip_row").style.display = "";
+	document.getElementById("sta_mask_row").style.display = "";
+	document.getElementById("sta_gateway_row").style.display = "";
+	document.getElementById("sta_dns_row").style.display = "";
+}
+else
+{
+	document.forms[0].IpType[0].checked = true;
+	document.getElementById("sta_ip_row").style.display = "none";
+	document.getElementById("sta_mask_row").style.display = "none";
+	document.getElementById("sta_gateway_row").style.display = "none";
+	document.getElementById("sta_dns_row").style.display = "none";
+}
+document.getElementById("svr_id").value = wzdPPTPInf[5];
+document.getElementById("sta_ip").value = wzdPPTPInf[6];
+document.getElementById("sta_mask").value = wzdPPTPInf[7];
+document.getElementById("sta_gateway").value = wzdPPTPInf[8];
+document.getElementById("sta_dns").value = wzdPPTPInf[9];
+
+//printTipMsg();
+
+var accessTypeIdx = 2;
+var multiSysModeIdx = 0;
+var sysModeIdx = 1;
+var wlanDualBandIdx = 3;
+var showStepInfoIdx = 4;
+
+var bMultiSysMode = wzdForShowStepInfo[multiSysModeIdx];
+var sysMode = wzdForShowStepInfo[sysModeIdx];
+var accessType = wzdForShowStepInfo[accessTypeIdx];
+var bWlanDualBand = wzdForShowStepInfo[wlanDualBandIdx];
+var bShowStepInfoEnable = wzdForShowStepInfo[showStepInfoIdx];
+if (bShowStepInfoEnable)
+{
+	showTipMsg(bMultiSysMode, sysMode, accessType, bWlanDualBand, "tips_msg", wanTypeStep);
+}
+//--></SCRIPT>

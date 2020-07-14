@@ -1,0 +1,42 @@
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<HTML>
+
+<HEAD>
+    <TITLE>Archer C7</TITLE>
+    <META http-equiv=Pragma content=no-cache>
+    <META http-equiv=Expires content="wed, 26 Feb 1997 08:21:57 GMT">
+    <LINK href="../css/css_help.css" rel=stylesheet type="text/css">
+    <SCRIPT language="javascript" type="text/javascript">function Click(){return false}document.oncontextmenu=Click;</SCRIPT>
+
+    <BODY>
+        <H1 class="header">SNMP Settings Help</H1>
+        <P class="brief">Simple Network Management Protocol (SNMP) is a popular network monitoring and management protocol. </P>  		
+
+		<p class="agent"><B>SNMP Agent</B> - Choose <B>Enable</B> to open this function if you want to have remote control through SNMPv1/v2 agent with MIB-II.
+ Choose <B>Disable</B> to close this function.</p>
+		<p class="contact"><B>SysContact</B> - The textual identification of the contact person for this managed node.</p>
+		<p class="name"><B>SysName</B> - An administratively-assigned name for this managed node.</p>
+		<p class="desc"><B>SysDescription</B> - The software version information for this managed node.</p>
+		<p class="location"><B>SysLocation</B> - The physical location of this node.</p>
+		<p class="note1"><B>Note:</B> Specifying one of these values via the Device's Web-Based Utility makes the corresponding object read-only. 
+If there isn't such a config setting, then the write request will succeed (assuming suitable access control settings), 
+but the new value would be forgotten the next time the agent was restarted.</p>
+
+		
+		<p class="getcomm"><B>Get Community</B> - Enter the community name that allows Read-Only access to this device's SNMP information.  
+The community name can be considered a group password. The default setting is <B>public</B>.</p>
+		<p class="setcomm"><B>Set Community</B> - Enter the community name that allows Read/Write access to this device's SNMP information.  
+The community name can be considered a group password. The default setting is <B>private</B>.</p>
+		<p class="note2"><B>Trap Manager IP</B> - Displays the IP address of the host to receive the traps.</p>
+
+
+		<p class="save">Click the <B>Save</B> button to save your settings.</p>
+    </BODY>
+
+</HTML>
+<script language="javascript" type="text/javascript">window.parent.$.transHelp(document.URL);</script>
+             
+
+
+
+

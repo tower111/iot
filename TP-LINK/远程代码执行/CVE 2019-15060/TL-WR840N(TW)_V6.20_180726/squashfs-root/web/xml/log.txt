@@ -1,0 +1,44 @@
+0
+1970-01-01 00:07:54 [5] Httpd: Clear log start.
+1970-01-01 00:07:54 [5] Httpd: 11111111111111111111111111111aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+1970-01-01 00:07:54 [5] Httpd: Clear log1.
+1970-01-01 00:07:54 [5] Dhcpd: Clear log2.
+1970-01-01 00:07:54 [5] Httpd: Clear log3.
+1970-01-01 00:07:54 [5] Httpd: Clear log4.
+1970-01-01 00:07:54 [5] Httpd: Clear log5.
+1970-01-01 00:07:54 [5] Httpd: Clear log6.
+1970-01-01 00:07:54 [5] Httpd: Clear log7.
+1970-01-01 00:07:54 [5] Httpd: Clear log8.
+1970-01-01 00:07:54 [5] Httpd: Clear log9.
+1970-01-01 00:07:54 [5] Httpd: Clear log0.
+1970-01-01 00:07:54 [5] Httpd: Clear log1.
+1970-01-01 00:07:54 [5] Httpd: Clear log2.
+1970-01-01 00:07:54 [5] Httpd: Clear log3.
+1970-01-01 00:07:54 [5] Httpd: Clear log4.
+1970-01-01 00:07:54 [5] Httpd: Clear log5.
+1970-01-01 00:07:54 [5] Httpd: Clear log6.
+1970-01-01 00:07:54 [5] Httpd: Clear log long long long long long long long long long long long long long long long long long long long long long .
+1970-01-01 00:07:54 [5] Httpd: Clear log7.
+1970-01-01 00:07:54 [5] Httpd: Clear log8.
+1970-01-01 00:07:54 [5] Httpd: Clear log9.
+1970-01-01 00:07:54 [5] Httpd: Clear log0.
+1970-01-01 00:07:54 [5] Httpd: Clear log1.
+1970-01-01 00:07:54 [5] Httpd: Clear log2.
+1970-01-01 00:07:54 [5] Httpd: Clear log3.
+1970-01-01 00:07:54 [5] Httpd: Clear log4.
+1970-01-01 00:07:54 [5] Httpd: Clear log5.
+1970-01-01 00:07:54 [5] Httpd: Clear log6.
+1970-01-01 00:07:54 [5] Httpd: Clear log7.
+1970-01-01 00:07:54 [5] Httpd: Clear log8.
+1970-01-01 00:07:54 [5] Httpd: Clear log9.
+1970-01-01 00:07:54 [5] Httpd: Clear log0.
+1970-01-01 00:07:54 [5] Httpd: Clear log1.
+1970-01-01 00:07:54 [0] Httpd: Clear log2.
+1970-01-01 00:07:54 [1] Httpd: Clear log3.
+1970-01-01 00:07:54 [2] Httpd: Clear log4.
+1970-01-01 00:07:54 [3] Httpd: Clear log5.
+1970-01-01 00:07:54 [4] Httpd: Clear log6.
+1970-01-01 00:07:54 [5] Httpd: Clear log7.
+1970-01-01 00:07:54 [6] Dhcpd: Clear log8.
+1970-01-01 00:07:54 [7] Httpd: Clear log9.
+1970-01-01 00:07:54 [5] Httpd: Clear log end.

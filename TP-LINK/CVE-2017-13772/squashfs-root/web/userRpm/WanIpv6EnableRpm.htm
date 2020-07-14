@@ -1,0 +1,71 @@
+
+        <script type="text/javascript">
+            var wanType = new Array(
+                "id=\"t_dyma_ip\" name=\"t_dyma_ip\">Enable/Disable IPv6<", //	WAN_TYPE_DISABE = 0,
+                "id=\"t_dyma_ip\" name=\"t_dyma_ip\">DHCPv6<",              //	WAN_TYPE_DHCP = 1,
+                "id=\"t_stat_ip\" name=\"t_stat_ip\">Static IPv6<",         //	WAN_TYPE_STATIC_IP,
+                "id=\"t_pppoe\" name=\"t_pppoev6\">PPPoEv6<",               //	WAN_TYPE_PPPOEv6,
+                "id=\"t_pppoe\" name=\"t_6to4\">Tunnel 6to4<",              //	WAN_TYPE_6TO4,
+                "id=\"t_pppoe\" name=\"t_link_local\">Link local<",         //	WAN_TYPE_LINK_LOCAL,
+                ""                                                          //	WAN_TYPE_END
+            );
+            
+            function doSubmit()
+            {
+                var val = document.forms[0].ipv6Enable.checked;
+                if(!confirm( js_to_reboot = "It is need to restart the device to enable the IPv6, continue?"))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            function doChange()
+            {
+                var t = document.forms[0].wantype.selectedIndex;
+                location.href = "../userRpm/" + wantypeinfo[t * 2 + 2];
+            }
+        </script>
+    </head>
+    <body onLoad="LoadHelp('LanIpv6CfgHelpRpm.htm');setTagStr(document,'ntw_wan_ipv6_enable_cfg');resize(this);" onResize="resize(this);">
+        <form action="WanIpv6EnableRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+            <table id="autoWidth">
+                <tr>
+                    <td class="h1" colspan="2" id="t_title">Enable/Disable IPv6</td>
+                </tr>
+                <tr>
+                    <td class="blue" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="Item" id="t_wan_conn_tp">WAN Connection Type:</td>
+                    <td>
+                    <select name="wantype" onChange="doChange()">
+                        <script type="text/javascript">
+                            for(var t = 0; t < wantypeinfo[0]; t++)
+                            {
+                                document.write('<option value="' + wantypeinfo[t * 2 + 1] + '" ' + wanType[wantypeinfo[t * 2 + 1]] + '\/option>');
+                            }
+                        </script>
+                    </select>
+                </tr>
+                <tr>
+                    <td class="Item" id = "t_enable_ipv6">Enable IPv6:</td>
+                    <td><input type="checkbox" name="ipv6Enable"></td>
+                </tr>
+                <tr>
+                    <td class="blue" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input name="Save" type="submit" class="buttonBig" value="Save"></td>
+                </tr>
+            </table>
+        </form>
+        <script type="text/javascript">
+            document.forms[0].ipv6Enable.checked = wanIpv6Enable[0];
+        </script>
+    </body>
+</html>

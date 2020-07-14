@@ -19,6 +19,11 @@ apt-get install libseccomp-dev
 git clone https://github.com/zardus/preeny.git
 make
 ```
+编译其他架构
+```
+make -i CC=mips-malta-linux-gnu-gcc
+```
+
 
 
 ## 使用

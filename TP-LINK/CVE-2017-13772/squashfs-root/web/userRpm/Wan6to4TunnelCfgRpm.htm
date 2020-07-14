@@ -1,0 +1,438 @@
+
+<script type="text/javascript">
+ var wanType = new Array(
+"id=\"t_disable_ipv6\" name=\"t_disable_ip\">Enable/Disable IPv6<", //	WAN_TYPE_DISABE = 0,
+"id=\"t_slaac\" name=\"t_slaac_ip\">SLAAC<",              			//	WAN_TYPE_SLAAC = 1,
+"id=\"t_dyma_ip\" name=\"t_dyma_ip\">DHCPv6<",              		//	WAN_TYPE_DHCP = 2,
+"id=\"t_stat_ip\" name=\"t_stat_ip\">Static IPv6<",         		//	WAN_TYPE_STATIC_IP,
+"id=\"t_pppoev6\" name=\"t_pppoev6\">PPPoEv6<",              		//	WAN_TYPE_PPPOEv6,
+"id=\"t_6to4\" name=\"t_6to4\">Tunnel 6to4<",              			//	WAN_TYPE_6TO4,
+"id=\"t_lla\" name=\"t_link_local\">Link local<",         			//	WAN_TYPE_LINK_LOCAL,
+""	                                                        		//	WAN_TYPE_END
+);
+		
+	function doSubmit()
+	{
+		var dns1;
+		var dns2;
+		
+		if(document.forms[0].ipv6Enable.checked == false)
+		{
+			return true;
+		}
+
+		if(document.forms[0].manual.checked)
+		{
+			dns1 = document.getElementById("dnsserver1").value;
+			dns2 = document.getElementById("dnsserver2").value;
+			if (dns1 == "")
+			{
+				obj = document.getElementById("dnsserver1");
+				obj.focus();
+				obj.select();
+				alert(js_blank_dns = "Please input the IPv6 DNS server address.");
+				return false;
+			}
+			if(false == isGlobalIPv6Addr(dns1))
+			{
+				element = document.getElementById("dnsserver1");
+				element.focus();
+				element.select();
+				return false;
+			}
+			if(dns2 != "" && false == isGlobalIPv6Addr(dns2))
+			{
+				element = document.getElementById("dnsserver2");
+				element.focus();
+				element.select();
+				return false;
+			}
+		}
+		return doLanv6CfgSubmit();
+	}
+
+	function doChange()
+	{
+		var t = document.forms[0].wantype.selectedIndex;
+		location.href = "../userRpm/" + wantypeinfo[t * 2 + 2];
+	}
+
+	function doSet()
+	{
+		if(document.forms[0].manual.checked)
+		{
+			document.forms[0].dnsserver1.disabled = false;
+			document.forms[0].dnsserver2.disabled = false;
+		}
+		else
+		{
+			document.forms[0].dnsserver1.disabled = true;
+			document.forms[0].dnsserver2.disabled = true;
+		}
+		return true;
+	}
+
+	function doEnableIpv6Onclinck()
+	{
+		var obj = document.forms[0];
+		if(obj.enableTunnel.checked)
+		{
+			obj.mtu.disabled = false;
+			obj.manual.disabled = false;
+		}
+		else
+		{
+			obj.mtu.disabled = true;
+			obj.manual.disabled = true;
+			obj.dnsserver1.disabled = true;
+			obj.dnsserver2.disabled = true;
+		}
+	}
+
+    function doLanv6CfgSubmit()
+	{
+		var startIP;
+		var endIp;
+		var prefixIp;
+		var element;
+		var prefixLen;
+		var releaseTime;
+		
+		if(document.forms[0].ipAssignType[1].checked == true)/*DHCPS*/
+		{
+			startIp = document.getElementById("ipStart").value;
+			if (false == isValidPart(startIp))
+			{
+				alert("\"" + startIp + "\"" + " is a valid value, please fill up a valid address.");
+				element = document.getElementById("ipStart");
+				element.focus();
+				element.select();
+				return false;
+			}
+			
+			endIp = document.getElementById("ipEnd").value;   
+			if (false == isValidPart(endIp))
+			{
+				alert("\"" + endIp + "\"" + " is a valid value, please fill up a valid address.");
+				element = document.getElementById("ipEnd");
+				element.focus();
+				element.select();
+				return false;
+			}					
+			releaseTime = document.getElementById("time").value;
+			
+			if(false == is_number(releaseTime, 1, 691200))
+			{
+				alert(js_rl_tm_err = "Release time should be between 1~691200, 86400 is default.")
+				element = document.getElementById("time");
+				element.focus();
+				element.select();
+				return false;
+			}
+		}            
+		
+		if (document.forms[0].ipPrefixType[1].checked == true)
+		{
+			if (false == isValidIPv6Prefix(document.forms[0].staticPrefix.value))
+			{
+				element = document.getElementById("staticPrefix");
+				element.focus();
+				element.select();
+				return false;
+			}
+			
+			if (false == is_number(document.forms[0].staticPrefixLength.value,1,128))
+			{
+				element = document.getElementById("staticPrefixLength");
+				element.focus();
+				element.select();
+				alert(js_prefix_len_error="The prefix length is invalid, please input another one(1-128), 64 is default!");
+				return false;
+			}
+		}
+		return true;
+	}
+	function doJudgeDisableAll()
+	{
+		disableTag(document, "SELECT");
+		disableTag(document, "INPUT");
+	}
+	function doJudgeEnableAll()
+	{
+		enableTag(document, "SELECT");
+		enableTag(document, "INPUT");
+	}
+	function disableLanLabel()
+	{
+		
+		if (Tunnel6to4Info[11] == 1 && Tunnel6to4Info[9] != "::/48" && Tunnel6to4Info[9] != "")
+		{
+			document.forms[0].ipAssignType[0].disabled = true;
+			document.forms[0].ipAssignType[1].disabled = true;						
+			document.getElementById("ipStart").disabled = true;
+			document.getElementById("ipEnd").disabled = true;
+			document.getElementById("time").disabled = true;
+			document.forms[0].ipPrefixType[0].disabled = true;
+			document.forms[0].ipPrefixType[1].disabled = true;
+			document.getElementById("staticPrefix").disabled = true;
+			document.getElementById("staticPrefixLength").disabled = true;					
+		}	
+		else
+		{
+			document.forms[0].ipAssignType[0].disabled = false;
+			document.forms[0].ipAssignType[1].disabled = false;						
+			document.getElementById("ipStart").disabled = false;
+			document.getElementById("ipEnd").disabled = false;
+			document.getElementById("time").disabled = false;
+			document.forms[0].ipPrefixType[0].disabled = false;
+			document.forms[0].ipPrefixType[1].disabled = false;
+			document.getElementById("staticPrefix").disabled = false;
+			document.getElementById("staticPrefixLength").disabled = false;
+		}
+	}
+
+	function doOnClick()
+	{
+		//if ((Tunnel6to4Info[11] == 1 && document.forms[0].ipv6Enable.checked == false)
+			//|| (Tunnel6to4Info[11] == 0 && document.forms[0].ipv6Enable.checked == true))
+		//{
+			//alert(js_reboot_active="The change of Enable IPv6 config will not take effect until the Router reboot.");
+		//}
+		if (Tunnel6to4Info[9] != "" && document.forms[0].ipv6Enable.checked == false)
+		{
+			if(!confirm(js_reboot_active="The WAN connection will be dropped after IPv6 is disabled, continue?"))
+			{
+				document.forms[0].ipv6Enable.checked == false;
+				return false;
+			}
+		}
+		if(document.forms[0].ipv6Enable.checked == true)
+		{
+			doJudgeEnableAll();	
+			if(document.forms[0].manual.checked)
+			{
+			
+				document.forms[0].dnsserver1.disabled = false;
+				document.forms[0].dnsserver2.disabled = false;
+			}
+			else
+			{					
+				document.forms[0].dnsserver1.disabled = true;
+				document.forms[0].dnsserver2.disabled = true;
+			}	
+			disableLanLabel();
+		}
+		else
+		{
+			doJudgeDisableAll();
+			document.forms[0].ipv6Enable.disabled = false;
+			document.forms[0].Save.disabled = false;
+		}
+	}
+	
+	function doAssignTypeOnClick()
+	{
+		//alert(obj[0].checked);document.forms[0].dnsType[0].checked
+		if(document.forms[0].ipAssignType[0].checked == true)
+		{
+			document.getElementById("dhcps1").style.display = "none";
+			document.getElementById("dhcps2").style.display = "none";
+			document.getElementById("dhcps3").style.display = "none";
+		}
+		else
+		{
+			document.getElementById("dhcps1").style.display = "";
+			document.getElementById("dhcps2").style.display = "";
+			document.getElementById("dhcps3").style.display = "";
+		}
+	}
+	function doPrefixTypeOnClick()
+	{
+		if(document.forms[0].ipPrefixType[0].checked == true)
+		{
+			document.getElementById('static_prefix').style.display = "none";
+			document.getElementById('static_prefix_length').style.display = "none";
+		}
+		else
+		{
+			document.getElementById('static_prefix').style.display = "";
+			document.getElementById('static_prefix_length').style.display = "";
+		}
+	}
+        </script>
+    </head>
+    <body onload="LoadHelp('Wan6to4TunnelCfgHelpRpm.htm');setTagStr(document,'ntw_Wan6to4Tunnel_cfg');resize(this);" onResize="resize(this);">
+        <form action="Wan6to4TunnelCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+            <table id="autoWidth">
+                <tr>
+                    <td class="h1" colspan="2" id = "t_title">WAN Setup</td>
+                </tr>
+                <tr>
+                    <td class="blue" colspan="2"></td>
+                </tr>
+	<tr>
+	<td class="Item" id="t_enable_tunnel">
+	Enable IPv6:
+	</td>
+	<td>
+	<input name="ipv6Enable" type="checkbox" onclick="doOnClick();">
+	</td>
+	</tr>	
+                <tr>
+                    <td class="Item" id="t_wan_conn_tp">WAN Connection Type:</td>
+                    <td>
+                    <select name="wantype" onChange="doChange()">
+                        <script type="text/javascript">
+                            for(var t = 0; t < wantypeinfo[0]; t++)
+                            {
+                                document.write('<option value="' + wantypeinfo[t * 2 + 1] + '" ' + wanType[wantypeinfo[t * 2 + 1]] + '\/option>');
+                            }
+                        </script>
+                    </select>
+                </tr>
+                <tr>
+                    <td class="Item" id="t_ip_addr">Address:</td>
+                    <td><div id="ip"></div></td>
+                </tr>
+                <tr>
+                    <td class="Item" id="t_sub_mask">Subnet Mask:</td>
+                    <td><div id="mask"></div></td>
+                </tr>
+                <tr>
+                    <td class="Item" id="t_def_gw">Default Gateway:</td>
+                    <td><div id="gateway"></div></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+                <tr style="display:none">
+                    <td class="Item" id="t_enable_tunnel">Enable 6To4 Tunnel:</td>
+                    <td><input type="checkbox" name="enableTunnel" onclick="doEnableIpv6Onclinck()"></td>
+                </tr>
+                <tr>
+                    <td class="Item" id="t_tunnel_addr">Tunnel Address:</td>
+                    <td><div id="tunnelAddr"></div></td>
+                </tr>
+                <tr>
+                    <td class="Item" id="t_mtu_size">MTU Size (in bytes):</td>
+                    <td><input name="mtu" type="text" class="text" value="" size="5" maxlength="5"><span id = "t_desc">&nbsp;(The default is 1480, do not change unless necessary.)</span></td>
+                </tr>
+                <tr>
+                    <td class="Item"><input name="manual" type="checkbox" value="2" onClick="doSet();"></td>
+                    <td><span id="t_use_dns_ser">Use the following IPv6 DNS Servers</span></td>
+                </tr>
+                <tr>
+                    <td class="Item" id = "t_ipv6_pri_dns">Primary IPv6 DNS:</td>
+                    <td><input name="dnsserver1" id="dnsserver1" type="text" class="text" value="" size="40" maxlength="40"></td>
+                </tr>
+                <tr>
+                    <td class="Item" id = "t_ipv6_sec_dns">Secondary IPv6 DNS:</td>
+                    <td><input name="dnsserver2" id="dnsserver2" type="text" class="text" value="" size="40" maxlength="40"><span id = "t_opt">&nbsp;(Optional)</span></td>
+                </tr>
+                <tr>
+				<td class="h1" colspan="2" id = "t_sub_title">LAN Setup</td>
+                </tr>
+                <tr>
+                    <td class="Item" id="t_ipv6_addr_type">Address Autoconfiguration Type:</td>
+                    <td><input name = "ipAssignType" id = "t_ipAssignType" type="radio" value = "0" onclick="doAssignTypeOnClick();">&nbsp;RADVD</input>
+					<input name = "ipAssignType" id = "t_ipAssignType" type="radio" value = "1" onclick="doAssignTypeOnClick();">&nbsp;<span id="t_dhcp_server">DHCPv6 Server</span></input>
+                </tr>
+				<tr id="dhcps1">
+                    <td class="Item" id="t_ipv6_addr_start">Start IPv6 Address</td>
+                    <td>::<input type="text" name="ipStart" id="ipStart" maxlength="4" size="4">(1~FFFE)</td>
+                </tr>
+                <tr id="dhcps2">
+                    <td class="Item" id="t_ipv6_addr_end">End IPv6 Address</td>
+                    <td>::<input type="text" name="ipEnd" id="ipEnd" maxlength="4" size="4">(1~FFFE)</td>
+                </tr>
+                <tr id="dhcps3">
+                    <td class="Item" id="t_rl_tm">Release Time:</td>
+                    <td><input type="text" name="time" id="time" maxlength="6" size="6"><span id="t_rl_tm_desc">Seconds(The default is 86400, do not change unless necessary.)</span></td>
+                </tr>
+				 <tr>
+                    <td class="Item" id="t_site_prefix_type">Site Prefix Configuration Type:</td>
+                    <td><input name = "ipPrefixType" id = "t_ipAssignType" type="radio" value = "0" onclick="doPrefixTypeOnClick();">&nbsp;<span id="t_delegate">Delegated</span></input>
+					<input name = "ipPrefixType" id = "t_ipAssignType" type="radio" value = "1"onclick="doPrefixTypeOnClick();" >&nbsp;<span id="t_static">Static</span></input>
+                </tr>
+                <tr id="static_prefix">
+                    <td class="Item" id="t_static_prefix">Site Prefix:</td>
+                    <td><input type="text" name="staticPrefix" id="staticPrefix" maxlength="40" size="40"></td>
+                </tr>
+				<tr id="static_prefix_length">
+                    <td class="Item" id="t_static_prefix_length">Site Prefix Length:</td>
+                    <td><input type="text" name="staticPrefixLength" id="staticPrefixLength" maxlength="3" size="3"><span id="t_default">(The default is 64, do not change unless necessary)</span></td>
+                </tr>
+				 <tr id="">
+                    <td class="Item" id="t_lan_ip">Lan IPV6 Address:</td>
+                    <td><div id="lanIpAdress"></div></td>
+                </tr>
+                <tr>
+                    <td class="blue" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input name="Save" type="submit" class="buttonBig" value="Save"></td>
+                </tr>
+            </table>
+        </form>
+        <script type="text/javascript">
+            if(Tunnel6to4Info[3] == 0)
+            {
+                document.forms[0].dnsserver1.disabled = true;
+                document.forms[0].dnsserver2.disabled = true;
+            }
+            else
+            {
+                document.forms[0].dnsserver1.disabled = false;
+                document.forms[0].dnsserver2.disabled = false;
+            }
+            
+            document.forms[0].wantype.selectedIndex = Tunnel6to4Info[0] - 1;
+            document.forms[0].enableTunnel.checked = Tunnel6to4Info[1] == 1 ? true : false;
+            document.forms[0].mtu.value = Tunnel6to4Info[2];
+            document.forms[0].manual.checked = Tunnel6to4Info[3] == 1 ? true : false;
+            document.forms[0].dnsserver1.value = Tunnel6to4Info[4];
+            document.forms[0].dnsserver2.value = Tunnel6to4Info[5];
+            document.getElementById("ip").innerHTML = Tunnel6to4Info[6];
+            document.getElementById("mask").innerHTML = Tunnel6to4Info[7];
+            document.getElementById("gateway").innerHTML = Tunnel6to4Info[8];
+            
+            if(Tunnel6to4Info[9] != "::/48")
+            {
+                document.getElementById("tunnelAddr").innerHTML = Tunnel6to4Info[9];
+            }
+        
+            if(lanIpv6Info[0] == 0)
+            {
+                document.getElementById("dhcps1").style.display = "none";
+                document.getElementById("dhcps2").style.display = "none";
+                document.getElementById("dhcps3").style.display = "";
+            }
+            if(lanIpv6Info[0] == 1)
+            {
+                document.getElementById("dhcps1").style.display = "none";        
+				document.getElementById("dhcps2").style.display = "none";
+                document.getElementById("dhcps3").style.display = "none";
+            }
+			
+			document.forms[0].ipAssignType[lanIpv6Info[0]].checked = true;
+			document.getElementById("ipStart").value = lanIpv6Info[1];
+            document.getElementById("ipEnd").value = lanIpv6Info[2];
+			document.getElementById("time").value = lanIpv6Info[3];
+			document.forms[0].ipPrefixType[lanIpv6Info[4]].checked = true;
+			document.forms[0].staticPrefix.value = lanIpv6Info[5];
+			document.forms[0].staticPrefixLength.value = lanIpv6Info[6];
+			document.getElementById('lanIpAdress').innerHTML = lanIpv6Info[7];
+			doAssignTypeOnClick();
+			doPrefixTypeOnClick();
+			document.forms[0].ipv6Enable.checked = Tunnel6to4Info[11] == 1 ? true:false;
+			
+			if (document.forms[0].ipv6Enable.checked == false)
+			{
+				doJudgeDisableAll();
+				document.forms[0].ipv6Enable.disabled = false;
+				document.forms[0].Save.disabled = false;	
+				
+			}
+			disableLanLabel();
+</SCRIPT>

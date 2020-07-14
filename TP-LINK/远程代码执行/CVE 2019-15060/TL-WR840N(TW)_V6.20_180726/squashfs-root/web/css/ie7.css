@@ -1,0 +1,1 @@
+﻿body{min-width:1000px;min-height:expression(documentElement.clientHeight);}a{noneFocusLine:expression(this.onFocus=this.blur());}#menu{background:#999;}#help{background:#cef;}#cover{width:100%;min-width:1000px;height:expression(body.clientHeight);}

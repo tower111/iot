@@ -1,0 +1,21 @@
+<script language="javascript" type="text/javascript">function initshow(){if(1==wlanobj_2g.enable){$.id("band_2g").checked=true}if(1==wlanobj_5g.enable){$.id("band_5g").checked=true}if(0==wlanobj_2g.X_TP_Configuration_Modified||0==wlanobj_5g.X_TP_Configuration_Modified){$.addClass($.id("tip"),"nd")}}function doSave(obj){$.addLoading(obj);var wlanEn_2g,wlanEn_5g;var syncAp=0;if($.id("band_2g").checked==true){wlanEn_2g=1}else{wlanEn_2g=0}if($.id("band_5g").checked==true){wlanEn_5g=1}else{wlanEn_5g=0}if(wlanobj_2g.enable==1&&wlanEn_2g==0&&wlanobj_5g.enable==1&&wlanEn_5g==0){syncAp=1}if(wlanobj_2g.enable!=wlanEn_2g){$.act(ACT_SET,LAN_WLAN,wlanobj_2g.__stack,null,["Enable="+wlanEn_2g,"__syncApStatus="+syncAp]);if(INCLUDE_LAN_WLAN_SCHEDULE){$.act(ACT_SET,LAN_WLAN_TASK_SCHEDULE,wlanobj_2g.__stack,null,["isUsrCtrl=1"])}}if(wlanobj_5g.enable!=wlanEn_5g){$.act(ACT_SET,LAN_WLAN,wlanobj_5g.__stack,null,["Enable="+wlanEn_5g,"__syncApStatus="+syncAp]);if(INCLUDE_LAN_WLAN_SCHEDULE){$.act(ACT_SET,LAN_WLAN_TASK_SCHEDULE,wlanobj_5g.__stack,null,["isUsrCtrl=1"])}}if(INCLUDE_LAN_WLAN_MSSID){var i=1;for(i=1;i<=vapList_2g.length;i++){vapObj_2g=vapList_2g[i-1];if(wlanobj_2g.enable!=wlanEn_2g){$.act(ACT_SET,LAN_WLAN_MSSIDENTRY,vapObj_2g.__stack,null,["enable="+vapObj_2g.enable])}}i=1;for(i=1;i<=vapList_5g.length;i++){vapObj_5g=vapList_5g[i-1];if(wlanobj_5g.enable!=wlanEn_5g){$.act(ACT_SET,LAN_WLAN_MSSIDENTRY,vapObj_5g.__stack,null,["enable="+vapObj_5g.enable])}}}$.exe(function(ret){if(!ret){if(srcPage){$.loadMain(srcPage)}else{$.removeLoading(obj);$.reload()}}})};</script>
+<p class="et" id="et">Dual Band Selection</p>
+<div class="con1 M">
+<p class="ct"></p>
+<p class="bl"></p>
+<div class="con2">
+<p class="L1 T" id="t_tip">Please select or clear the check box to enable or disable a given radio band.</p>
+<p class="br"></p>
+<p>
+<input id="band_2g" type="checkbox"/><span class="T" id="t_band2g">2.4GHz</span>
+</p>
+<p class="nd" id="wl_5g">
+<input id="band_5g" type="checkbox"/><span class="T" id="t_band5g">5GHz</span>
+</p>
+</div>
+<p class="bl"></p>
+<p class="tail" id="tail">
+<input type="button" class="button L T T_save" value="Save" id="savebtn" onclick="doSave(this);" />
+</p>
+</div>
+<script language="javascript" type="text/javascript">var srcPage=undefined;if($.mainParam){if($.mainParam=="wlGuest.htm"){srcPage="wlGuest.htm";$.mainParam=undefined}else{if($.mainParam.iptv==1){iptv=$.mainParam;$.mainParam=undefined}}}if(INCLUDE_LAN_WLAN_DUALBAND){$.removeClass($.id("wl_5g"),"nd")}var basicList=$.act(ACT_GL,LAN_WLAN,null,null,["name","enable","X_TP_Configuration_Modified","X_TP_Band","__syncApStatus"]);var wlanobj_2g,wlanobj_5g;$.loadHelpFrame("DualBandSelectionHelpRpm.htm");if(INCLUDE_LAN_WLAN_MSSID){var mssidObj_2g,vapList_2g,vapObj_2g,mssidObj_5g,vapList_5g,vapObj_5g}if(INCLUDE_LAN_WLAN_SCHEDULE){var scheduleObj_2g,scheduleObj_5g}if(!$.exe()){$.each(basicList,function(){if("2.4GHz"==this.X_TP_Band){wlanobj_2g=this}if("5GHz"==this.X_TP_Band){wlanobj_5g=this}})}if(INCLUDE_LAN_WLAN_SCHEDULE){scheduleObj_2g=$.act(ACT_GET,LAN_WLAN_TASK_SCHEDULE,wlanobj_2g.__stack,null,["enable","isTimeSet","isUsrCtrl"]);scheduleObj_5g=$.act(ACT_GET,LAN_WLAN_TASK_SCHEDULE,wlanobj_5g.__stack,null,["enable","isTimeSet","isUsrCtrl"])}if(INCLUDE_LAN_WLAN_MSSID){mssidObj_2g=$.act(ACT_GET,LAN_WLAN_MULTISSID,wlanobj_2g.__stack,null,["MultiSSIDEnable"]);mssidObj_5g=$.act(ACT_GET,LAN_WLAN_MULTISSID,wlanobj_5g.__stack,null,["MultiSSIDEnable"]);vapList_2g=$.act(ACT_GS,LAN_WLAN_MSSIDENTRY,null,mssidObj_2g.__stack,["Enable","Name","SSID","SSIDAdvertisementEnable","BeaconType","WPAEncryptionModes","IEEE11iEncryptionModes"]);vapList_5g=$.act(ACT_GS,LAN_WLAN_MSSIDENTRY,null,mssidObj_5g.__stack,["Enable","Name","SSID","SSIDAdvertisementEnable","BeaconType","WPAEncryptionModes","IEEE11iEncryptionModes"]);if(!$.exe()){initshow()}else{initshow()}}else{initshow()}if(INCLUDE_RUSSIA_SPEC&&INCLUDE_MULTILANGUAGE){var langObj=$.act(ACT_GET,IGD_DEV_INFO,null,null,["X_TP_SupportedLanguages","X_TP_CurrentLanguage","X_TP_LanguageSetByUser"]);if(!$.exe()){var languageAreadySet=langObj.X_TP_CurrentLanguage||"en_US";if(languageAreadySet!="en_US"){$.id("t_band2g").innerText="2.4 ГГц";$.id("t_band5g").innerText="5 ГГц"}}};</script>

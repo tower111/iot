@@ -1,0 +1,237 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+function doSubmit()
+{
+	var type = document.getElementById("ipAssignType").value;
+	var startIP;
+	var endIp;
+	var prefixIp;
+	var element;
+	var prefixLen;
+	var releaseTime;
+	if (type == 0) /*DHCPS*/
+	{
+		startIp = document.getElementById("ipStart").value;
+		endIp = document.getElementById("ipEnd").value;
+		prefixIp = document.getElementById("ipDhcp6sPrefix").value;
+		prefixLen = document.getElementById("ipDhcp6sPrefixLength").value;
+		releaseTime = document.getElementById("time").value;
+		if (false == isValidIpAddress6(startIp))
+		{
+			alert(js_addr_error="IPv6 address is invalid");
+			element = document.getElementById("ipStart") ;
+			element.focus();
+			element.select();
+			return false;
+		}
+		
+		if (false == isValidIpAddress6(endIp))
+		{
+			alert(js_addr_error="IPv6 address is invalid");
+			element = document.getElementById("ipEnd") ;
+			element.focus();
+			element.select();
+			return false;
+		}
+		
+		if (false == isValidIPv6Prefix(prefixIp))
+		{
+			alert(js_ipv6_invalid="IPv6 address is invalid");
+			element = document.getElementById("ipDhcp6sPrefix") ;
+			element.focus();
+			element.select();
+			return false;
+		}
+		
+		if(false == is_number(prefixLen, 0, 128))
+		{
+			alert(js_ipv6_length_error="IPv6 address prefix length should be between 0~128, 64 is default.")
+			element = document.getElementById("ipDhcp6sPrefixLength") ;
+			element.focus();
+			element.select();
+			return false;
+		}
+		if(false == is_number(releaseTime, 0, 691200))
+		{
+			alert(js_release_time_error="Release time should be between 0~691200, 3600 is default.")
+			element = document.getElementById("time") ;
+			element.focus();
+			element.select();
+			return false;
+		}
+	}
+	else if (type == 1)
+	{
+		prefixIp = document.getElementById("ipRadvdPrefix").value;
+		if (false == isValidIpAddress6(prefixIp))
+		{
+			alert(js_ipv6_invalid="IPv6 address is invalid");
+			element = document.getElementById("ipRadvdPrefix") ;
+			element.focus();
+			element.select();
+			return false;
+		}
+	}
+	return true;
+}
+function doJudgeDisableAll()
+{
+	if(lanIpv6Info[9] == 0)
+	{	
+		disableTag(document, "SELECT");
+		disableTag(document, "INPUT");
+	}
+}
+function doOnchange()
+{	
+	var obj=document.getElementById('ipAssignType');
+	if(obj.value==0)
+	{
+		document.getElementById("dhcps1").style.display = "";
+		document.getElementById("dhcps2").style.display = "none";
+		document.getElementById("dhcps3").style.display = "none";
+		document.getElementById("dhcps4").style.display = "";
+		document.getElementById("dhcps5").style.display = "none";
+		document.getElementById("dhcps6").style.display = "";
+		document.getElementById("ra1").style.display = "none";
+		document.getElementById("ra2").style.display = "none";
+		//document.getElementById("ra3").style.display = "none";
+	}
+	else
+	{
+		document.getElementById("dhcps1").style.display = "none";
+		document.getElementById("dhcps2").style.display = "none";
+		document.getElementById("dhcps3").style.display = "none";
+		document.getElementById("dhcps4").style.display = "none";
+		document.getElementById("dhcps5").style.display = "none";
+		document.getElementById("dhcps6").style.display = "none";
+		document.getElementById("ra1").style.display = "";
+		document.getElementById("ra2").style.display = "";
+		//document.getElementById("ra3").style.display = "";
+	}
+}
+-->
+</script>
+</HEAD>
+<body onLoad="LoadHelp('LanIpv6CfgHelpRpm.htm');setTagStr(document,'ntw_LanIPv6');resize(this);" onResize="resize(this);">
+<form action="LanIPv6CfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+<TABLE id="autoWidth" border=0>
+	<tr>
+      <td class=h1 colspan=2 id = "t_title">LAN IPv6 Configuration</td>
+    </tr>
+	<tr>
+      <td class=blue colspan=2></td>
+    </tr>
+	<tr>
+		<td class=Item id="t_wan_type">IPv6 Address Assign Type:</td>
+		<td><select name="ipAssignType" id="ipAssignType" onchange="doOnchange();">
+		<option value=0 id="t_dhcps">DHCP6s</option>
+		<option value=1 id="t_route_advert">Route Advertisement</option>
+	</tr>
+	
+	<tr>
+	<td colspan=2></td>
+	</tr>
+	
+	<tr id="dhcps1">
+		<td class=Item id="t_dhcps" >DHCP6s Configuration</td>
+	</tr>	
+	<tr style="display:none" id="dhcps2">
+		<td class=Item id="t_start">Start IPv6 Address</td>
+		<td><input type="text" name="ipStart" id="ipStart" maxlength=40 size=40></td>
+	</tr>
+	<tr style="display:none" id="dhcps3">
+		<td class=Item id="t_end">End IPv6 Address</td>
+		<td><input type="text" name="ipEnd" id="ipEnd" maxlength=40 size=40></td>
+	</tr>
+	<tr id="dhcps4">
+		<td class=Item id="t_prefix">IPv6 Address Prefix</td>
+		<td><input type="text" name="ipDhcp6sPrefix" id="ipDhcp6sPrefix" maxlength=40 size=40></td>
+	</tr>
+	<tr style="display:none" id="dhcps5">
+		<td class=Item id="t_prefix_length">IPv6 Address Prefix Length</td>
+		<td><input type="text" name="ipDhcp6sPrefixLength" id="ipDhcp6sPrefixLength" maxlength=3 size=3></td>
+	</tr>
+	<tr id="dhcps6">
+		<td class=Item id="t_rl_tm">Release Time</td>
+		<td><input type="text" name="time" id="time" maxlength=6 size=6></td>
+	</tr>
+	
+	
+	
+	<tr id="ra1">
+		<td class=Item id="t_ra">Route Advertisement</td>
+	</tr>	
+
+	<tr id="ra2">
+		<td class=Item id="t_prefix2">IPv6 Address Prefix:</td>
+		<td><input type="text" name="ipRadvdPrefix" id="ipRadvdPrefix" maxlength=40 size=40><span>/64</span></td>
+	</tr>
+	<tr>
+	<td class=Item id="t_lan_ip">LAN IPv6 Address:</td>
+	<td><div id="lanip"></div></td>
+	</tr>
+	
+	<tr id="message">
+	<td class=Item id="t_message">Message</td>
+	<td><div id="msg"></div></td>
+	</tr>
+	
+	<tr>
+	<td class=blue colspan=2></td>
+	</tr>
+	
+	<tr>
+	<td></td>
+	<td><input name="Save" type="submit" class="buttonBig" value="Save"></td>
+	</tr>
+</TABLE>
+<script type="text/javascript">
+	doJudgeDisableAll();
+	if(lanIpv6Info[0]==0)
+	{
+		document.getElementById("dhcps1").style.display = "";
+		document.getElementById("dhcps2").style.display = "none";
+		document.getElementById("dhcps3").style.display = "none";
+		document.getElementById("dhcps4").style.display = "";
+		document.getElementById("dhcps5").style.display = "none";
+		document.getElementById("dhcps6").style.display = "";
+		document.getElementById("ra1").style.display = "none";
+		document.getElementById("ra2").style.display = "none";
+		//document.getElementById("ra3").style.display = "none";		
+	}
+	if(lanIpv6Info[0]==1)
+	{
+		document.getElementById("dhcps1").style.display = "none";
+		document.getElementById("dhcps2").style.display = "none";
+		document.getElementById("dhcps3").style.display = "none";
+		document.getElementById("dhcps4").style.display = "none";
+		document.getElementById("dhcps5").style.display = "none";
+		document.getElementById("dhcps6").style.display = "none";
+		document.getElementById("ra1").style.display = "";
+		document.getElementById("ra2").style.display = "";
+		//document.getElementById("ra3").style.display = "";
+		
+	}
+	document.getElementById("ipAssignType").value=lanIpv6Info[0];
+	document.getElementById("ipStart").value=lanIpv6Info[1];
+	document.getElementById("ipEnd").value=lanIpv6Info[2];
+	document.getElementById("ipDhcp6sPrefix").value=lanIpv6Info[3];
+	document.getElementById("ipDhcp6sPrefixLength").value=lanIpv6Info[4];		
+	document.getElementById("time").value=lanIpv6Info[5];
+	document.getElementById("ipRadvdPrefix").value=lanIpv6Info[6];
+	//document.getElementById("ipRadvdPrefixLength").value=lanIpv6Info[7];
+	document.getElementById("lanip").innerHTML=lanIpv6Info[8];
+	if(lanIpv6Info[9] == 0)
+	{
+		document.getElementById("msg").innerHTML="The WAN IPv6 type is 6to4 tunnel, so the LAN is configed automaticlly by the router.";
+	}
+	else
+	{
+		document.getElementById("message").style.display = "none";
+	}
+</script>
+</form>
+</body>

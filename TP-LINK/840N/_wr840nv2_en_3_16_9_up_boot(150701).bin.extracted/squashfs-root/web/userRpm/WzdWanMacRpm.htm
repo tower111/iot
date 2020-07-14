@@ -1,0 +1,218 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+function radioClick(isNeedClone)
+{
+	if (isNeedClone == 0)
+	{
+		document.forms[0].CloneMAC.disabled = true;
+	}
+	else
+	{
+		document.forms[0].CloneMAC.disabled = false;
+	}
+}
+function doRestore()
+{
+	document.forms[0].wan_mac.value =  wzdMacClone[3];
+}
+function doClone()
+{
+    document.forms[0].wan_mac.value =  wzdMacClone[2];
+}
+
+function doReSubmit()
+{
+	if(!is_macaddr(document.forms[0].wan_mac.value))
+	{
+		var element =document.forms[0].wan_mac;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	return true;
+}
+
+var sign = false;
+function doSubmit()
+{
+	if(!is_macaddr(document.forms[0].wan_mac.value))
+	{
+		var element =document.forms[0].wan_mac;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(sign == true)
+	{
+		return false;
+	}
+	else
+	{
+		sign = true;
+	}
+	return true;
+}
+/*
+function printTipMsg()
+{
+	var tipMsg = "";
+	if (wzdMacClone[multiSysModeIdx] == 1)
+	{
+		tipMsg += "<B><span id=\"t_start\" name=\"t_start\">Start</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_workingmode\" name=\"t_workingmode\">Working Mode</span>&nbsp;&gt;&gt;&nbsp;";
+	}
+	else
+	{
+		tipMsg += "<B><span id=\"t_start\" name=\"t_start\">Start</span>&nbsp;&gt;&gt;&nbsp;";
+	}
+	
+	if (wzdMacClone[sysModeIdx] == 2)//3G
+	{
+		tipMsg += "<span id=\"t_interacce\" name=\"t_interacce\">Internet Access</span>&nbsp;&gt;&gt;&nbsp;";
+		if (wzdMacClone[accessTypeIdx] == 0)
+		{
+			tipMsg += "<span id=\"t_3g\" name=\"t_3g\">3G</span>&nbsp;&gt;&gt;&nbsp;</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;";
+		}
+		else if (wzdMacClone[accessTypeIdx] == 1)
+		{		
+			tipMsg += "";
+		}
+		else if (wzdMacClone[accessTypeIdx] == 2)
+		{
+			tipMsg += "</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt; <span id=\"t_3g\" name=\"t_3g\">3G</span> &gt;&gt;&nbsp;";
+		} 
+		else if (wzdMacClone[accessTypeIdx] == 3)
+		{
+			tipMsg += "</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;";
+		}
+	}
+	else
+	{
+		tipMsg += "</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;";
+	}
+	
+	tipMsg += "<span id=\"t_wireless\" name=\"t_wireless\">Wireless</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	
+	document.getElementById("tips_msg").innerHTML = tipMsg;
+}
+*/
+//-->
+</SCRIPT>
+<style type="text/css">
+<!--
+.STYLE2 {color: #66CC00}
+-->
+</style>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_wanmac');LoadHelp('WzdWanMacHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+	<FORM action="WzdWanMacRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doReSubmit();">
+	<TABLE id="autoWidth" border = "0">
+	</TBODY>
+		<TR>
+			<TD class="h1" colspan = "2" id="t_title">Quick Setup - MAC Clone</TD>
+		</TR>
+		<TR>
+			<TD class="blue" colspan = "2"></TD>
+        </TR>
+		<TR>
+			<TD class=info colspan=2 STYLE1>
+			<SPAN id = "tips_msg"></SPAN>
+			</TD>
+		</TR>
+        <TR>
+			<TD class="info" colspan="2" id="t_mac_info1" style="line-height:150%;white-space:normal;" name="t_mac_info1">
+			MAC(Media Access Control) address is a unique identifier that identifies your computer or device in the network.
+			Some of the ISPs may register the MAC address of your computer which firstly connects to their services, and would
+			not allow the Internet connection for any new computer or router.TP-LINK router can help you to "clone" or replicate
+			the registered MAC address of your first computer.</TD>
+		</TR>
+		</br>
+		<TR>
+			<TD>&nbsp;</TD>
+		</TR>
+		<TR>
+			<TD  class="info" colspan="2" id="t_mac_info2" style="line-height:150%;white-space:normal;" name="t_mac_info2">
+			In most of the cases, there is no need to clone the MAC address. But if you can't get the Internet connection after
+			Quick Setup, please run it again and clone the MAC address for a try. </TD>
+		</TR>
+		<TR>
+			<TD>&nbsp;</TD>
+		</TR>
+	
+		<TR>
+			<TD class="info" colspan="2">
+				<INPUT name="is_need_clone" type="radio" value="1" onClick="doRestore()">&nbsp;
+				<span id="t_not_need_clone">No, I do NOT need to clone MAC address.</span>
+			</TD>
+		</TR>
+		<TR>
+			<TD class="info" colspan="2">
+				<INPUT name="is_need_clone" type="radio" value="0" onClick="doClone()">&nbsp;
+				<span id="t_need_clone">YES, I need to clone MAC address.</span>
+			</TD>
+		</TR>
+		<TR style="display:none">
+			<TD class=Item id="t_wan_mac_addr">WAN MAC Address:</TD>
+			<TD><input type="text" class="text" name ="wan_mac" size="18" maxlength="17">&nbsp;
+			<INPUT name="RestoreMAC" id="restore" type="button" class="buttonL" onClick="doRestore();" value="Restore Factory MAC"></TD>
+		</TR>
+		<TR style="display:none">
+			<TD class=Item id="t_pc_mac_addr">Your PC's MAC Address:</TD>
+			<TD><input type="text" class="text" name ="pc_mac" size="18" maxlength="17">&nbsp;
+			<INPUT name="CloneMAC" id="clone" type="button" class="buttonL" onClick="doClone();" value="Clone MAC Address"></TD>
+		</TR>		
+		<TR>
+          <TD class=info colspan=2><span style="color:#A52A2A" id="t_item">Note: please make sure your current computer is the one initially connected to your modem or ISP's device.</span></TD>
+        </TR>		
+		<TR>
+			<TD class="blue" colspan = "2"></TD>
+		</TR>
+		<TR>
+			<TD class=mbtn colspan=2><INPUT name="Return" class=buttonBig id=PrevStep type=submit value="Back">
+			&nbsp;&nbsp;
+			<INPUT name="Next" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value="Next">
+			<INPUT type=hidden name=ClientId></TD>
+		</TR>
+	</TBODY>
+	</TABLE>
+	</FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+
+<SCRIPT type="text/javascript">
+document.forms[0].wan_mac.value = wzdMacClone[1];
+document.forms[0].pc_mac.value = wzdMacClone[2];
+document.forms[0].pc_mac.disabled = true;
+document.forms[0].CloneMAC.disabled = true;
+document.forms[0].ClientId.value=wzdMacClone[0];
+document.forms[0].is_need_clone[0].checked = true;
+doRestore();
+//printTipMsg();
+
+var accessTypeIdx = 2;
+var multiSysModeIdx = 0;
+var sysModeIdx = 1;
+var wlanDualBandIdx = 3;
+var showStepInfoIdx = 4
+
+var bMultiSysMode = wzdForShowStepInfo[multiSysModeIdx];
+var sysMode = wzdForShowStepInfo[sysModeIdx];
+var accessType = wzdForShowStepInfo[accessTypeIdx];
+var bWlanDualBand = wzdForShowStepInfo[wlanDualBandIdx];
+var bShowStepInfoEnable = wzdForShowStepInfo[showStepInfoIdx];
+if (bShowStepInfoEnable)
+{
+	showTipMsg(bMultiSysMode, sysMode, accessType, bWlanDualBand, "tips_msg", wanTypeStep);
+}
+</SCRIPT>

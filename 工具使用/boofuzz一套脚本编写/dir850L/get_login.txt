@@ -1,0 +1,69 @@
+GET /authentication.cgi?captcha=&dummy=1589539220517 HTTP/1.1
+Host: 192.168.0.1
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0
+Accept: */*
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded
+Connection: keep-alive
+Referer: http://192.168.0.1/
+Cookie: uid=ZRqxrAf7EE
+
+HTTP/1.1 200 OK
+Server: Linux, HTTP/1.1, DIR-850L Ver 1.05
+Date: Sat, 01 Jan 2000 02:40:18 GMT
+Transfer-Encoding: chunked
+Content-Type: application/x-www-form-urlencoded
+
+6a
+{"status": "ok", "error": null, "uid": "hdC4fr9saX", "challenge": "35428997-cd5e-4d96-8f9c-804be70c5efb"}
+
+0
+
+POST /authentication.cgi HTTP/1.1
+Host: 192.168.0.1
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0
+Accept: */*
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 50
+Origin: http://192.168.0.1
+Connection: keep-alive
+Referer: http://192.168.0.1/
+Cookie: uid=hdC4fr9saX
+
+id=Admin&password=8732F41F27D9DE550BE37995BDADF1F9HTTP/1.1 200 OK
+Server: Linux, HTTP/1.1, DIR-850L Ver 1.05
+Date: Sat, 01 Jan 2000 02:40:18 GMT
+Transfer-Encoding: chunked
+Content-Type: application/x-www-form-urlencoded
+
+44
+{"status": "ok", "error": null, "id": "Admin", "key": "hdC4fr9saX"}
+
+0
+
+GET /pic/topmenumodel.gif HTTP/1.1
+Host: 192.168.0.1
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0
+Accept: image/webp,*/*
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://192.168.0.1/css/general.css
+Cookie: uid=hdC4fr9saX
+
+HTTP/1.1 200 OK
+Server: Linux, HTTP/1.1, DIR-850L Ver 1.05
+Date: Sat, 01 Jan 2000 02:40:18 GMT
+Content-Type: image/gif
+Content-Length: 1284
+Last-Modified: Sat, 01 Jan 2000 02:40:18 GMT
+
+GIF89a......................}}}III<<<...cccVVV......EIIfff.....................ILLorry||pppMQQ......UXX.........X\\...............}..SSS............]``twwADD......vvv.........NRR......[__...ZZZJMM000...@CC................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................,............}..H......*T.......,x...C
+*|x.`.... C.......(...x.........p...8.........K...Q...@s*]
+..............%0`...R.`...h.....CX......p}b.H.....6..../...M.p......>.`.....:.KF..q...\........	...."...4.|`.3...ah.H.G..G1.~.;4...5...........}.....6$.ha...~.KfQ......?...:1v.......b..C?..A.|......j.CV.....~a...GfyP.D(......G`X.Y....!....z5!X.XvQ
+..'.j.2.!T...Q..,P.E.y.bW+>%.x?...
+1YU.._.....Y..Q.....K.........\AY..'.....l........9q........?@G..8.y.T..Y.w..I.[v...sa.......hBl..&.r.........{Z....N
+R@.;

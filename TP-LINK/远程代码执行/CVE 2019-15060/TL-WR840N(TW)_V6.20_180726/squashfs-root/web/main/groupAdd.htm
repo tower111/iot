@@ -1,0 +1,36 @@
+﻿<script language="javascript" type="text/javascript">function checkRoutedWAN(wanOpt,flag){var index=0;if(flag==1){for(index=0;index<wanIpConns.length;index++){if(wanOpt.id==wanIpConns[index].name){if(routedWANExsit==true&&wanIpConns[index].connectionType=="IP_Routed"){alert("The group already has a routed WAN.");return false}else{if(routedWANExsit==false&&wanIpConns[index].connectionType=="IP_Routed"){routedWANExsit=true;return true}else{return true}}}}for(index=0;index<wanPppConns.length;index++){if(wanOpt.id==wanPppConns[index].name){if(routedWANExsit==true&&wanPppConns[index].connectionType=="IP_Routed"){alert("The group already has a routed WAN.");return false}else{if(routedWANExsit==false&&wanPppConns[index].connectionType=="IP_Routed"){routedWANExsit=true;return true}}}}}else{routedWANExsit=false;return true}}function appendTo(list_opt,list_des,flag){var x;var selectedOption;while(list_opt.selectedIndex!=-1){x=list_opt.selectedIndex;selectedOption=list_opt.options[x];if(flag!=0&&INCLUDE_ROUTE_BINDING){if(false==checkRoutedWAN(selectedOption,flag)){return false}}list_des.appendChild(selectedOption);selectedOption.selected=false}}function addPort(){if(lan_list.selectedIndex!=-1){appendTo(lan_list,grouped_list,0)}else{if(wan_list.selectedIndex!=-1){appendTo(wan_list,grouped_list,1)}else{$.alert(ERR_INTERFACE_INVAD)}}}function deletePort(){if(grouped_list.selectedIndex!=-1){if(grouped_list.options[grouped_list.selectedIndex].value=="lan"){appendTo(grouped_list,lan_list,0)}else{if(grouped_list.options[grouped_list.selectedIndex].value=="wan"){appendTo(grouped_list,wan_list,2)}}}else{$.alert(ERR_INTERFACE_INVAD)}}function doSave(){var groupname=$.id("groupname").value;var groupIsolation=$.id("enableGroupIsolation").checked?1:0;if(!$.isname($.id("groupname").value)){$.alert(ERR_WAN_INTER_GROUPNAME_INVALID);var element=$.id("groupname");if(element){element.focus();element.select()}return false}for(var i=0;i<brlist.length;i++){if(groupname==brlist[i].bridgeName){$.alert(ERR_GROUP_NAME_INVAD);return}}var l=$.id("grouped_list").length;if(l>0&&groupname){$.addLoading($.id("saveBtn"));$.act(ACT_ADD,L2_BRIDGING_ENTRY,null,null,["bridgeName="+groupname,"X_TP_EnableBridgeIsolation="+groupIsolation]);$.exe(function(ret){if(ret){return}for(var i=0;i<l;i++){for(var j=0;j<filterlist.length;j++){if(filterlist[j].X_TP_IfAliasName==$.id("grouped_list").options[i].text){$.act(ACT_SET,L2_BRIDGING_FILTER,filterlist[j].__stack,null,["__filterBridgeRefName="+groupname])}}}$.exe(function(ret){if(!ret){$.loadMain("group.htm")}})})}else{$.alert(ERR_GROUP_INVAD)}}function doBack(){$.loadMain("group.htm")};</script>
+
+<p class="et T" id="et">Add New Group</p>
+<div class="con1 M">
+<p class="ct"></p>
+<p class="bl"></p>
+<div class="con2">
+<p id="gwWarn" class="nd"><i class="T" id="t_note1">Note: You can not move default gateway </i><i id="gwName"></i><i class="T" id="t_note2"> to another group.</i></p>
+<p class="center"><b class="T" id="t_name">Group Name:</b> <input type="text" class="text" id="groupname" size="15" maxlength="15" /></p>
+<p class="br"></p>
+<table class="tc" border="0">
+<tr>
+<td class="T" id="t_lan">Available LAN</td>
+<td rowspan="4"><p><input id="add_arrow" type="button" class="button S" value="->" onclick="addPort();" /></p><p><input id="delete_arrow" class="button S" type="button" value="<-" onclick="deletePort()" /></p></td>
+<td class="T" id="t_added">Added Interface</td>
+</tr>
+<tr>
+<td><select id="lan_list" multiple size="8" style="width:100px"></select></td>
+<td rowspan="3"><select id="grouped_list" multiple size="18" style="width:100px"></select></td>
+</tr>
+<tr>
+<td class="T" id="t_wan">Available WAN</td>
+</tr>
+<tr>
+<td><select id="wan_list" multiple size="8" style="width:100px"></select></td>
+</tr>
+</table>
+</div>
+<p class="br"></p>
+<p class="center" ><input type="checkbox" id="enableGroupIsolation"/><span class="T" id="t_en">Enable Group Isolation.</span></p>
+<p class="bl"></p>
+<p class="tail" id="tail">
+<input type="button" class="button L T T_save" id="saveBtn" value="Save" onclick ="doSave();" />
+<input type="button" class="button L T T_back" value="Back" onclick="doBack();"/></p>
+</div>
+<script language="javascript" type="text/javascript">$.loadHelp("group_h.htm");var routedWANExsit=false;var fromSel=[];var fromSelIndex=0;var lan_list=$.id("lan_list");var wan_list=$.id("wan_list");var grouped_list=$.id("grouped_list");var brlist=$.act(ACT_GL,L2_BRIDGING_ENTRY,null,null,["bridgeName"]);var filterlist=$.act(ACT_GL,L2_BRIDGING_FILTER,null,null,["filterKey","X_TP_IfAliasName","__filterBridgeRefName","filterEnable"]);var availableIf=$.act(ACT_GL,L2_BRIDGING_INTF,null,null,["availableInterfaceKey","interfaceType"]);var wanIpConns=$.act(ACT_GL,WAN_IP_CONN,null,null,["enable","connectionType","name"]);var wanPppConns=$.act(ACT_GL,WAN_PPP_CONN,null,null,["enable","connectionType","name","transportType"]);var l3ForwardingName=$.act(ACT_GET,L3_FORWARDING,null,null,["__ifAliasName"]);if(!$.exe()){var lan_opt;var wan_opt;$.each(filterlist,function(arg,index){if(this.filterEnable==false){return}var notShow=0;if(INCLUDE_ROUTE_BINDING){for(var index=0;index<wanIpConns.length;index++){if(wanIpConns[index].name==this.X_TP_IfAliasName&&wanIpConns[index].enable==0){notShow=1;break}}for(var index=0;index<wanPppConns.length;index++){if(wanPppConns[index].name==this.X_TP_IfAliasName&&(wanPppConns[index].enable==0||wanPppConns[index].transportType=="PPP3G")){notShow=1;break}}}else{for(var index=0;index<wanIpConns.length;index++){if(wanIpConns[index].name==this.X_TP_IfAliasName&&(wanIpConns[index].connectionType=="IP_Routed"||(wanIpConns[index].connectionType=="IP_Bridged"&&wanIpConns[index].enable==0))){notShow=1;break}}}if(notShow==1){return}for(var i=0;i<availableIf.length;i++){if(this.filterKey==availableIf[i].availableInterfaceKey){if((this.__filterBridgeRefName=="Default")&&(availableIf[i].interfaceType=="LANInterface")){lan_opt=$.c("option");lan_opt.value="lan";lan_opt.text=this.X_TP_IfAliasName;lan_opt.id=this.X_TP_IfAliasName;try{lan_list.add(lan_opt,null)}catch(e){lan_list.add(lan_opt)}}if((this.__filterBridgeRefName=="Default")&&(availableIf[i].interfaceType=="WANInterface")){if(this.X_TP_IfAliasName==l3ForwardingName.__ifAliasName){$.h($.id("gwName"),"("+l3ForwardingName.__ifAliasName+")");$.removeClass($.id("gwWarn"),"nd");continue}wan_opt=$.c("option");wan_opt.value="wan";wan_opt.text=this.X_TP_IfAliasName;wan_opt.id=this.X_TP_IfAliasName;try{wan_list.add(wan_opt,null)}catch(e){wan_list.add(wan_opt)}}}}})};</script>

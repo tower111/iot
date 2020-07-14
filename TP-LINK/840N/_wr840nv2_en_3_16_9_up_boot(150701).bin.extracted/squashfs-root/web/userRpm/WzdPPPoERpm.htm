@@ -1,0 +1,244 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+
+<SCRIPT type="text/javascript"><!--//
+var sign = false;
+function doSubmit()
+{
+	var acc =document.forms[0].acc;
+	var element_pwd = document.forms[0].psw;
+	var confirm = document.forms[0].confirm;
+	if (acc.value.length == 0 || element_pwd.value.length == 0)
+	{
+		var bContinue = window.confirm("User Name or password is empty, are you sure to go to the next step?");
+		if (!bContinue)
+		{
+			return false;
+		}
+	}
+	element = document.forms[0].psw;
+
+	if (confirm.value != element.value)
+	{
+		alert(js_confirm_different = "The Password is different from the Confirm Password!");
+		return false;
+	}
+	
+	/* by huangwenzhong 21Dec10  */
+	/*if static ip set in secondary connection*/
+	if ( document.forms[0].SecType[2].checked == true)
+	{
+		if ( !is_ipaddr( document.forms[0].sta_ip.value ) )
+		{
+			var element = document.forms[0].sta_ip;
+			if ( element )
+			{
+				element.focus();
+				element.select();			
+			}
+			return false;
+		}
+		if ( !is_maskaddr( document.forms[0].sta_mask.value ) )
+		{
+			var element = document.forms[0].sta_mask;
+			if ( element )
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+	if(sign == true)
+	{
+		return false;
+	}
+	else
+	{
+		sign = true;
+	}
+	return true;
+}
+
+/* by huangwenzhong 21Dec10  */
+function changeIpType()
+{
+	if(document.forms[0].SecType[2].checked==true) 
+	{
+		document.getElementById("sta_ip_row").style.display = "";
+		document.getElementById("sta_mask_row").style.display = "";
+	}
+    else
+    {
+		document.getElementById("sta_ip_row").style.display = "none";
+		document.getElementById("sta_mask_row").style.display = "none";
+    }
+}
+/*
+function printTipMsg()
+{
+	var tipMsg = "";
+	if (wzdPPPoEInf[multiSysModeIdx] == 1)
+	{
+		tipMsg += "<B><span id=\"t_start\" name=\"t_start\">Start</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_workingmode\" name=\"t_workingmode\">Working Mode</span>&nbsp;&gt;&gt;&nbsp;";
+	}
+	else
+	{
+		tipMsg += "<B><span id=\"t_start\" name=\"t_start\">Start</span>&nbsp;&gt;&gt;&nbsp;";
+	}
+	
+	if (wzdPPPoEInf[sysModeIdx] == 2)//3G
+	{
+		tipMsg += "<span id=\"t_interacce\" name=\"t_interacce\">Internet Access</span>&nbsp;&gt;&gt;&nbsp;";
+		if (wzdPPPoEInf[accessTypeIdx] == 0)
+		{
+			tipMsg += "<span id=\"t_3g\" name=\"t_3g\">3G</span>&nbsp;&gt;&gt;&nbsp;</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;";
+		}
+		else if (wzdPPPoEInf[accessTypeIdx] == 1)
+		{			
+			tipMsg += "";
+		}
+		else if (wzdPPPoEInf[accessTypeIdx] == 2)
+		{
+			tipMsg += "</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_3g\" name=\"t_3g\">3G</span>&nbsp;&gt;&gt;&nbsp;";
+		} 
+		else if (wzdPPPoEInf[accessTypeIdx] == 3)
+		{
+			tipMsg += "</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;";
+		}
+	}
+	else
+	{
+		tipMsg += "</B><span class=\"STYLE2\"><span id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span></span><B>&nbsp;&gt;&gt;&nbsp;";
+	}
+	
+	tipMsg += "<span id=\"t_wireless\" name=\"t_wireless\">Wireless</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	
+	document.getElementById("tips_msg").innerHTML = tipMsg;
+}
+*/
+//--></SCRIPT>
+<style type="text/css">
+<!--
+.STYLE2 {color: #66CC00}
+-->
+</style>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_pppoe');LoadHelp('WzdPPPoEHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action=WzdPPPoERpm.htm method=get enctype=multipart/form-data>
+    <TABLE id=autoWidth border = 0>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup - PPPoE</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+		<TR>
+          <TD class=info colspan=2 STYLE1>
+			<SPAN id = "tips_msg"></SPAN>
+		  </TD>
+        </TR>
+		<br/><br/>	
+        <TR>
+          <TD class=Item id="t_name">User Name:</TD>
+          <TD><INPUT type="text" class=textS id=acc maxlength=118 size=25 name=acc></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_pwd">Password: </TD>
+          <TD><INPUT class=textS id=psw type=password maxlength=118 size=25 name=psw></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_psw_confirm">Confirm Password: </TD>
+          <TD><INPUT class=textS id=confirm type=password maxlength=118 size=25 name=confirm></TD>
+        </TR>
+
+		<TR>
+			<TD colspan=2></TD>
+		</TR>
+	
+		<TR>
+			<TD class=Item id="t_sec_conn">Secondary Connection:</TD>
+			<TD><INPUT name="SecType" type="radio" onClick="changeIpType()" value="0" checked>
+				<SPAN id = "t_sec_disable">Disabled</SPAN>&nbsp; &nbsp;
+				<INPUT name="SecType" type="radio" onClick="changeIpType()" value="1">
+				<SPAN id = "t_sec_dynamic">Dynamic IP</SPAN>&nbsp; &nbsp;
+				<INPUT name="SecType" type="radio" onClick="changeIpType()" value="2">
+				<SPAN id = "t_sec_static">Static IP</SPAN>&nbsp;&nbsp;&nbsp;
+				<SPAN id = "t_sec_descript">(For Dual Access/Russia PPPoE)</SPAN>
+			</TD>
+		</TR>
+		<TR id="sta_ip_row">
+			<TD class=Item id = "t_sec_ip_addr" name="t_sec_ip_addr">IP Address:</TD>
+			<TD><input name="sta_ip" id="sta_ip" type="text" class="textS" value="" size="15" maxlength="15"></TD>
+		</TR>
+		
+		<TR id="sta_mask_row">
+			<TD class=Item id = "t_sub_mask" name="t_sub_mask">Subnet Mask:</TD>
+			<TD><input name="sta_mask" id="sta_mask" type="text" class="textS" value="" size="15" maxlength="15"></TD>
+		</TR>
+		
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR >
+          <TD class=mbtn colspan=2><INPUT name="Return" class=buttonBig id=PrevStep type=submit value="Back">
+            &nbsp;&nbsp;
+            <INPUT name="Next" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value="Next">
+            <INPUT type=hidden name=ClientId></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript"><!--//
+document.forms[0].acc.value=wzdPPPoEInf[2];
+document.forms[0].psw.value=wzdPPPoEInf[3];
+document.forms[0].confirm.value=wzdPPPoEInf[3];
+document.forms[0].ClientId.value=wzdPPPoEInf[0];
+
+if ( wzdPPPoEInf[7] == 1 )
+{
+	document.forms[0].SecType[1].checked = true;
+	document.getElementById("sta_ip_row").style.display = "none";
+	document.getElementById("sta_mask_row").style.display = "none";
+}
+else if ( wzdPPPoEInf[7] == 2 )
+{
+	document.forms[0].SecType[2].checked = true;
+	document.getElementById("sta_ip_row").style.display = "";
+	document.getElementById("sta_mask_row").style.display = "";
+}
+else
+{
+	document.forms[0].SecType[0].checked = true;
+	document.getElementById("sta_ip_row").style.display = "none";
+	document.getElementById("sta_mask_row").style.display = "none";
+}
+document.getElementById("sta_ip").value = wzdPPPoEInf[8];
+document.getElementById("sta_mask").value = wzdPPPoEInf[9];
+
+//printTipMsg();
+
+var accessTypeIdx = 2;
+var multiSysModeIdx = 0;
+var sysModeIdx = 1;
+var wlanDualBandIdx = 3;
+var showStepInfoIdx = 4;
+
+var bMultiSysMode = wzdForShowStepInfo[multiSysModeIdx];
+var sysMode = wzdForShowStepInfo[sysModeIdx];
+var accessType = wzdForShowStepInfo[accessTypeIdx];
+var bWlanDualBand = wzdForShowStepInfo[wlanDualBandIdx];
+var bShowStepInfoEnable = wzdForShowStepInfo[showStepInfoIdx];
+if (bShowStepInfoEnable)
+{
+	showTipMsg(bMultiSysMode, sysMode, accessType, bWlanDualBand, "tips_msg", wanTypeStep);
+}
+//--></SCRIPT>

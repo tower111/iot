@@ -1,0 +1,85 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+
+function doSubmit()
+{
+	if(document.forms[0].Filename.value == "")
+	{
+		alert(js_input_file="Please choose a file to upgrade!");
+		return false;
+	}
+	var tmp = document.forms[0].Filename.value
+	if(tmp.substr(tmp.length - 4) != ".bin")
+	{
+		alert(js_chk_file="The selected file is in wrong format, please select another.");
+		return false;
+	}
+	var arr = tmp.substr(tmp.lastIndexOf('\\') + 1);
+	if(arr.length >= 64)
+	{
+		alert(js_bad_file="Please choose a file to upgrade!");
+		return false;
+	}
+	if(!confirm(js_to_upgrade="Are you sure to upgrade the firmware?"))
+	{
+		return false;
+	}
+	return true;
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="LoadHelp('SoftwareUpgradeHelpRpm.htm'); setTagStr(document,'ntw_software_upgrade');resize(this);" onResize="resize(this);">
+<FORM action="../incoming/Firmware.htm" enctype="multipart/form-data" method="post" onSubmit="return doSubmit();">
+  <TABLE id="autoWidth">
+    <TR>
+      <TD class=h1 colspan=2 id="t_title">Firmware Upgrade</TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=2></TD>
+    </TR>
+	 <TR id="wan_deny" name="wan_deny" style="display:none">
+		<TD colspan="2" id="t_note_wan_deny" name="t_note_wan_deny" style="color:red; white-space:normal;">The device cannot perform software upgrades via the remote management tool. Please upgrade software from within the LAN. </TD>
+	 </TR>	
+    <TR>
+      <TD class=Item id="t_file">File:</TD>
+      <TD ><INPUT class="file" name="Filename" type="file" size="35"></TD>
+    </TR>
+    <TR>
+      <TD class=Item id="t_softversion">Firmware Version:</TD>
+      <TD><DIV id="fversion"></DIV></TD>
+    </TR>
+    <TR>
+      <TD class=Item id="t_hardversion">Hardware Version:</TD>
+      <TD><DIV id="hversion"></DIV></TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=2></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD><INPUT name="Upgrade" type="submit" class="buttonBig" id="Submit" value="Upgrade"></TD>
+    </TR>
+  </TABLE>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.getElementById("fversion").innerHTML = softUpInf[0];
+document.getElementById("hversion").innerHTML = softUpInf[1];
+if (1 == softUpInf[3])
+{
+	document.forms[0].Filename.disabled = true;
+	document.forms[0].Upgrade.disabled = true;
+	document.getElementById("wan_deny").style.display = "";	
+}
+else
+{
+	document.forms[0].Filename.disabled = false;
+	document.forms[0].Upgrade.disabled = false;	
+	document.getElementById("wan_deny").style.display = "none";	
+}
+</SCRIPT>

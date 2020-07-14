@@ -1,0 +1,13 @@
+<LINK href="../dynaform/css_help.css" rel=stylesheet>
+<!--//<TP_C_TAG >-->
+<h1>Bandwidth Control Rules Setting Help</h1>
+<p>This page is for the bandwidth configures of the Bandwidth Control rules.</p>
+<ul>
+<li><b>Enable</b> - Enable or disable the rule.</li>
+<li><b>IP Range</b> - Interior PC address range. The starting address should not be blank, and should be less than the ending address if the ending address is not blank.</li>
+<li><b>Port Range</b> - The port range which contains the port(s) used by Interior PC(s) to access outside PC(s). If both are blank, the domain is not effective.</li>
+<li><b>Protocol</b> - Transport layer protocol, here there are All, TCP, UDP<!--- This domain works only the port range is selected-->.</li>
+<!--<li><b>Mode</b> - Independent bandwidth means each port has its own upload and download bandwidth. Share bandwidth means addresses or ports share the upload and download bandwidth.</li>-->
+<li><b>Egress Bandwidth</b> - The max and the min upload speed through the WAN port, default number is 0.</li>
+<li><b>Ingress Bandwidth</b> - The max and the min download speed through the WAN port, default number is 0.</li>
+</ul>

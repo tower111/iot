@@ -1,0 +1,131 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+
+<SCRIPT type="text/javascript">
+<!--//
+function doSubmit()
+{
+	if (document.forms[0].opt[0].checked == false && document.forms[0].opt[1].checked == false && document.forms[0].opt[2].checked == false)
+	{
+		alert(js_ts_select="Please select one of the options!");
+		return false;
+	}
+	return true;
+}
+function printTipMsg()
+{
+	var tipMsg = "";
+	var sysMode = wzdTroubleShooting[curSysModeIdx];
+	if (wzdTroubleShooting[multiSysModeIdx])
+	{
+		tipMsg += "<B><span id=\"t_start\" name=\"t_start\">Start</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_workingmode\" name=\"t_workingmode\">Working Mode</span>&nbsp;&gt;&gt;&nbsp;";
+	}
+	else
+	{
+		tipMsg += "<B><span id=\"t_start\" name=\"t_start\">Start</span>&nbsp;&gt;&gt;&nbsp;</B>";
+	}
+	if (sysMode == 1 || sysMode == 4)
+	{
+		tipMsg += "<span class=\"STYLE2\" id=\"t_wantype\" name=\"t_wantype\">WAN Connection Type</span><B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_wireless\" name=\"t_wireless\">Wireless</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	}
+	else if (sysMode == 2)
+	{
+		tipMsg += "<B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_interacce\" name=\"t_interacce\">Internet Access</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_wan3g\" name=\"t_wan3g\">WAN/3G</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_wireless\" name=\"t_wireless\">Wireless</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	}
+	else if (sysMode == 8)
+	{
+		tipMsg += "<B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_wireless_mode\" name=\"t_wireless_mode\">Wireless operMode</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_wireless\" name=\"t_wireless\">Wireless</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	}
+	else if (sysMode == 16)
+	{
+		tipMsg += "<B>&nbsp;&gt;&gt;&nbsp;<span id=\"t_3g\" name=\"t_3g\">3G</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_wireless\" name=\"t_wireless\">Wireless</span>&nbsp;&gt;&gt;&nbsp;<span id=\"t_finish\" name=\"t_finish\">Finish</span></B>";
+	}
+	document.getElementById("tips_msg").innerHTML = tipMsg;
+}
+//-->
+</SCRIPT>
+
+</SCRIPT>
+<style type="text/css">
+<!--
+.STYLE2 {color: #66CC00}
+-->
+</style>
+
+</HEAD>
+
+<BODY onLoad="setTagStr(document,'wzd_wan_trouble_shooting');LoadHelp('WzdWanTroubleShootingHelp.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action=WzdWanTroubleShootingRpm.htm method=get enctype=multipart/form-data>
+    <TABLE id=autoWidth>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup - Troubleshooting</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+	    <TR>
+          <TD class=info colspan=2 STYLE1> 
+			<SPAN id = "tips_msg"></SPAN>
+		  </TD>
+        </TR>
+        <TR>
+			<TD class=info colspan=2 id="t_item">The router failed to detect your internet connection type, the following are the most likely reason:</TD>
+        </TR>
+		<TR>
+			<TD class=info colspan=2 id="t_shooting_connection">1.	The hardware connection is wrong or the modem is not ready.</TD>
+		</TR>
+		<TR>
+			<TD class=info colspan=2 id="t_shooting_dynamic">2.	Your Internet connection type is Dynamic IP but the router needs to clone the MAC address of the original computer.</TD>
+		</TR>
+		<TR>
+			<TD class=info colspan=2 id="t_shooting_static">3.	Your ISP (Internet Service Provider) assigns a fixed (static) IP to you.</TD>
+		</TR>
+		
+		<TR><TD>&nbsp;</TD></TR>
+		<TR><TD class=info colspan=2 id="t_shooting_choose">Select one of the options below and click <B id="t_shooting_next">Next</B><span id="t_shooting_pro"> to proceed:</span></TD></TR>
+		
+        <TR id="shooting_option1">
+          <TD class=clk><INPUT name="opt" type="radio" value="1"><span id="t_shooting_reboot_modern">Now I will reboot my modem, wait for 2 minutes and proceed; Usually this operation will resolve most of the issues.</span></TD>
+        </TR>
+        <TR id="shooting_option2">
+          <TD class=clk><INPUT name="opt" type="radio" value="2"><span id="t_shooting_clone_mac">I've rebooted the modem before, now I will try to clone the MAC address from my original computer.</span></TD>
+        </TR>
+        <TR id="shooting_option2">
+          <TD class=clk><INPUT name="opt" type="radio" value="3"><span id="t_shooting_clone_mac1">Yes, my ISP assigns me a fixed IP address.</span></TD>
+        </TR>
+		
+		<TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn colspan=2><INPUT class=buttonBig id=Return type="submit" value="Back" name="Return">
+            &nbsp; 
+            &nbsp;
+            <INPUT class=buttonBig id=Submit type="submit" value="Next" name="Next" onClick="return doSubmit();">
+            &nbsp;
+            <INPUT type=hidden name=ClientId></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript"><!--//
+var curSysModeIdx = 0;
+var multiSysModeIdx = 1;
+var clientIdIdx = 2;
+var sysMode;
+document.forms[0].ClientId.value = wzdTroubleShooting[clientIdIdx]; 
+sysMode = wzdTroubleShooting[curSysModeIdx];
+if (sysMode != 8)
+{
+	document.getElementById("tips_msg").style.display = "";
+	//printTipMsg();
+}
+//--></SCRIPT>

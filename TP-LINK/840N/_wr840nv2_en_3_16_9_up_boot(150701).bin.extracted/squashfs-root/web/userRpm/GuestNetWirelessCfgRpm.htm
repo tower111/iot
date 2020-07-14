@@ -1,0 +1,1408 @@
+
+<SCRIPT type="text/javascript">
+<!--//
+var g_guestNetworkStatus = guestNetworkInf[1];
+
+if(guestNetworkBandwidthInf[6] == 1)
+	var g_guestNetwork5GStatus = guestNetworkInf[13];
+
+
+/*****************************************************************************
+*****************************wireless function*********************************
+****************************************************************************/
+
+/*******************************1.选择加密方式*********************************/
+function changeSecInfo()
+{
+
+	if (document.forms[0].SecOpt.value == 3)
+	{
+		document.getElementById("psk_1_id").style.display = "";
+		document.getElementById("psk_2_id").style.display = "";
+		document.getElementById("psk_3_id").style.display = "";
+		document.getElementById("psk_4_id").style.display = "";
+		document.getElementById("psk_5_id").style.display = "";
+		document.getElementById("psk_6_id").style.display = "";
+	}
+	else
+	{
+		document.getElementById("psk_1_id").style.display = "none";
+		document.getElementById("psk_2_id").style.display = "none";
+		document.getElementById("psk_3_id").style.display = "none";
+		document.getElementById("psk_4_id").style.display = "none";
+		document.getElementById("psk_5_id").style.display = "none";
+		document.getElementById("psk_6_id").style.display = "none";
+	}
+}
+
+function changeSecInfo5g()
+{
+	if (document.forms[0].SecOpt5g.value == 3)
+	{
+		document.getElementById("psk5g_1_id").style.display = "";
+		document.getElementById("psk5g_2_id").style.display = "";
+		document.getElementById("psk5g_3_id").style.display = "";
+		document.getElementById("psk5g_4_id").style.display = "";
+		document.getElementById("psk5g_5_id").style.display = "";
+		document.getElementById("psk5g_6_id").style.display = "";
+	}
+	else
+	{
+		document.getElementById("psk5g_1_id").style.display = "none";
+		document.getElementById("psk5g_2_id").style.display = "none";
+		document.getElementById("psk5g_3_id").style.display = "none";
+		document.getElementById("psk5g_4_id").style.display = "none";
+		document.getElementById("psk5g_5_id").style.display = "none";
+		document.getElementById("psk5g_6_id").style.display = "none";
+	}
+}
+
+/*********************************2.选择psk编码方式************************************/		
+function changePskCipher()
+{
+	if ((document.forms[0].pskCipher.value == 2))
+	{
+		document.getElementById("table_notice_tkip_id").style.display = "";
+	}
+	else
+	{
+		document.getElementById("table_notice_tkip_id").style.display = "none";
+	}
+}
+
+function changePskCipher5g()
+{
+	if ((document.forms[0].pskCipher5g.value == 2))
+	{
+		document.getElementById("table_notice_tkip5g_id").style.display = "";
+	}
+	else
+	{
+		document.getElementById("table_notice_tkip5g_id").style.display = "none";
+	}
+}
+
+
+function doAccessTime()
+{
+	if (document.forms[0].AccessTime.value == 0)
+	{
+		document.getElementById("TIMEOUT_id").style.display = "";
+		document.getElementById("SCHE_SELE_id").style.display = "none";
+		document.getElementById("DAYSX_id").style.display = "none";
+		document.getElementById("DAYSALL_TR_id").style.display = "none";
+		document.getElementById("STARTTIME_TR_id").style.display = "none";
+		document.getElementById("ENDTIME_TR_id").style.display = "none";
+	}
+	else if (document.forms[0].AccessTime.value == 1)
+	{
+		document.getElementById("TIMEOUT_id").style.display = "none";
+		document.getElementById("SCHE_SELE_id").style.display = "";
+		document.getElementById("DAYSX_id").style.display = "";
+		document.getElementById("DAYSALL_TR_id").style.display = "";
+		document.getElementById("STARTTIME_TR_id").style.display = "";
+		document.getElementById("ENDTIME_TR_id").style.display = "";
+	}
+	else if (document.forms[0].AccessTime.value == 2)
+	{
+		document.getElementById("TIMEOUT_id").style.display = "none";
+		document.getElementById("SCHE_SELE_id").style.display = "none";
+		document.getElementById("DAYSX_id").style.display = "none";
+		document.getElementById("DAYSALL_TR_id").style.display = "none";
+		document.getElementById("STARTTIME_TR_id").style.display = "none";
+		document.getElementById("ENDTIME_TR_id").style.display = "none";
+	}
+}
+
+function doAccessTime5g()
+{
+	if (document.forms[0].AccessTime5g.value == 0)
+	{
+		document.getElementById("TIMEOUT5g_id").style.display = "";
+		document.getElementById("SCHE_SELE5g_id").style.display = "none";
+		document.getElementById("DAYSX5g_id").style.display = "none";
+		document.getElementById("DAYSALL5g_TR_id").style.display = "none";
+		document.getElementById("STARTTIME5g_TR_id").style.display = "none";
+		document.getElementById("ENDTIME5g_TR_id").style.display = "none";
+	}
+	else if (document.forms[0].AccessTime5g.value == 1)
+	{
+		document.getElementById("TIMEOUT5g_id").style.display = "none";
+		document.getElementById("SCHE_SELE5g_id").style.display = "";
+		document.getElementById("DAYSX5g_id").style.display = "";
+		document.getElementById("DAYSALL5g_TR_id").style.display = "";
+		document.getElementById("STARTTIME5g_TR_id").style.display = "";
+		document.getElementById("ENDTIME5g_TR_id").style.display = "";
+	}
+	else if (document.forms[0].AccessTime.value == 2)
+	{
+		document.getElementById("TIMEOUT5g_id").style.display = "none";
+		document.getElementById("SCHE_SELE5g_id").style.display = "none";
+		document.getElementById("DAYSX5g_id").style.display = "none";
+		document.getElementById("DAYSALL5g_TR_id").style.display = "none";
+		document.getElementById("STARTTIME5g_TR_id").style.display = "none";
+		document.getElementById("ENDTIME5g_TR_id").style.display = "none";
+	}
+}
+
+
+function doScheDay()
+{
+	if (document.getElementById("sche_allday_id").checked)
+	{
+		document.getElementById("days1_id").disabled=true;
+		document.getElementById("days2_id").disabled=true;
+		document.getElementById("days3_id").disabled=true;
+		document.getElementById("days4_id").disabled=true;
+		document.getElementById("days5_id").disabled=true;
+		document.getElementById("days6_id").disabled=true;
+		document.getElementById("days7_id").disabled=true;		
+	}
+	else if(document.getElementById("sche_selectday_id").checked)
+	{
+		document.getElementById("days1_id").disabled=false;
+		document.getElementById("days2_id").disabled=false;
+		document.getElementById("days3_id").disabled=false;
+		document.getElementById("days4_id").disabled=false;
+		document.getElementById("days5_id").disabled=false;
+		document.getElementById("days6_id").disabled=false;
+		document.getElementById("days7_id").disabled=false;	
+	}
+}
+
+function doScheDay5g()
+{
+	if (document.getElementById("sche_allday5g_id").checked)
+	{
+		document.getElementById("days1_5g_id").disabled=true;
+		document.getElementById("days2_5g_id").disabled=true;
+		document.getElementById("days3_5g_id").disabled=true;
+		document.getElementById("days4_5g_id").disabled=true;
+		document.getElementById("days5_5g_id").disabled=true;
+		document.getElementById("days6_5g_id").disabled=true;
+		document.getElementById("days7_5g_id").disabled=true;		
+	}
+	else if(document.getElementById("sche_selectday5g_id").checked)
+	{
+		document.getElementById("days1_5g_id").disabled=false;
+		document.getElementById("days2_5g_id").disabled=false;
+		document.getElementById("days3_5g_id").disabled=false;
+		document.getElementById("days4_5g_id").disabled=false;
+		document.getElementById("days5_5g_id").disabled=false;
+		document.getElementById("days6_5g_id").disabled=false;
+		document.getElementById("days7_5g_id").disabled=false;	
+	}
+}
+
+function doSelDay()
+{
+		document.getElementById("days1_id").disabled=false;
+		document.getElementById("days2_id").disabled=false;
+		document.getElementById("days3_id").disabled=false;
+		document.getElementById("days4_id").disabled=false;
+		document.getElementById("days5_id").disabled=false;
+		document.getElementById("days6_id").disabled=false;
+		document.getElementById("days7_id").disabled=false;		
+}
+
+function doSelDay5g()
+{
+	document.getElementById("days1_5g_id").disabled=false;
+	document.getElementById("days2_5g_id").disabled=false;
+	document.getElementById("days3_5g_id").disabled=false;
+	document.getElementById("days4_5g_id").disabled=false;
+	document.getElementById("days5_5g_id").disabled=false;
+	document.getElementById("days6_5g_id").disabled=false;
+	document.getElementById("days7_5g_id").disabled=false;
+}
+
+function doDaysAll()
+{
+	if (document.getElementById("daysAll_id").checked)
+	{
+		document.getElementById("starttime_id").disabled=true;
+		document.getElementById("endtime_id").disabled=true;
+		document.getElementById("STARTTIME_TR_id").disabled=true;
+		document.getElementById("ENDTIME_TR_id").disabled=true;
+	}
+	else
+	{
+		document.getElementById("starttime_id").disabled=false;
+		document.getElementById("endtime_id").disabled=false;
+		document.getElementById("STARTTIME_TR_id").disabled=false;
+		document.getElementById("ENDTIME_TR_id").disabled=false;
+	}
+}
+
+function doDaysAll5g()
+{
+	if (document.getElementById("daysAll5g_id").checked)
+	{
+		document.getElementById("starttime5g_id").disabled=true;
+		document.getElementById("endtime5g_id").disabled=true;
+		document.getElementById("STARTTIME5g_TR_id").disabled=true;
+		document.getElementById("ENDTIME5g_TR_id").disabled=true;
+	}
+	else
+	{
+		document.getElementById("starttime5g_id").disabled=false;
+		document.getElementById("endtime5g_id").disabled=false;
+		document.getElementById("STARTTIME5g_TR_id").disabled=false;
+		document.getElementById("ENDTIME5g_TR_id").disabled=false;
+	}
+}
+
+function doPagePrepare()
+{
+	judgeIfWlanEnabled();
+	changeSecInfo(); 
+	if(guestNetworkBandwidthInf[6] == 1)
+	{
+		changeSecInfo5g();	
+	}	
+	doAccessTime();
+	if(guestNetworkBandwidthInf[6] == 1)
+	{	
+		doAccessTime5g(); 
+	}
+	doScheDay();
+	if(guestNetworkBandwidthInf[6] == 1)
+	{
+		doScheDay5g(); 
+	}
+	doDaysAll();
+	
+	if(guestNetworkBandwidthInf[6] == 1)
+	{
+		doDaysAll5g();
+	}
+	doPskCipher();
+}
+function doPskCipher()
+{
+	var cf = document.forms[0];
+	if ((guestNetworkInf[11] == 3 || guestNetworkInf[11] == 7))
+	{
+		cf.pskCipher.value = 3;
+	}
+	
+	if(guestNetworkBandwidthInf[6] == 1){
+		if ((guestNetworkInf[23] == 3) || (guestNetworkInf[23] == 7))
+		{
+			cf.pskCipher5g.value = 3;
+		}
+	}
+}
+function judgeIfWlanEnabled()
+{
+	var cf = document.forms[0];
+	if (guestNetworkInf[24] == 1)
+	{
+		cf.guestNetMode.disabled = true;
+		document.getElementById("t_notice_wlan_enabled").style.display = "";
+		cf.guestNetMode5g.disabled = true;
+		document.getElementById("t_notice_wlan_enabled5g").style.display = "";	
+	}
+	else
+	{
+		if ( guestNetworkInf[0] == 0 )
+		{
+			cf.guestNetMode.disabled = true;
+			document.getElementById("t_notice_wlan_enabled").style.display = "";
+		}
+		else
+		{
+			cf.guestNetMode.disabled = false;
+			document.getElementById("t_notice_wlan_enabled").style.display = "none";
+		}
+		
+		if(guestNetworkBandwidthInf[6] == 1){
+			if ( guestNetworkInf[12] == 0 )
+			{
+			   cf.guestNetMode5g.disabled = true;
+			   document.getElementById("t_notice_wlan_enabled5g").style.display = "";
+			}
+			else
+			{
+				cf.guestNetMode5g.disabled = false;
+				document.getElementById("t_notice_wlan_enabled5g").style.display = "none";
+			}
+		}
+	}
+}
+
+function is_timeStr(str)
+{
+	if(str.length != 4)
+		return false;
+	var hourStr = str.substring(0,2);
+	var minStr = str.substring(2,4);
+	if(is_number(hourStr,0,23)&&is_number(minStr,0,59))
+		return true;
+	else			
+		return false;
+}
+
+// check len of ssid
+function getValLen(val)
+{
+	var len = 0;
+	var i = 0;
+	for (i = 0; i < val.length; i ++)
+	{
+		var c = val.charAt(i);
+		len += ((c >= ' ') && (c <= '~')) ? 1 : 2;
+	}
+	return len;
+}
+function checkssid()
+{
+	var cf = document.forms[0];
+	return getValLen(cf.ssid.value);
+}
+function checkssid5g()
+{
+	var cf = document.forms[0];
+	return getValLen(cf.ssid5g.value);
+}
+//check auth
+function checkAuth()
+{
+	var cf = document.forms[0];
+	var len;
+	var i;
+	var st = 0;
+
+	//WPARadius JS
+	if (cf.SecOpt.value == 3)//psk
+	{
+		st = 3;
+	}
+	else if (cf.SecOpt.value == 2)//wpa2
+	{
+		alert(js_wpa2_forbid="Can not use WPA2 secret for GuestNetwork!");
+		return false;
+	}
+	else if (cf.SecOpt.value == 1)//wep
+	{
+		alert(js_wep_forbid="Can not use WEP secret for GuestNetwork!");
+		return false;
+	}
+	//WAPPSK JS
+	{
+		len = getValLen(cf.pskSecret.value);
+		if ((st == 3) && (len <= 0))
+		{
+			alert(js_empty_psk_password="Empty PSK password, please input one!");
+			cf.pskSecret.focus();
+			return false;
+		}
+		if ((len > 0) && (len < 8))
+		{
+			alert(js_psk_char="PSK password should not be less than 8 characters, please input again!");
+			cf.pskSecret.focus();
+			cf.pskSecret.select();
+			return false;
+		}
+		if(len >= 64)
+		{
+			var ch="ABCDEFabcdef0123456789";
+			var c;
+			for(i = 0; i < len; i++)
+			{
+				c = cf.pskSecret.value.charAt(i);
+				if(ch.indexOf(c) == -1)
+				{
+					alert(js_psk_hex="The 64 bytes PSK password include non-hexadecimal characters, please input again.");
+					cf.pskSecret.focus();
+					cf.pskSecret.select();
+					return false;
+				}
+			}
+		}
+	
+		if ((0 != cf.interval.value) && (cf.interval.value < 30))
+		{
+			if ((st == 3) || ("" != cf.interval.value))
+			{
+				alert(js_inv_group_per="Invalid Group Key Update Period, please input again!");
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+function checkAuth5g()
+{
+	var cf = document.forms[0];
+	var len;
+	var i;
+	var st = 0;
+
+	//WPARadius JS
+	if (cf.SecOpt5g.value == 3)//psk
+	{
+		st = 3;
+	}
+	else if (cf.SecOpt5g.value == 2)//wpa2
+	{
+		alert(js_wpa2_forbid_5g="Can not use WPA2 secret for GuestNetwork for 5GHz!");
+		return false;
+	}
+	else if (cf.SecOpt5g.value == 1)//wep
+	{
+		alert(js_wep_forbid_5g="Can not use WEP secret for GuestNetwork for 5GHz!");
+		return false;
+	}
+	//WAPPSK JS
+	{
+		len = getValLen(cf.pskSecret5g.value);
+		if ((st == 3) && (len <= 0))
+		{
+			alert(js_empty_psk_password5g="Empty PSK password, please input one for 5GHz!");
+			cf.pskSecret5g.focus();
+			return false;
+		}
+		if ((len > 0) && (len < 8))
+		{
+			alert(js_psk_char5g="PSK password should not be less than 8 characters, please input again for 5GHz!");
+			cf.pskSecret5g.focus();
+			cf.pskSecret5g.select();
+			return false;
+		}
+		if(len >= 64)
+		{
+			var ch="ABCDEFabcdef0123456789";
+			var c;
+			for(i = 0; i < len; i++)
+			{
+				c = cf.pskSecret5g.value.charAt(i);
+				if(ch.indexOf(c) == -1)
+				{
+					alert(js_psk_hex5g="The 64 bytes PSK password include non-hexadecimal characters, please input again for 5GHz.");
+					cf.pskSecret5g.focus();
+					cf.pskSecret5g.select();
+					return false;
+				}
+			}
+		}
+	
+		if ((0 != cf.interval5g.value) && (cf.interval5g.value < 30))
+		{
+			if ((st == 3) || ("" != cf.interval5g.value))
+			{
+				alert(js_inv_group_per5g="Invalid Group Key Update Period, please input again for 5GHz!");
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+function doSubmit()
+{
+	var cf = document.forms[0];
+	var guestNetSsidLen;
+	//Bandwidth Control
+	if(document.forms[0].up_bandWidth.value == "")
+	{
+		document.forms[0].up_bandWidth.value = 0;
+	}
+	if(!is_number(document.forms[0].up_bandWidth.value))
+	{
+		alert(js_egrs_num_err="Egress bandwidth error,please input again!");
+		document.forms[0].up_bandWidth.select();
+		return false;
+	}
+	if((document.forms[0].up_bandWidth.value > guestNetworkBandwidthInf[1]) || (document.forms[0].up_bandWidth.value <= 0))
+	{
+		alert(js_egrs_bnd_err="Egress bandwidth for Guest Network is out of range!");
+		document.forms[0].up_bandWidth.select();
+		return false;
+	}
+	if(document.forms[0].down_bandWidth.value == "")
+	{
+		document.forms[0].down_bandWidth.value = 0;
+	}
+	if(!is_number(document.forms[0].down_bandWidth.value)){
+		alert(js_ingrs_num_err="Ingress bandwidth error,please input again!");
+		document.forms[0].down_bandWidth.select();
+		return false;
+	}
+	if((document.forms[0].down_bandWidth.value > guestNetworkBandwidthInf[2]) || (document.forms[0].down_bandWidth.value <= 0))
+	{
+		alert(js_ingrs_bnd_err="Ingress bandwidth for Guest Network is out of range!");
+		document.forms[0].down_bandWidth.select();
+		return false;
+	}
+	
+	/*********************************2G GuestNetwork check************************************/
+	//检查ssid
+	guestNetSsidLen = checkssid();
+	if(0 == guestNetSsidLen)
+	{
+		alert(js_pl_ssid="Please input SSID!");
+		//doSelKeytype();
+		return false;
+	}
+	//检查加密
+	if (!checkAuth())
+	{
+		return false;
+	}
+	/******************************5G GuestNetwork check*********************************/
+	if(guestNetworkBandwidthInf[6] == 1)
+	{
+		guestNetSsidLen = checkssid5g();
+		if(0 == guestNetSsidLen)
+		{
+			alert(js_pl_ssid5g="Please input SSID of 5GHz!");
+			//doSelKeytype();
+			return false;
+		}
+		//检查加密
+		if (!checkAuth5g())
+		{
+			return false;
+		}
+	}
+	
+	//2G AccessTime
+	if(cf.AccessTime.value == 0)
+	{
+		var timeouthour = parseInt(cf.timeouthour.value, 10);
+		var timeoutmin = parseInt(cf.timeoutmin.value, 10);
+		if(isNaN(timeouthour)||isNaN(timeoutmin)){
+			alert(js_2g_timeout1="2.4GHZ: timeout input is invalid!");
+			return false;
+		}
+		if(timeouthour<0||timeoutmin<0||timeouthour>9999||timeoutmin>9999){
+			alert(js_2g_timeout2="2.4GHZ: timeout hour and minute should be between 0 and 9999.");
+			return false;
+		}
+	}
+	else if(cf.AccessTime.value == 1 && !cf.daysAll.checked)
+	{
+		var starttime = cf.starttime.value;
+		var endtime = cf.endtime.value;
+		if(!is_timeStr(starttime))
+		{
+			alert(js_2g_starttime="2.4GHZ: start time is invalid, should be HHMM.");
+			return false;
+		}
+		if(!is_timeStr(endtime))
+		{
+			alert(js_2g_endtime="2.4GHZ: end time is invalid, should be HHMM.");
+			return false;
+		}	
+		if(parseInt(starttime, 10)>parseInt(endtime, 10))
+		{
+			alert(js_2g_timeErr="2.4GHZ: start time should be earlier than endtime.");
+			return false;
+		}
+	}
+	//5G AccessTime
+	if(guestNetworkBandwidthInf[6] == 1)
+	{
+		if(cf.AccessTime5g.value == 0)
+		{
+			var timeouthour = parseInt(cf.timeouthour5g.value, 10);
+			var timeoutmin = parseInt(cf.timeoutmin5g.value, 10);
+			if(isNaN(timeouthour)||isNaN(timeoutmin)){
+				alert(js_5g_timeout1="5GHZ: timeout input is invalid!");
+				return false;
+			}
+			if(timeouthour<0||timeoutmin<0||timeouthour>9999||timeoutmin>9999){
+				alert(js_5g_timeout2="5GHZ: timeout hour and minute should be between 0 and 9999.");
+				return false;
+			}
+		}
+		else if(cf.AccessTime5g.value == 1 && !cf.daysAll5g.checked)
+		{
+			var starttime = cf.starttime5g.value;
+			var endtime = cf.endtime5g.value;
+			if(!is_timeStr(starttime))
+			{
+				alert(js_5g_starttime="5GHZ: start time is invalid, should be HHMM.");
+				return false;
+			}
+			if(!is_timeStr(endtime))
+			{
+				alert(js_5g_endtime="5GHZ: end time is invalid, should be HHMM.");
+				return false;
+			}		
+			if(parseInt(starttime, 10)>parseInt(endtime, 10))
+			{
+				alert(js_5g_timeErr="5GHZ: start time should be earlier than endtime.");
+				return false;
+			}					
+		}
+	}
+	return true;
+}
+
+//-->
+</SCRIPT>
+</HEAD>
+	
+<BODY onload = "setTagStr(document,'ntw_guest_net_wls_cfg'); LoadHelp('GuestNetWirelessCfgHelpRpm.htm')">
+<FORM action="GuestNetWirelessCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+<CENTER>
+<TABLE border="0" cellspacing="0" cellpadding="0">
+
+<!-----------------------------------GUEST NETWORK SETTINGS-------------------------------------->
+<TR>
+	<TD align="left" valign="middle" colspan="3" class="h1" id = "t_title" >
+		Guest Network Wireless Settings
+	</TD>
+</TR>		
+
+<!----------------------------BANDWIDTH CONTROL----------------------------->
+<TR>
+	<TD class = "blue" colspan="3">
+	</TD>
+</TR>	
+
+
+<TR>
+	<TD class="h2" colspan=3 id="t_fw">
+		Access And Bandwidth Control
+	</TD>
+</TR>	
+
+<TR>
+	<TD id = "t_allow_access" class = "Item">
+		Allow Guest To Access My Local Network:
+	</TD>
+	
+	<TD>
+		<INPUT name="guestAccessCtrl" type="checkbox" value="1">
+	</TD>
+	
+	<TD>
+		&nbsp;
+	</TD>
+</TR>	
+
+<TR>
+	<TD id = "t_enable_bandwidth" class = "Item">
+		Enable Guest Network Bandwidth Control:
+	</TD>
+	
+	<TD>
+		<INPUT name="bandwidthCtrl" type="checkbox" value="1">
+	</TD>
+	
+	<TD>
+		&nbsp;
+	</TD>
+</TR>			
+	
+<TR valign="bottom">
+	<TD width="60" class = "Item" id = "t_up_band">
+		Egress Bandwidth For Guest Network:
+	</TD>
+	
+	<TD>
+		<INPUT name="up_bandWidth" type="text" value="" size="21" maxlength="7" class="text">&nbsp;
+		<SPAN id = "t_kbps" name="t_kbps">
+			Kbps
+		</SPAN>
+		&nbsp;
+		<SCRIPT type="text/javascript">
+			document.write("<B style='font-size: 14px; vertical-align: middle;'>(Range:1~" + guestNetworkBandwidthInf[1] + ")<\/B>");
+		</SCRIPT>
+	</TD>
+	<TD>
+		&nbsp;
+	</TD>
+</TR>
+	
+	
+<TR valign="bottom">
+	<TD width="60" class = "Item" id = "t_down_band">
+		Ingress Bandwidth For Guest Network:
+	</TD>
+	
+	<TD>
+		<INPUT name="down_bandWidth" type="text" value="" size="21" maxlength="7" class="text">&nbsp;
+		<SPAN id = "t_kbps" name="t_kbps">
+			Kbps
+		</SPAN>
+		&nbsp;
+		<SCRIPT type="text/javascript">
+			document.write("<B style='font-size: 14px; vertical-align: middle;'>(Range:1~" + guestNetworkBandwidthInf[2] + ")<\/B>");
+		</SCRIPT>
+		&nbsp;&nbsp;
+	</TD>				
+	<TD>
+		&nbsp;
+	</TD>
+</TR>
+
+<!--------------------------------------------------------------------------------------->	
+
+
+
+<!-------------------------------------WIRELESS 2.4GHZ----------------------------------->
+<TR>
+	<TD class = "blue" colspan=3></TD>
+</TR>
+
+<TR>
+	<TD id = "t_wireless2GHz" class="h2" colspan=3>
+		
+		<SCRIPT type="text/javascript">
+			var wlanTitleTips = "Wireless 2.4GHz";
+			if (guestNetworkBandwidthInf[6] == 0)//if not dual band wireless router
+			{
+				wlanTitleTips = "Wireless";				
+			}
+			document.write(wlanTitleTips);
+			</SCRIPT>
+	</TD>
+</TR>
+<TR>
+	<TD class="Item">
+		<SPAN id = "t_guestNetwork2G">
+			<SCRIPT type="text/javascript">
+			var wlanNameTips = "Guest Network (2.4G):";
+			if (guestNetworkBandwidthInf[6] == 0)//if not dual band wireless router
+			{
+				wlanNameTips = "Guest Network:";				
+			}
+			document.write(wlanNameTips);
+			</SCRIPT>
+		</SPAN>
+	</TD>
+	
+	<TD>
+		<INPUT name="guestNetMode" type="checkbox" value="1">
+		&nbsp;
+		<SPAN name="notice_wlan_enabled" id="t_notice_wlan_enabled" style="display:none;color:red;">
+			<SCRIPT type="text/javascript">
+			var enableTips = "Note: You should turn on the WiFi by press the button or enable the 2.4GHz Band on Dual Band Selection!";
+			if (guestNetworkBandwidthInf[6] == 0)//if not dual band wireless router
+			{
+				enableTips = "Note: You should turn on the WiFi by press the button or enable the wireless router radio on wireless settings!";				
+			}
+			document.write(enableTips);
+			</SCRIPT>
+			
+		</SPAN>
+	</TD>
+</TR>
+	
+	
+	
+<TR valign="bottom">
+	<TD id = "t_networkName" width="60" class = "Item">
+		Network Name:
+	</TD>
+		
+	<TD colspan="2">
+		<INPUT name="ssid" id="ssid_id" type="text" value="" size="32" maxlength="32" class="text">&nbsp;
+		<SPAN id = "t_alsoCalled">
+			(Also called the SSID)
+		</SPAN>
+	</TD>
+</TR>
+	
+	
+<TR valign="bottom">
+	<TD id = "t_wirelessSec" width="50" class = "Item">
+		Wireless Security:
+	</TD>
+		
+	<TD colspan=2>
+				<SELECT name="SecOpt" id="SecOpt_id" onchange="changeSecInfo()">
+			<OPTION id = "t_disableSec" value="0">Disable Security</OPTION>
+			<OPTION id = "t_wpaPer" value="3">WPA/WPA2-Personal</OPTION>
+		</SELECT>
+	</TD>
+</TR>
+
+
+<!--
+<TR id="psk_x" style="display:none"><TD colspan=3>
+<TABLE>
+-->
+<TR name="psk_1" id="psk_1_id" style="display:none">
+	<TD id = "t_version" class=Item style="padding-left:60px">
+		Version:
+	</TD>
+		
+	<TD colspan=2>
+		<SELECT  name="pskSecOpt" id="pskSecOpt_id" class=Item>
+			<OPTION name="auto" id="t_auto" value="3">Automatic(Recommended)</OPTION>
+			<OPTION id = "t_wpaPsk" value="1">WPA-PSK</OPTION>
+			<OPTION id = "t_wpa2Psk" value="2">WPA2-PSK</OPTION>
+		</SELECT>
+	</TD>
+</TR>
+	
+	
+<TR name="psk_2" id="psk_2_id" style="display:none">
+	<TD id = "t_encryption" class=Item style="padding-left:60px">
+		Encryption:
+	</TD>
+		
+	<TD colspan=2>
+				<SELECT name="pskCipher" id="pskCipher_id" onchange="changePskCipher()">
+			<SCRIPT type="text/javascript">
+			if ((guestNetworkInf[11] != 3) && (guestNetworkInf[11] != 7))//guestNetworkInf
+			{
+				document.write('<option name="psk_auto" id="t_psk_auto" value="1">Automatic(Recommended)</option>');
+				document.write('<option id = "t_psk_tkip" value="2">TKIP</option>');
+			}
+			</SCRIPT>
+			<OPTION id = "t_psk_aes" value="3">AES</OPTION>
+		</SELECT>
+	</TD>
+</TR>
+	
+	
+<TR name="psk_3" id="psk_3_id" style="display:none">
+	<TD class="Item" style="padding-left:60px" id="t_psk_pwd">
+		PSK Password:
+	</TD>
+	
+	<TD colspan=2>
+		<INPUT name="pskSecret" id="pskSecret_id" type="text" class="text" value="" size="64" maxlength="64">
+	</TD>
+</TR>
+	
+	
+<TR name="psk_4" id="psk_4_id" style="display:none">
+	<TD>
+		&nbsp;
+	</TD>
+		
+	<TD name="psk_note" id="t_psk_note" colspan=2>
+		(You can enter ASCII characters between 8 and 63 or Hexadecimal characters between 8 and 64.)
+	</TD>
+</TR>
+
+	
+<TR name="psk_5" id="psk_5_id" style="display:none">
+	<TD id = "t_groupKeyUp" class="Item" style="padding-left:60px">
+		Group Key Update Period:
+	</TD>
+		
+	<TD colspan = 2>
+		<INPUT name="interval" id="interval_id" type="text" class="text" value="" size="9" maxlength="9">
+		<A name="key_update_prd_note" id="t_key_update_prd_note">
+			&nbsp;Seconds (Keep it default if you are not sure, minimum is 30, 0 means no update)
+		</A>
+	</TD>
+</TR>
+		
+		
+<TR name="psk_6" id="psk_6_id" style="display:none">
+	<TD width="228">
+		&nbsp;
+	</TD>
+		
+	<TD colspan = 2>
+		<TABLE name="table_notice_tkip" id ="table_notice_tkip_id" style="display:none;color:red;">
+		<TR>
+			<TD  colspan = "4">
+				<SPAN name="notice_tkip_1" id="t_notice_tkip_1">
+					We do not recommend using the TKIP encryption if the device operates in
+				</SPAN>
+				<BR>
+				<SPAN name="notice_tkip_2" id="t_notice_tkip_2">
+					802.11n mode due to the fact that TKIP is not supported by 802.11n specification.
+				</SPAN>
+			</TD>
+		</TR>
+		</TABLE>
+	</TD>
+</TR>
+	
+<TR>
+	<TD id = "t_accTime" class="Item">
+		Access Time:
+	</TD>
+	
+	<TD colspan=2 style="height:30px">
+				<SELECT name="AccessTime" id="accessTime_id" onchange="doAccessTime()">
+			<OPTION id = "t_timeOut" value="0">Timeout</OPTION>
+			<OPTION id = "t_schdule" value="1">Schedule</OPTION>
+		</SELECT>
+		
+<Script type="text/javaScript">		
+		document.write('<span class="tips" id="t_wlanUsabled2g">can be connect!</span>');
+		document.write('<span class="tips" id="t_remainTime2g">'
+						+'</span><span class="countDown" id="countDown2g"></span>');
+</Script>	
+	</TD>
+	
+</TR>
+
+
+<TR name="TIMEOUT" id="TIMEOUT_id" style="display:none">
+	<TD>
+		&nbsp;
+	</TD>
+		
+	<TD colspan = 2>
+		<INPUT name="timeouthour" id="timeouthour_id" type=text class=text value="" size="9" maxlength="4">
+					<span id="t_hour">&nbsp;Hours&nbsp;</span>
+		<INPUT name="timeoutmin" id="timeoutmin_id" type=text class=text value="" size="9" maxlength="4">
+					<span id="t_minute">&nbsp;Minutes</span>
+	</TD>
+	
+	<TD>
+		&nbsp;
+	</TD>
+</TR>
+	
+	
+<TR name="SCHE_SELE" id="SCHE_SELE_id" style="display:none">
+	<TD>
+		&nbsp;
+	</TD>
+		
+	<TD>
+		<INPUT name="scheDay" id="sche_allday_id" type="radio" value="0" checked onClick="doScheDay()">&nbsp;
+			<span id="t_everyday">Everyday</span>
+		&nbsp;&nbsp;
+		<INPUT name="scheDay" id="sche_selectday_id" type="radio" value="1" onClick="doSelDay()">&nbsp;
+			<span id="t_select_day">Select Days</span>
+	</TD>
+	
+	<TD>
+		&nbsp;
+	</TD>
+</TR>
+
+	
+<TR name="DAYSX" id="DAYSX_id" style="display:none">
+	<TD>
+	&nbsp;
+	</TD>
+		
+	<TD colspan=2>
+		<INPUT name="days1" id="days1_id" type="checkbox" value="1"><span id="t_mon">Mon</span>&nbsp;
+		<INPUT name="days2" id="days2_id" type="checkbox" value="0"><span id="t_tue">Tue</span>&nbsp;
+		<INPUT name="days3" id="days3_id" type="checkbox" value="0"><span id="t_wed">Wed</span>&nbsp;
+		<INPUT name="days4" id="days4_id" type="checkbox" value="0"><span id="t_thu">Thu</span>&nbsp;
+		<INPUT name="days5" id="days5_id" type="checkbox" value="0"><span id="t_fri">Fri</span>&nbsp;
+		<INPUT name="days6" id="days6_id" type="checkbox" value="0"><span id="t_sat">Sat</span>&nbsp;
+		<INPUT name="days7" id="days7_id" type="checkbox" value="0"><span id="t_sun">Sun</span>
+	</TD>
+	
+	<TD>
+	&nbsp;
+	</TD>
+</TR>
+	
+	
+<TR name="DAYSALL_TR" id="DAYSALL_TR_id" style="display:none">
+	<TD>
+		&nbsp;
+	</TD>
+		
+	<TD>
+		<INPUT name="daysAll" id="daysAll_id" type="checkbox" value="0" Onclick="doDaysAll()">&nbsp;<span id="t_all_day">All day-24 Hours</span>
+	</TD>
+	
+	<TD>
+		&nbsp;
+	</TD>
+</TR>
+	
+	
+<TR name="STARTTIME_TR" id="STARTTIME_TR_id" style="display:none">
+	<TD>
+		&nbsp;
+	</TD>
+		
+	<TD>
+		<SPAN id = "t_startTim">
+			Start Time:
+		</SPAN>
+		<INPUT name="starttime" id="starttime_id" type="text" class="text" value="" size="9" maxlength="4">&nbsp;<span id="t_hm">(HHMM)</span>
+	</TD>
+	
+	<TD>
+		&nbsp;
+	</TD>
+</TR>
+	
+	
+<TR name="ENDTIME_TR" id="ENDTIME_TR_id" style="display:none">
+	<TD>
+		&nbsp;
+	</TD>
+		
+	<TD name="end_tim">
+		<SPAN id = "t_endTim">
+		End Time:&nbsp;
+		</SPAN>
+		<INPUT name="endtime" id="endtime_id" type=text class=text value="" size="9" maxlength="4">&nbsp;<span id="t_hm">(HHMM)</span>
+	</TD>
+
+	<TD>
+		&nbsp;
+	</TD>
+</TR>
+<!-------------------------------------------------------------------------------->		
+<!---------------------------------WIRELESS 5GHZ----------------------------------->
+<SCRIPT type="text/javascript">
+if (guestNetworkBandwidthInf[6] == 1)
+{
+	document.write('<TR><TD class = "blue" colspan="3"></TD></TR>');
+	document.write('<TR><TD id = "t_wireless5GHz" class="h2" colspan="3">Wireless 5GHz</TD></TR>');
+	document.write('<TR><TD class="Item"><SPAN id="t_guestNetwork5G">Guest Network (5G): </SPAN></TD>'
+					+'<TD><INPUT name="guestNetMode5g" type="checkbox" value="1">&nbsp;'
+					+'<SPAN name="notice_wlan_enabled5g" id="t_notice_wlan_enabled5g" style="display:none;color:red;">'
+					+'Note: You should turn on the WiFi by press the button or enable the 5GHz Band on Dual Band Selection!</SPAN>'
+					+'</TD><TD>&nbsp;</TD></TR>');
+	document.write('<TR valign="bottom"><TD id = "t_networkName5G" width="60" class = "Item">Network Name: </TD>'
+					+'<TD colspan=2><INPUT name="ssid5g" id="ssid5g_id" type="text" value="" size="32" maxlength="32" class="text">&nbsp;'
+					+'<SPAN id = "t_alsoCalled5G">(Also called the SSID)</SPAN></TD></TR>');
+	document.write('<TR valign=bottom><TD id = "t_wirelessSec5G" width="50" class = "Item">Wireless Security: </TD>'
+					+'<TD colspan="2"><SELECT name="SecOpt5g" id="SecOpt5g_id" onchange="changeSecInfo5g()">'
+					+'<OPTION id = "t_disableSec5G" value="0">Disable Security</OPTION>'
+					+'<OPTION id = "t_wpaPer5G" value="3">WPA/WPA2-Personal</OPTION>'
+					+'</SELECT></TD></TR>');
+	document.write('<TR name="psk5g_1" id="psk5g_1_id" style="display:none">'
+					+'<TD id = "t_version5G" class=Item style="padding-left:60px">Version: </TD>'
+					+'<TD colspan="2"><SELECT name="pskSecOpt5g" id="pskSecOpt5g_id" class="Item">'
+					+'<OPTION name="auto5g" id="t_auto5g" value="3">Automatic(Recommended)</OPTION>'
+					+'<OPTION id = "t_wpaPsk5g" value="1">WPA-PSK</OPTION>'
+					+'<OPTION id = "t_wpa2Psk5g" value="2">WPA2-PSK</OPTION>'
+					+'</SELECT></TD></TR>');
+	document.write('<TR name="psk5g_2" id="psk5g_2_id" style="display:none">'
+					+'<TD id = "t_encryption5g" class="Item" style="padding-left:60px">Encryption: </TD>'
+					+'<TD colspan="2"><SELECT name="pskCipher5g" id="pskCipher5g_id"  onchange="changePskCipher5g()">'
+					);
+					
+	if ((guestNetworkInf[23] != 3) && (guestNetworkInf[23] != 7))
+	{
+		document.write('<option name="psk_auto5g" id="t_psk_auto5g" value="1" >Automatic(Recommended)</option>');
+		document.write('<option id = "t_psk_tkip5g"value="2">TKIP</option>');
+	}
+	document.write('<OPTION id = "t_psk_aes5g" value="3">AES</OPTION></SELECT></TD></TR>');					
+	document.write('<TR name="psk5g_3" id="psk5g_3_id" style="display:none">'
+					+'<TD class="Item" style="padding-left:60px" id="t_psk_pwd5g">PSK Password: </TD>'
+					+'<TD colspan ="2">'
+					+'<INPUT name="pskSecret5g" id="pskSecret5g_id" type=text class=text value="" size="64" maxlength="64">'
+					+'</TD></TR>');
+	document.write('<TR name="psk5g_4" id="psk5g_4_id" style="display:none"><TD>&nbsp;</TD>'
+					+'<TD name="psk_note5g" id="t_psk_note5g" colspan=2>(You can enter ASCII characters between 8 and 63 or Hexadecimal characters between 8 and 64.)'
+					+'</TD></TR>');
+	document.write('<TR name="psk5g_5" id="psk5g_5_id" style="display:none">'
+					+'<TD id = "t_groupKeyUp5g" class=Item style="padding-left:60px">Group Key Update Period: </TD>'
+					+'<TD colspan ="2"><INPUT name="interval5g" id="interval5g_id" type=text class=text value="" size="9" maxlength="9">'
+					+'<A  id="t_key_update_prd_note5g" name="t_key_update_prd_note5g">'
+					+'&nbsp;Seconds (Keep it default if you are not sure, minimum is 30, 0 means no update)</A>'
+					+'</TD></TR>');
+	document.write('<TR name="psk5g_6" id="psk5g_6_id" style="display:none"><TD width="228">&nbsp;</TD>'
+					+'<TD colspan = 2><TABLE name="table_notice_tkip5g" id ="table_notice_tkip5g_id" style="display:none;color:red;">'
+					+'<TR><TD  colspan = "4"><SPAN name="notice_tkip5g_1" id="t_notice_tkip5g_1">'
+					+'We do not recommend using the TKIP encryption if the device operates in</SPAN><BR>'
+					+'<SPAN name="notice_tkip5g_2" id="t_notice_tkip5g_2">802.11n mode due to the fact that TKIP is not supported by 802.11n specification.'
+					+'</SPAN></TD></TR></TABLE></TD></TR>');
+	document.write('<TR><TD id = "t_accTime5g" class = "Item">Access Time: </TD>'
+					+'<TD colspan="2" style="height:30px"><SELECT name="AccessTime5g" id="accessTime5g_id" onchange="doAccessTime5g()">'
+					+'<OPTION id = "t_timeOut5g" value="0">Timeout</OPTION>'
+					+'<OPTION id = "t_schedule5g" value="1">Schedule</OPTION></SELECT>'
+					+'<span class="tips" id="t_wlanUsabled5g">can be connect!</span>'
+					+'<span class="tips" id="t_remainTime5g"></span>'
+					+'<span class="countDown" id="countDown5g"></span>'
+					+'</TD></TR>');
+	document.write('<TR name="TIMEOUT5g" id="TIMEOUT5g_id" style="display:none"><TD>&nbsp;</TD>'
+					+'<TD colspan =2><INPUT name="timeouthour5g" id="timeouthour5g_id" type="text" class="text" value="" size="9" maxlength="4">'
+					+'&nbsp;Hours&nbsp;'
+					+'<INPUT name="timeoutmin5g" id="timeoutmin5g_id" type=text class=text value="" size="9" maxlength="4">&nbsp;Minutes'
+					+'</TD></TR>');
+	document.write('<TR name="SCHE_SELE5g" id="SCHE_SELE5g_id" style="display:none"><TD>&nbsp;</TD>'
+					+'<TD><INPUT name="scheDay5g" id="sche_allday5g_id" type="radio" value="0" checked onClick="doScheDay5g()">&nbsp;'
+					+'Everyday&nbsp;&nbsp;<INPUT name="scheDay5g" id="sche_selectday5g_id" type="radio" value="1" onClick="doScheDay5g()">&nbsp;'
+					+'Select Days</TD><TD>&nbsp;</TD></TR>');
+	document.write('<TR name="DAYSX5g" id="DAYSX5g_id" style="display:none"><TD>&nbsp;</TD>'
+					+'<TD colspan=2><INPUT name="days1_5g" id="days1_5g_id" type="checkbox" value="1">Mon&nbsp;'
+					+'<INPUT name="days2_5g" id="days2_5g_id" type="checkbox" value="0">Tue&nbsp;'
+					+'<INPUT name="days3_5g" id="days3_5g_id" type="checkbox" value="0">Wed&nbsp;'
+					+'<INPUT name="days4_5g" id="days4_5g_id" type="checkbox" value="0">Thu&nbsp;'
+					+'<INPUT name="days5_5g" id="days5_5g_id" type="checkbox" value="0">Fri&nbsp;'
+					+'<INPUT name="days6_5g" id="days6_5g_id" type="checkbox" value="0">Sat&nbsp;'
+					+'<INPUT name="days7_5g" id="days7_5g_id" type="checkbox" value="0">Sun</TD></TR>');
+	document.write('<TR name="DAYSALL5g_TR" id="DAYSALL5g_TR_id" style="display:none"><TD>&nbsp;</TD>'
+					+'<TD><INPUT name="daysAll5g" id="daysAll5g_id" type="checkbox" value="0" onClick="doDaysAll5g()">'
+					+'&nbsp;All day-24 Hours</TD><TD>&nbsp;</TD></TR>');
+	document.write('<TR name="STARTTIME5g_TR" id="STARTTIME5g_TR_id" style="display:none"><TD>&nbsp;</TD>'
+					+'<TD><SPAN id = "t_startTim5g">Start Time:</SPAN>'
+					+'<INPUT name="starttime5g" id="starttime5g_id" type=text class=text value="" size="9" maxlength="4">'
+					+'&nbsp;(HHMM)</TD><TD>&nbsp;</TD></TR>');
+	document.write('<TR name="ENDTIME5g_TR" id="ENDTIME5g_TR_id" style="display:none"><TD>&nbsp;</TD>'
+					+'<TD><SPAN id = "t_endTim5g">End Time:&nbsp;</SPAN>'
+					+'<INPUT name="endtime5g" id="endtime5g_id" type=text class=text value="" size="9" maxlength="4">'
+					+'&nbsp;(HHMM)</TD><TD>&nbsp;</TD></TR>');
+}
+</SCRIPT>
+
+		
+	<!--	
+	<TR id="psk5g_x" style="display:none">
+	<TD colspan=3>
+	<TABLE>
+	-->											
+	<!------------------------------------------------------------------------>
+	<!---------------------------------SAVE----------------------------------->
+		<TR>
+			<TD class = "blue" colspan=3></TD>
+		</TR>
+		<TR>
+			<TD>&nbsp;</TD>			
+			<TD><INPUT class="buttonBig" id="Save_id" type="submit" value="Save" name="Save"></TD>
+			<TD>&nbsp;</TD>
+		</TR>
+	<!------------------------------------------------------------------------>	
+	</TABLE>
+</CENTER>
+</FORM>
+</BODY>
+	
+	
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+/* Guest_Network Bandwidth */
+document.forms[0].bandwidthCtrl.checked = guestNetworkBandwidthInf[0] ? true:false;
+document.forms[0].up_bandWidth.value = guestNetworkBandwidthInf[3];
+document.forms[0].down_bandWidth.value = guestNetworkBandwidthInf[4];
+document.forms[0].guestAccessCtrl.checked = guestNetworkBandwidthInf[5] ? true:false;
+/* end */
+if (guestNetworkInf[1] == 1)
+{
+	g_guestNetworkStatus = 1;
+}
+else
+{
+	g_guestNetworkStatus = 0;
+}
+if (g_guestNetworkStatus == 0)
+{
+	document.forms[0].guestNetMode.checked = false;
+}
+else
+{
+	document.forms[0].guestNetMode.checked = true;
+}
+if(guestNetworkBandwidthInf[6] == 1)
+{
+	if (guestNetworkInf[13] == 1)
+	{
+		g_guestNetwork5GStatus = 1;
+	}
+	else
+	{
+		g_guestNetwork5GStatus = 0;
+	}
+	if (g_guestNetwork5GStatus == 0)
+	{
+		document.forms[0].guestNetMode5g.checked = false;
+	}
+	else
+	{
+		document.forms[0].guestNetMode5g.checked = true;
+	}
+}
+
+
+
+/********************ssid**********************/
+document.forms[0].ssid.value = guestNetworkInf[2];
+if(guestNetworkBandwidthInf[6] == 1)
+	document.forms[0].ssid5g.value = guestNetworkInf[14];
+/****************Wireless Security******************/
+document.forms[0].SecOpt.value = guestNetworkInf[4];
+if(guestNetworkBandwidthInf[6] == 1)
+	document.forms[0].SecOpt5g.value = guestNetworkInf[16];
+/*****************type********************/
+document.forms[0].pskSecOpt.value = guestNetworkInf[5].charAt(2);
+if(guestNetworkBandwidthInf[6] == 1)
+	document.forms[0].pskSecOpt5g.value = guestNetworkInf[17].charAt(2);
+/******************PSK Password********************/
+document.forms[0].pskSecret.value = guestNetworkInf[7];
+if(guestNetworkBandwidthInf[6] == 1)
+	document.forms[0].pskSecret5g.value = guestNetworkInf[19];
+/*******************Group Key Update Period psk**********************/
+document.forms[0].interval.value = guestNetworkInf[8];
+if(guestNetworkBandwidthInf[6] == 1)
+	document.forms[0].interval5g.value = guestNetworkInf[20];
+/**********************Encryption psk************************/
+document.forms[0].pskCipher.value = guestNetworkInf[9];
+if(guestNetworkBandwidthInf[6] == 1)
+	document.forms[0].pskCipher5g.value = guestNetworkInf[21];
+/***      ***      Access Time       ***       ***/
+function showWlanStatus(status, idStr)
+{
+if(status == 0){
+	document.getElementById(idStr).innerHTML = "can not be connected."
+	}
+else if(status == 1){
+	document.getElementById(idStr).innerHTML = "can be connected."
+	}
+else{
+	document.getElementById(idStr).innerHTML = "please wait for taking effect..."
+	}
+}
+showWlanStatus(guestNetAccTime2gInf[1], "t_wlanUsabled2g");
+
+if(guestNetworkBandwidthInf[6] == 1)
+	showWlanStatus(guestNetAccTime5gInf[1], "t_wlanUsabled5g");
+
+/** count down Timer **/
+var remainingTime2g = guestNetAccTime2gInf[2]; 
+
+if(guestNetworkBandwidthInf[6] == 1)
+	var remainingTime5g = guestNetAccTime5gInf[2];
+
+function getTimeStr(t)
+{
+	var min = Math.floor(t/60);
+	var sec = t - 60*min;
+	var hour = Math.floor(min/60);
+	min = min - 60*hour;
+	var timeStr = "";
+	if(hour<10)
+		timeStr=timeStr+"0";
+	timeStr=timeStr+hour+":";
+	if(min<10)
+		timeStr=timeStr+"0";
+	timeStr=timeStr+min+":";
+	if(sec<10)
+		timeStr=timeStr+"0";
+	timeStr=timeStr+sec;
+	return timeStr;
+}
+function showRemainingTime2g()
+{
+	var showStr1 = "", showStr2 = "";		
+	if(guestNetAccTime2gInf[2]>0 && remainingTime2g < 0){
+		location.href = "GuestNetWirelessCfgRpm.htm";
+//		showStr2 = "Time Out"
+		}
+	else{	
+		showStr1 = "Remaining Time is";
+		showStr2 = getTimeStr(remainingTime2g);
+		remainingTime2g -= 1;
+		setTimeout("showRemainingTime2g()", 1000);
+		}	
+	document.getElementById("t_remainTime2g").innerHTML = showStr1;
+	document.getElementById("countDown2g").innerHTML = showStr2;
+}
+function showRemainingTime5g()
+{
+	var showStr1 = "", showStr2 = "";	
+	if(guestNetAccTime5gInf[2]>0 && remainingTime5g < 0)
+	{
+		location.href = "GuestNetWirelessCfgRpm.htm";
+//		showStr2 = "Time Out"
+	}
+	else{	
+		showStr1 = "Remaining Time is";
+		showStr2 = getTimeStr(remainingTime5g);
+		remainingTime5g -= 1;
+		setTimeout("showRemainingTime5g()", 1000);			
+		}
+	document.getElementById("t_remainTime5g").innerHTML = showStr1;	
+	document.getElementById("countDown5g").innerHTML = showStr2;
+}
+
+if(guestNetAccTime2gInf[0] == 1)
+	document.forms[0].AccessTime.selectedIndex = 1;
+else if(guestNetAccTime2gInf[0] == 0)
+{
+	document.forms[0].AccessTime.selectedIndex = 0;
+	if(guestNetAccTime2gInf[1] == 1 && guestNetAccTime2gInf[2]>0)
+	{
+		showRemainingTime2g();
+	}
+	else if(guestNetAccTime2gInf[1]==1 && guestNetAccTime2gInf[2]==0)
+	{
+		setTimeout("location.href = \"GuestNetWirelessCfgRpm.htm\";",30000);
+	}
+}
+
+if(guestNetworkBandwidthInf[6] == 1){
+	if(guestNetAccTime5gInf[0] == 1)
+		document.forms[0].AccessTime5g.selectedIndex = 1;
+	else if(guestNetAccTime5gInf[0] == 0){
+		document.forms[0].AccessTime5g.selectedIndex = 0;
+		if(guestNetAccTime5gInf[1] == 1 && guestNetAccTime5gInf[2]>0)
+		{
+			showRemainingTime5g();
+		}
+		else if(guestNetAccTime5gInf[1]==1 && guestNetAccTime5gInf[2]==0){
+			setTimeout("location.href = \"GuestNetWirelessCfgRpm.htm\";",30000);
+		}
+	}
+}
+	
+document.forms[0].timeouthour.value = guestNetAccTime2gInf[3];
+document.forms[0].timeoutmin.value = guestNetAccTime2gInf[4];
+
+if(guestNetworkBandwidthInf[6] == 1)
+{
+	document.forms[0].timeouthour5g.value = guestNetAccTime5gInf[3];
+	document.forms[0].timeoutmin5g.value = guestNetAccTime5gInf[4];
+}
+if(guestNetAccTime2gInf[5]==0)
+	document.forms[0].scheDay[1].checked = true;
+else
+	document.forms[0].scheDay[0].checked = true;
+
+if(guestNetworkBandwidthInf[6] == 1)
+{
+	if(guestNetAccTime5gInf[5]==0)
+		document.forms[0].scheDay5g[1].checked = true;
+	else
+		document.forms[0].scheDay5g[0].checked = true;	
+}
+	
+for(var i=6; i<13; i++)
+{
+	tmp = i-5;
+	weekday = "days"+ tmp + "_id";
+	weekday5g = "days"+ tmp +"_5g_id";
+	if(guestNetAccTime2gInf[i])
+		document.getElementById(weekday).checked = true;
+	if(guestNetworkBandwidthInf[6] == 1)
+		if(guestNetAccTime5gInf[i])
+			document.getElementById(weekday5g).checked = true;
+}	
+
+if(guestNetAccTime2gInf[13])
+{
+	document.forms[0].daysAll.checked = true;
+}
+else
+{
+	document.forms[0].starttime.value = guestNetAccTime2gInf[14];
+	document.forms[0].endtime.value = guestNetAccTime2gInf[15];
+}
+if(guestNetworkBandwidthInf[6] == 1)
+{
+	if(guestNetAccTime5gInf[13])
+	{
+		document.forms[0].daysAll5g.checked = true;
+	}
+	else
+	{
+		document.forms[0].starttime5g.value = guestNetAccTime5gInf[14];
+		document.forms[0].endtime5g.value = guestNetAccTime5gInf[15];
+	}
+}
+
+doPagePrepare();
+</SCRIPT>
+
